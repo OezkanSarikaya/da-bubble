@@ -4,6 +4,12 @@ section{
   height: 100vh;
   width: 100%;
   position: relative;
+  @extend .d-center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+section{
   .presentation{
     position: absolute;
     top: 0;
@@ -20,7 +26,7 @@ section{
 .container-presentation{
   position: relative;
   @extend .d-center;
-  z-index: 10;
+  z-index: 100;
   animation: container-logo-up 650ms ease-out 2500ms forwards;
 }
 
@@ -41,7 +47,7 @@ span.text-logo{
   color: $white-color;
   font-size: 24px;
   font-weight: 700;
-  animation: text-logo-right 500ms ease-out 1500ms forwards;
+  animation: text-logo-right 500ms ease-out 1500ms forwards, logo-img-color 500ms ease-out 3s forwards;
   position: relative;
   z-index: -5;
   opacity: 0;
@@ -52,9 +58,19 @@ span.text-logo{
     transform: translate(0);
   }
   to{
-    transform: translate(-50px);
+    transform: translate(-60px);
   }
 }
+
+@keyframes logo-img-color {
+  from{
+    color: $white-color;
+  }
+  to{
+    color: $black-color;
+  }
+}
+
 
 @keyframes logo-img-transparent {
   from{
@@ -72,7 +88,7 @@ span.text-logo{
   }
   to{
     opacity: 100;
-    transform: translate(+50px);
+    transform: translate(+40px);
   }
 }
 
@@ -82,24 +98,53 @@ span.text-logo{
   }
   to{
     opacity: 100;
-    transform: translateY(-35vh);
+    transform: translateY(-40vh);
   }
 }
 
 @keyframes background-change {
   from{
     z-index: 100;
-    opacity: 1;
-    visibility: visible;
+    background-image: linear-gradient($main-light, $main-secondary, $main-color);
   }
   to{
+    background-image: linear-gradient($white-color, $white-color);
     z-index: -1000;
-    opacity: 0;
-    visibility: hidden;
   }
 }
 
+.main-container{
+  @extend .d-center;
+  flex-direction: column;
+  margin-top: 45px;
+}
 
-.control{
- @extend .d-center;
+.card{
+  @extend .d-center;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 40px;
+  h1{
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+  } 
+  
+  h3{
+    margin: 0;
+    font-size: 17px;
+    font-weight: normal;
+  }
+}
+
+.form{
+  @extend .d-center;
+  flex-direction: column;
+  gap: 15px;
+  .control{
+   @extend .d-center;
+   .container-input{
+    @extend .d-center;
+   }
+  }
 }
