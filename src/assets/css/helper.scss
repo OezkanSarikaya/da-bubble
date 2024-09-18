@@ -2,6 +2,7 @@
 $main-color: #444DF2;
 $main-secondary: #535AF1;
 $main-light: #797EF3;
+$bg-field-color: #ECEEFE;
 $main-gray: #686868;
 
 //Basic color
@@ -13,3 +14,27 @@ $white-color: white;
   justify-content: center;
   align-items: center;
 }
+
+.d-none{
+  display: none;
+}
+
+.border-radius{
+  border-radius: 16px;
+}
+
+.button-app{
+  background-color: $main-color;
+  font-size: 12px;
+  font-weight: 700;
+  color: $white-color;
+  padding: 12px 25px;
+  border: 1px solid transparent;
+  border-color: transparent;
+  border-radius: 25px;
+}
+
+.privacy-container{
+  @extend .d-none;
+}
+

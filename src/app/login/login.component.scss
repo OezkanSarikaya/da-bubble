@@ -6,7 +6,7 @@ section{
   position: relative;
   @extend .d-center;
   flex-direction: column;
-  gap: 20px;
+  gap: 0;
 }
 
 section{
@@ -98,7 +98,7 @@ span.text-logo{
   }
   to{
     opacity: 100;
-    transform: translateY(-40vh);
+    transform: translateY(-41vh);
   }
 }
 
@@ -108,7 +108,7 @@ span.text-logo{
     background-image: linear-gradient($main-light, $main-secondary, $main-color);
   }
   to{
-    background-image: linear-gradient($white-color, $white-color);
+    background-image: linear-gradient($bg-field-color, $bg-field-color);
     z-index: -1000;
   }
 }
@@ -116,18 +116,23 @@ span.text-logo{
 .main-container{
   @extend .d-center;
   flex-direction: column;
-  margin-top: 45px;
+  margin-top: 75px;
 }
 
 .card{
   @extend .d-center;
   flex-direction: column;
-  gap: 15px;
-  padding: 0 40px;
+  gap: 8px;
+  padding: 16px;
+  margin: 8px 16px;
+  background-color: $white-color;
+  @extend .border-radius;
+
   h1{
     margin: 0;
     font-size: 32px;
     font-weight: 700;
+    color: $main-color;
   } 
   
   h3{
@@ -140,11 +145,99 @@ span.text-logo{
 .form{
   @extend .d-center;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  width: 100%;
   .control{
-   @extend .d-center;
+    width: 100%;
+    display: block;
    .container-input{
     @extend .d-center;
    }
+  }
+}
+
+.control {
+  svg{
+    width: 24px;
+    height: 24px;
+  }
+  input{
+    border: none;
+    background-color: transparent;
+    &:focus{
+      outline: none;
+    }
+  
+  }
+}
+
+.container-input{
+  @extend .border-radius;;
+  padding: 4px 8px;
+  background-color: $bg-field-color;
+  border: 1px solid transparent;
+  &:has(input:focus) {
+    border: 1px solid $main-color;
+  }
+}
+
+.color-svg{
+  fill: $main-gray;
+}
+
+.container-register{
+  @extend .d-center;
+  flex-direction: column;
+  gap: 2px;
+  p{margin: 0;}
+}
+
+.container-passwort-forgot{
+  a{
+    color: $main-secondary;
+  }
+}
+
+.container-or{
+  width: 100%;
+  @extend .d-center;
+  >*{
+    flex: 1;
+  }
+  span{
+    text-align: center;
+  }
+  .divider{
+    height: 1px;
+    width: 100%;
+    background-color: rgba($color: $black-color, $alpha: 0.2);
+  }
+}
+
+.container-submit{
+  @extend .d-center;
+  gap: 20px;
+  button.submit {
+    @extend .button-app;
+  }
+  button.gast {
+    @extend .button-app;
+    color: $main-color;
+    border-color: $main-color;
+    background-color: $white-color;
+  }
+}
+
+.container-register{
+  p{
+    font-size: 18px;
+    font-weight: 400;
+  }
+  a{
+    @extend .button-app;
+    color: $main-secondary; 
+    background-color: $white-color;
+    border-color: $main-color;
+    font-size: 18px;
   }
 }
