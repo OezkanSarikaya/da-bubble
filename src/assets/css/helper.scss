@@ -34,7 +34,18 @@ $white-color: white;
   border-radius: 25px;
 }
 
-.privacy-container{
-  @extend .d-none;
+.form-control{
+  @extend .d-center;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  .control{
+    width: 100%;
+    display: block;
+   .container-input{
+    @extend .d-center;
+   }
+  }
 }
+
 

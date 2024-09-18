@@ -143,17 +143,7 @@ span.text-logo{
 }
 
 .form{
-  @extend .d-center;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  .control{
-    width: 100%;
-    display: block;
-   .container-input{
-    @extend .d-center;
-   }
-  }
+  @extend .form-control;
 }
 
 .control {
@@ -240,4 +230,8 @@ span.text-logo{
     border-color: $main-color;
     font-size: 18px;
   }
+}
+
+.privacy-container{
+  @extend .d-none;
 }
