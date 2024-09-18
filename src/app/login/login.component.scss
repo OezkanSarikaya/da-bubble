@@ -10,32 +10,94 @@ section{
     left: 0;
     bottom: 0;
     right: 0;
+    pointer-events: none;
     background-image: linear-gradient($main-light, $main-secondary, $main-color);
+    animation: background-change 650ms ease-out 3s forwards;
     @extend .d-center;
-    // gap: 16px;
   }
 }
 
 .container-presentation{
   position: relative;
   @extend .d-center;
+  z-index: 10;
+  animation: container-logo-up 650ms ease-out 2500ms forwards;
 }
 
-img.logo{
-  width:186px;
-  height: 184px;
+.img-container{
+  @extend .d-center;
   position: absolute;
-  left:-93px;
+  animation: logo-img-left 500ms ease-out 1s forwards,
+  logo-img-transparent 1ms ease-out 2000ms forwards;
+  background-color: $main-secondary;
+  z-index: 10;
+  img.logo{
+    width:72px;
+    height: 64px;
+  }
 }
 
 span.text-logo{
   color: $white-color;
-  font-size: 72px;
+  font-size: 24px;
   font-weight: 700;
-  // display: none;
-  // visibility: hidden;
+  animation: text-logo-right 500ms ease-out 1500ms forwards;
+  position: relative;
+  z-index: -5;
+  opacity: 0;
 }
 
+@keyframes logo-img-left {
+  from{
+    transform: translate(0);
+  }
+  to{
+    transform: translate(-50px);
+  }
+}
+
+@keyframes logo-img-transparent {
+  from{
+    background-color: $main-secondary;
+  }
+  to{
+    background-color: transparent;
+  }
+}
+
+@keyframes text-logo-right {
+  from{
+    opacity: 100;
+    transform: translate(-25px);
+  }
+  to{
+    opacity: 100;
+    transform: translate(+50px);
+  }
+}
+
+@keyframes container-logo-up {
+  from{
+    transform: translateY(0);
+  }
+  to{
+    opacity: 100;
+    transform: translateY(-35vh);
+  }
+}
+
+@keyframes background-change {
+  from{
+    z-index: 100;
+    opacity: 1;
+    visibility: visible;
+  }
+  to{
+    z-index: -1000;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
 
 
 .control{
