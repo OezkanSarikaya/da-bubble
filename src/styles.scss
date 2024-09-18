@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@import './assets/css/fonts.css';
+
+body { 
+  font-family: Nunito, "Helvetica Neue", sans-serif; 
+  max-width: 1440px;
+  margin: 0 auto;
+}
