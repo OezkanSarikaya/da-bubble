@@ -7,3 +7,9 @@ $main-gray: #686868;
 //Basic color
 $black-color: black;
 $white-color: white;
+
+.d-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

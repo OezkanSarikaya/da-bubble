@@ -1,2 +1,43 @@
 @import '../helper.scss';
 
+section{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  .presentation{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: linear-gradient($main-light, $main-secondary, $main-color);
+    @extend .d-center;
+    // gap: 16px;
+  }
+}
+
+.container-presentation{
+  position: relative;
+  @extend .d-center;
+}
+
+img.logo{
+  width:186px;
+  height: 184px;
+  position: absolute;
+  left:-93px;
+}
+
+span.text-logo{
+  color: $white-color;
+  font-size: 72px;
+  font-weight: 700;
+  // display: none;
+  // visibility: hidden;
+}
+
+
+
+.control{
+ @extend .d-center;
+}
