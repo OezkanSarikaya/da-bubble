@@ -19,7 +19,7 @@
             (focus)="clearPlaceholder($event)" 
             (blur)="restorePlaceholder($event, 'beispielname@email.com')">
           </div>
-          <div class="error"></div>
+          <div class="error">*Diese E-Mail E-Mail-Adresse ist leider ungültig.</div>
         </div>
         <div class="control">
           <div class="container-input">
@@ -35,7 +35,7 @@
             (focus)="clearPlaceholder($event)" 
             (blur)="restorePlaceholder($event, 'Passwort')">
           </div>
-          <div class="error"></div>
+          <div class="error">*Falsches Passwort oder E-Mail. Bitte noch einmal versuchen</div>
         </div>
         <div class="container-passwort-forgot">
             <a [routerLink]="['/recover-password']">Passwort vergessen?</a>

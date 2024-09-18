@@ -8,6 +8,7 @@ $main-gray: #686868;
 //Basic color
 $black-color: black;
 $white-color: white;
+$red-color: red;
 
 .d-center{
   display: flex;
@@ -37,7 +38,7 @@ $white-color: white;
 .form-control{
   @extend .d-center;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   .control{
     width: 100%;
@@ -46,6 +47,28 @@ $white-color: white;
     @extend .d-center;
    }
   }
+}
+
+.container-input{
+  @extend .border-radius;;
+  padding: 4px 8px;
+  background-color: $bg-field-color;
+  border: 1px solid transparent;
+  &:has(input:focus) {
+    border: 1px solid $main-color;
+  }
+}
+
+.container-input:has(input:focus) {
+  svg .color-svg {
+    fill: $black-color;
+  }
+}
+
+.error{
+  font-size: 10px;
+  color: $white-color; 
+  // color: $red-color; 
 }
 
 

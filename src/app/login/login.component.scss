@@ -122,8 +122,8 @@ span.text-logo{
 .card{
   @extend .d-center;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: 4px;
+  padding: 8px 16px;
   margin: 8px 16px;
   background-color: $white-color;
   @extend .border-radius;
@@ -162,13 +162,7 @@ span.text-logo{
 }
 
 .container-input{
-  @extend .border-radius;;
-  padding: 4px 8px;
-  background-color: $bg-field-color;
-  border: 1px solid transparent;
-  &:has(input:focus) {
-    border: 1px solid $main-color;
-  }
+  @extend .container-input;
 }
 
 .color-svg{
@@ -196,6 +190,7 @@ span.text-logo{
   }
   span{
     text-align: center;
+    font-size: 14px;
   }
   .divider{
     height: 1px;
