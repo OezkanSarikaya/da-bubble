@@ -1,5 +1,17 @@
 @import '../../assets/css/helper.scss';
 
+.presentation{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  pointer-events: none;
+  background-image: linear-gradient($main-light, $main-secondary, $main-color);
+  animation: background-change 650ms ease-out 3s forwards;
+  @extend .d-center;
+}
+
 section{
   height: 100vh;
   width: 100%;
@@ -7,20 +19,6 @@ section{
   @extend .d-center;
   flex-direction: column;
   gap: 0;
-}
-
-section{
-  .presentation{
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    pointer-events: none;
-    background-image: linear-gradient($main-light, $main-secondary, $main-color);
-    animation: background-change 650ms ease-out 3s forwards;
-    @extend .d-center;
-  }
 }
 
 .container-presentation{
