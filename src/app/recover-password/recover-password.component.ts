@@ -1,14 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-recover-password',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './recover-password.component.html',
   styleUrl: './recover-password.component.scss'
 })
 export class RecoverPasswordComponent {
+  isAllField: boolean = true;
+  
   clearPlaceholder(event: any) {
     event.target.placeholder = '';
   }

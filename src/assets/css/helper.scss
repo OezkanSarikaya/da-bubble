@@ -52,6 +52,9 @@ $red-color: red;
     border: 1px solid transparent;
     &:has(input:focus) {
       border: 1px solid $main-color;
+    };
+    input::placeholder{
+      font-family: 'Nunito';
     }
    }
   }
