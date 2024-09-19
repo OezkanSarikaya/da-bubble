@@ -4,8 +4,7 @@
 
 body { 
   font-family: Nunito, "Helvetica Neue", sans-serif; 
-  max-width: 1440px;
-  margin: 0 auto;
+  @extend .max-width;
   padding:0;
   box-sizing: border-box;  
   background-color: $bg-field-color;
@@ -17,5 +16,6 @@ button, a{
 
 a{
   text-decoration: none;
+  color: $main-secondary;
 }
 

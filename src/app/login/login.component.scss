@@ -112,7 +112,7 @@ span.text-logo{
 
 @keyframes background-change {
   from{
-    z-index: 100;
+    z-index: 1000;
     background-image: linear-gradient($main-light, $main-secondary, $main-color);
   }
   to{
@@ -185,12 +185,6 @@ span.text-logo{
   flex-direction: column;
   gap: 2px;
   p{margin: 0;}
-}
-
-.container-passwort-forgot{
-  a{
-    color: $main-secondary;
-  }
 }
 
 .container-or{
@@ -323,7 +317,7 @@ span.text-logo{
   }
   to{
     opacity: 100;
-    transform: translate(+150px);
+    transform: translate(160px);
   }
 }
 
