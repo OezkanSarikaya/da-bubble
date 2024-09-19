@@ -45,7 +45,7 @@ span.text-logo{
   color: $white-color;
   font-size: 24px;
   font-weight: 700;
-  animation: text-logo-right 500ms ease-out 1500ms forwards, logo-img-color 500ms ease-out 3s forwards;
+  animation: text-logo-right 500ms ease-out 1500ms forwards, text-img-color 500ms ease-out 3s forwards;
   position: relative;
   z-index: -5;
   opacity: 0;
@@ -60,7 +60,7 @@ span.text-logo{
   }
 }
 
-@keyframes logo-img-color {
+@keyframes text-img-color {
   from{
     color: $white-color;
   }
@@ -100,6 +100,16 @@ span.text-logo{
   }
 }
 
+@keyframes container-logo-up-desktop {
+  from{
+    transform: translate(0);
+  }
+  to{
+    opacity: 100;
+    transform: translate(-41vh, -41vh);
+  }
+} 
+
 @keyframes background-change {
   from{
     z-index: 100;
@@ -121,6 +131,7 @@ span.text-logo{
   @extend .d-center;
   flex-direction: column;
   gap: 4px;
+  max-width: 398px;
   padding: 8px 16px;
   margin: 8px 16px;
   background-color: $white-color;
@@ -230,3 +241,109 @@ span.text-logo{
 .privacy-container{
   @extend .d-none;
 }
+
+@media (min-height: 650px) {
+  section{
+    gap:12px;
+  }
+  .card{
+    gap: 12px;
+    padding: 10px 16px;
+  }
+  .form{
+    gap:14px
+  }
+}
+
+@media (min-height: 800px) {
+  section{
+    gap:20px;
+  }
+  .card{
+    gap: 15px;
+    padding: 16px;
+  }
+  .form{
+    gap:20px
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-presentation{
+    animation: container-logo-up-desktop 650ms ease-out 2500ms forwards;
+  }
+
+  .img-container{
+    background-color: $main-secondary;
+    animation: logo-img-left-desktop 500ms ease-out 1s forwards,
+    logo-img-transparent 1ms ease-out 2000ms forwards;
+    img.logo{
+      width:187px;
+      height: 184px;
+      animation: logo-small 1ms ease-out 2500ms forwards;
+    }
+  }
+
+  span.text-logo{
+    font-size: 72px;
+    text-align: left;
+    animation: text-logo-right-desktop 500ms ease-out 1500ms forwards, 
+                text-logo-size-desktop 500ms ease-out 2500ms forwards,
+                text-img-color 500ms ease-out 3s forwards,
+                text-logo-move-desktop 500ms ease-out 2500ms forwards;
+  }
+}
+
+@keyframes logo-small {
+  from{
+    width:187px;
+    height: 184px;
+  }
+  to{
+    width:72px;
+    height: 64px;
+  }
+}
+
+@keyframes logo-img-left-desktop {
+  from{
+    transform: translate(0);
+    
+  }
+  to{
+    transform: translate(-120px);
+    
+  }
+}
+
+@keyframes text-logo-right-desktop {
+  from{
+    opacity: 100;
+    transform: translate(-5px);
+  }
+  to{
+    opacity: 100;
+    transform: translate(+150px);
+  }
+}
+
+@keyframes text-logo-size-desktop {
+  from{
+    font-size: 72px;
+  }
+  to{
+    font-size: 24px;
+  }
+}
+
+@keyframes text-logo-move-desktop {
+  from{
+    transform: translateX(0);
+  }
+  to{
+    transform: translateX(-10px);
+  }
+}
+
+
+
