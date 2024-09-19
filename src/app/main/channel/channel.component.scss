@@ -1,0 +1,18 @@
+@import "../../../assets/css/helper.scss";
+
+.channel {
+  @extend .d-none;
+}
+
+// Media Queries Mobile First
+
+@media screen and (min-width: 800px) {
+  .channel {
+    display: block;
+    border-radius: 30px;
+    height: 85vh;
+    margin: 0 16px;
+    background-color: white;
+    padding: 20px;
+  }
+}

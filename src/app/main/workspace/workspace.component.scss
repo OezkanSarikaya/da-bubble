@@ -2,8 +2,9 @@
 
 .workspace {
   background-color: white;
-  height: 100vh;
+  height: 88vh;
   padding: 20px;
+  
 }
 
 .iconSize24 {
@@ -48,4 +49,20 @@
     }
 }
 
+.channelListItem {
+    @extend .d-center;
+
+}
+
 // .channels {background-color:pink}
+
+// Media Queries Mobile First
+
+@media screen and (min-width: 800px) {
+    .workspace {
+        width:366px;
+        border-radius: 30px;
+        height: 85vh;
+        margin:0 16px;
+    }
+}
