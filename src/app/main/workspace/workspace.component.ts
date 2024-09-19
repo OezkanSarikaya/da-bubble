@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
   styleUrl: './workspace.component.scss',
 })
 export class WorkspaceComponent {
-  isChannelOpen = false;
-  isPrivateMessageOpen = false;
+  isChannelOpen = true;
+  isPrivateMessageOpen = true;
   togglePrivateMessage() {
     this.isPrivateMessageOpen = !this.isPrivateMessageOpen;
   }
