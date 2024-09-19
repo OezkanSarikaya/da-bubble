@@ -209,6 +209,7 @@ span.text-logo{
   gap: 20px;
   button.submit {
     @extend .button-app;
+    
   }
   button.gast {
     @extend .button-app;
@@ -228,7 +229,7 @@ span.text-logo{
     color: $main-secondary; 
     background-color: $white-color;
     border-color: $main-color;
-    font-size: 18px;
+    font-size: 14px;
   }
 }
 
@@ -247,6 +248,19 @@ span.text-logo{
   .form{
     gap:14px
   }
+
+  .container-register{
+    a{
+      font-size: 18px;
+    }
+  }
+
+  .container-submit{
+    button.submit, button.gast {
+      font-size: 12px;
+    }
+  }
+  
 }
 
 @media (min-height: 800px) {
@@ -285,6 +299,19 @@ span.text-logo{
                 text-logo-size-desktop 500ms ease-out 2500ms forwards,
                 text-img-color 500ms ease-out 3s forwards,
                 text-logo-move-desktop 500ms ease-out 2500ms forwards;
+  }
+
+  .privacy-container{
+    position: absolute;
+    bottom: 42px;
+    display: flex;
+    gap:16px;
+  }
+
+  .container-submit{
+    button.submit, button.gast {
+      font-size: 18px;
+    }
   }
 }
 
