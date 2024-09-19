@@ -1,10 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import './assets/css/fonts.css';
+@import './assets/css/helper.scss';
 
 body { 
   font-family: Nunito, "Helvetica Neue", sans-serif; 
-  max-width: 1440px;
-  margin: 0 auto;
+  // max-width: 1440px;
+  margin:0;
+  padding:0;
+  box-sizing: border-box;  
+  background-color: $bg-field-color;
 }
 
 button, a{
@@ -14,3 +18,4 @@ button, a{
 a{
   text-decoration: none;
 }
+
