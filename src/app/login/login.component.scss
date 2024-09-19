@@ -161,8 +161,10 @@ span.text-logo{
   }
 }
 
-.container-input{
+.container-input-login{
   @extend .container-input;
+  justify-content: start !important;
+  padding-left: 24px !important;
 }
 
 .color-svg{

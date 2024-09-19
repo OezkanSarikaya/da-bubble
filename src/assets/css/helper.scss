@@ -45,17 +45,15 @@ $red-color: red;
     display: block;
    .container-input{
     @extend .d-center;
+    gap: 8px;
+    @extend .border-radius;;
+    padding: 4px 8px;
+    background-color: $bg-field-color;
+    border: 1px solid transparent;
+    &:has(input:focus) {
+      border: 1px solid $main-color;
+    }
    }
-  }
-}
-
-.container-input{
-  @extend .border-radius;;
-  padding: 4px 8px;
-  background-color: $bg-field-color;
-  border: 1px solid transparent;
-  &:has(input:focus) {
-    border: 1px solid $main-color;
   }
 }
 
