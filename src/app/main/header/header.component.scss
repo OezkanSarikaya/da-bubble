@@ -1,0 +1,21 @@
+@import "../../../assets/css/helper.scss";
+.header {
+  @extend.d-center;
+  height: 80px;
+  background-color: $bg-field-color;
+  padding: 0px 16px;
+  justify-content: space-between;
+
+  .logo {
+    @extend.d-center;
+    gap:16px;
+    img {
+      height: 45px;
+    }
+    h1 {
+      font-size: 24px;
+    }
+  }
+
+
+}
