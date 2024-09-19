@@ -1,0 +1,51 @@
+@import "../../../assets/css/helper.scss";
+
+.workspace {
+  background-color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.iconSize24 {
+  width: 24px;
+  height: 24px;
+}
+
+.channels,
+.privateMessage {
+  @extend .d-center;
+  justify-content: flex-start;
+  gap: 16px;
+  .dropDownHeader {
+    @extend .d-center;
+    gap: 8px;
+  }
+}
+
+.dropDownHeader {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    @extend .d-center;
+    // justify-content: flex-start;
+    align-items: start;
+    gap:8px;
+    flex-direction: column;
+    margin-left:48px;
+
+}
+
+.userList {
+    @extend .d-center;
+    gap:16px;
+    padding:4px 20px;
+    cursor: pointer;
+    &:hover {
+        background-color:$bg-field-color;
+        border-radius: 30px;
+        
+    }
+}
+
+// .channels {background-color:pink}

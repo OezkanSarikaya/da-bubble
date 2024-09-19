@@ -1,1 +1,94 @@
-<p>workspace works!</p>
+<section class="workspace">
+  <div class="channels dropdown-container">
+    <img
+      src="../../../assets/img/arrow_drop_down.svg"
+      alt=""
+      class="arrow-icon iconSize30"
+      (click)="toggleChannels()"
+    />
+    <div class="dropDownHeader" (click)="toggleChannels()">
+      <img src="../../../assets/img/workspaces.svg" alt="" class="iconSize24" />
+      <h3>Channels</h3>
+    </div>
+  </div>
+  <div class="dropdown-content" *ngIf="isChannelOpen">
+    <img src="../../../assets/img/tag.svg" alt="" class="iconSize24" />
+    <span>Entwicklerteam</span>
+  </div>
+
+  <div class="privateMessage dropdown-container">
+    <img
+      src="../../../assets/img/arrow_drop_down.svg"
+      alt=""
+      class="arrow-icon iconSize30"
+      (click)="togglePrivateMessage()"
+    />
+    <div class="dropDownHeader" (click)="togglePrivateMessage()">
+      <!-- <img src="../../../assets/img/workspaces.svg" alt="" /> -->
+      <img
+        src="../../../assets/img/account_circle.svg"
+        alt=""
+        class="iconSize24"
+      />
+      <h3>Direktnachrichten</h3>
+    </div>
+  </div>
+  <div class="dropdown-content" *ngIf="isPrivateMessageOpen">
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile1.png"
+        alt=""
+        class="userProfile50"
+      />
+      <span>Frederick Beck (Du)</span>
+    </div>
+
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile2.png"
+        alt=""
+        class="userProfile50"
+      />
+      <span>Sofia Müller</span>
+    </div>
+
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile3.png"
+        alt=""
+        class="userProfile50"
+      />
+      <span>Noah Braun</span>
+    </div>
+
+    <div class="userList">
+        <img
+          src="../../../assets/img/img_profile/profile6.png"
+          alt=""
+          class="userProfile50"
+        />
+        <span>Elise Roth</span>
+      </div>
+
+      <div class="userList">
+        <img
+          src="../../../assets/img/img_profile/profile5.png"
+          alt=""
+          class="userProfile50"
+        />
+        <span>Elias Neumann</span>
+      </div>
+
+      <div class="userList">
+        <img
+          src="../../../assets/img/img_profile/profile4.png"
+          alt=""
+          class="userProfile50"
+        />
+        <span>Steffen Hoffmann</span>
+      </div>
+
+
+
+  </div>
+</section>

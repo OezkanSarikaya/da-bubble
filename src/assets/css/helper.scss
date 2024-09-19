@@ -69,6 +69,21 @@ $red-color: red;
   // color: $red-color; 
 }
 
+.max-width {
+  max-width:1440px;
+  margin:0 auto;
+}
+
+.userProfile50 img, .userProfile50 {
+  border-radius: 50%;
+  width: 50px;
+}
+
+.userProfile80 img, .userProfile80{
+  border-radius: 50%;
+  width: 80px;
+}
+
 
 
 
