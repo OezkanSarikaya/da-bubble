@@ -84,7 +84,9 @@
 
 .workspaceSearch {
   display: block;
-  
+}
+.workspaceName {
+  display: none;
 }
 
 // Media Queries Mobile First
@@ -97,7 +99,19 @@
     margin: 0 16px;
   }
   .workspaceSearch {
-    
     display: none;
+  }
+  .workspaceName {
+    display:flex;
+    justify-content: space-between;
+    div {
+      display:flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32.74px;
+      text-align: left;
+    }
   }
 }

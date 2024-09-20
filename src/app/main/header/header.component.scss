@@ -48,21 +48,19 @@
   display: none;
 }
 
-
-
-
-
+.userDropDownIcon {
+  display: none;
+}
 
 @media screen and (min-width: 800px) {
   .headerSearch {
-    display: inline;
-    // background-color: red;
-    // width:100%;
-  
+    display: inline;  
   }
+
   .loggedInUserName {
     display: inline;
   }
+
   .userProfile50 {
     width: 70px;
   }
@@ -82,5 +80,8 @@
   .online {
     @extend .status;
     background: #92c83e;
+  }
+  .userDropDownIcon {
+    display: block;
   }
 }
