@@ -3,16 +3,69 @@
 .channel {
   @extend .d-none;
 }
+.channelHeader {
+  // background-color:pink;
+  padding: 25px 45px;
+  box-shadow: 0px 2px 10px -2px #00000014;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+.channelName {
+  @extend .d-center;
+  span {
+    font-size: 24px;
+  }
+  justify-content: flex-start;
+}
+
+.channelBody, .channelBottom {
+  padding: 20px;
+}
+
+.timeLine {
+  position: relative;
+  align-items: center;
+  border-top: 1px solid #adb0d9;
+  display: flex;
+  justify-content: center;
+  span {
+    position: absolute;
+    top: -18px;
+    border: 1px solid #adb0d9;
+    padding: 5px 15px 5px 15px;
+    border-radius: 30px;
+    color: black;
+    font-size: 18px;
+    background:white;
+  }
+}
+
+.channelBottom textarea {
+//   width: Fixed (919px)px;
+height: 145px;
+// top: 755px;
+// left: 35px;
+padding: 20px ;
+gap: 40px;
+border-radius: 20px ;
+border: 1px solid #ADB0D9;
+width:calc(100% - 40px);
+
+
+
+}
 
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
   .channel {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     border-radius: 30px;
-    height: 85vh;
+    height: 89vh;
     margin: 0 16px;
     background-color: white;
-    padding: 20px;
   }
 }

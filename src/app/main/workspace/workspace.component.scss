@@ -82,6 +82,11 @@
   background: #686868;
 }
 
+.workspaceSearch {
+  display: block;
+  
+}
+
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
@@ -90,5 +95,9 @@
     border-radius: 30px;
     height: 85vh;
     margin: 0 16px;
+  }
+  .workspaceSearch {
+    
+    display: none;
   }
 }

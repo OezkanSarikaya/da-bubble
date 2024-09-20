@@ -6,16 +6,81 @@
   padding: 0px 16px;
   justify-content: space-between;
 
-  .logo {
-    @extend.d-center;
-    gap:16px;
-    img {
-      height: 45px;
-    }
-    h1 {
-      font-size: 24px;
-    }
+
+
+
+}
+
+.logo {
+  @extend.d-center;
+  justify-content: flex-start;
+  width: 398px !important;
+  // background-color: pink;
+  padding-left:16px;
+  gap:16px;
+  img {
+    height: 45px;
   }
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+  }
+}
+
+.headerSearch {
+  display: none;
+
+}
+
+.loggedInUser {
+  position: relative;
+  @extend.d-center;
+  gap:16px;
+  font-family: Nunito;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 43.65px;
+  text-align: left;
+  
+}
+
+.loggedInUserName {
+  display: none;
+}
 
 
+
+
+
+
+@media screen and (min-width: 800px) {
+  .headerSearch {
+    display: inline;
+    // background-color: red;
+    // width:100%;
+  
+  }
+  .loggedInUserName {
+    display: inline;
+  }
+  .userProfile50 {
+    width: 70px;
+  }
+  .status {
+    border: 2px solid #ffffff;
+    width: 14px;
+    height: 14px;
+    top: 50px;  
+    gap: 0px;
+    border: 2px 0px 0px 0px;
+    opacity: 0px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 40px;
+  }
+  .online {
+    @extend .status;
+    background: #92c83e;
+  }
 }
