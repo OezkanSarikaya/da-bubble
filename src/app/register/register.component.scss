@@ -203,11 +203,21 @@ span.text-logo {
   }
 }
 
+
+
 @media (min-height: 900px) {
 	.presentation {
 		transform: translateY(-28vh);
 	}
+
+	.privacy-container{
+		position: absolute;
+		bottom: 42px;
+		display: flex;
+		gap:16px;
+	}
 }
+
 
 @media (min-width: 390px) {
   h1{
@@ -249,13 +259,6 @@ span.text-logo {
 		justify-content: center;
 		margin-top: 75px;
 	}
-
-  .privacy-container{
-    position: absolute;
-		bottom: 42px;
-		display: flex;
-		gap:16px;
-  }
 
   h1{
     font-size: 36px !important;
