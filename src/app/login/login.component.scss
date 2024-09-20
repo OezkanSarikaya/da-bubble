@@ -245,36 +245,50 @@ span.text-logo{
   }
 
   .container-logo-name {
-    // gap: 20px;
-    // position: absolute;
-    // width: 33vh;
-    // height: 100vh;
     position: relative;
     height: 100vh;
     display: block;
 	}
 
   .container-register-desktop {
+    display: block;
     position: absolute;
-    left: -40.5vh;
+    right: 7vh;
+    top: 6vh;
+    p{
+      font-size: 18px;
+      font-weight: 400;
+    }
+    a{
+      color: $main-secondary; 
+      background-color: transparent;
+      border: 1px solid transparent;
+      font-size: 18px;
+      padding: 12px 25px;
+      &:hover{
+        background-color: transparent;
+        border: 1px solid $main-gray;
+        border-radius: 25px;
+      }
+    }
 	}
 
   .img-container-desktop{
     position: absolute;
-    left: -37vh;
+    left: -37.9vh;
     img.logo-desktop {
       width: 72px;
       height: 64px;
       position: absolute;
       left: 8.2vh;
-      top: 5.7vh;
+      top: 6vh;
     }
   }
 
   span.text-logo-desktop{
     position: absolute;
-    left: -19.6vh;
-    top: 7.4vh;
+    left: -21.3vh;
+    top: 7.6vh;
     font-size: 24px;
     font-weight: 700;
   }

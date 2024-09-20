@@ -23,9 +23,9 @@ export class LoginComponent {
   }
 
   constructor(){
-    // setTimeout(() => {
-    //   this.presentationPlayed()
-    // }, 3500);
+    setTimeout(() => {
+      this.presentationPlayed()
+    }, 3500);
   }
 
   presentationPlayed(){

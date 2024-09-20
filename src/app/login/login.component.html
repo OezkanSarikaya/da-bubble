@@ -70,7 +70,10 @@
       <a [routerLink]="['/privacy']">Datenschutz</a>
     </div>
   </article>
-  <aside class="container-register-desktop">right</aside>
+  <aside class="container-register-desktop">
+    <p>Neu bei DABubble?</p>
+    <a [routerLink]="['/register']">Konto erstellen</a>
+  </aside>
 </section>
 <div class="presentation" [ngClass]="{'d-none': isPresentation}">
   <div class="container-presentation">
