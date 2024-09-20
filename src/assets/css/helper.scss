@@ -35,6 +35,22 @@ $red-color: red;
   border-radius: 25px;
   font-family: 'Nunito';
   font-size: 12px;
+  &:hover{
+    background-color: $main-light;
+  }
+}
+
+.button-app-disabled{
+  background-color: $main-gray;
+  font-size: 12px;
+  font-weight: 700;
+  color: $white-color;
+  padding: 12px 25px;
+  border: 1px solid transparent;
+  border-color: transparent;
+  border-radius: 25px;
+  font-family: 'Nunito';
+  font-size: 12px;
 }
 
 .form-control{

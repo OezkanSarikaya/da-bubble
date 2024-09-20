@@ -181,6 +181,18 @@ span.text-logo{
   fill: $main-gray;
 }
 
+.mb-18{
+  margin-bottom: 18px;
+}
+
+.btn{
+  @extend .button-app;
+}
+
+.btn-disabled{
+  @extend .button-app-disabled;
+}
+
 .container-register{
   @extend .d-center;
   flex-direction: column;
@@ -208,15 +220,15 @@ span.text-logo{
 .container-submit{
   @extend .d-center;
   gap: 20px;
-  button.submit {
-    @extend .button-app;
-    
-  }
   button.gast {
     @extend .button-app;
     color: $main-color;
     border-color: $main-color;
     background-color: $white-color;
+    &:hover{
+      background-color: $main-color;
+      color: $white-color;
+    }
   }
 }
 

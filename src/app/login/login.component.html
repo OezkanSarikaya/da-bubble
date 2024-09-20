@@ -5,7 +5,7 @@
       <h1>Anmeldung</h1>
       <h3>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</h3>
       <form class="form">
-        <div class="control">
+        <div class="control" [ngClass]="{'mb-18': errorForm.email}">
           <div class="container-input-login">
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
               <mask id="mask0_79092_726" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30" height="30">
@@ -19,7 +19,7 @@
             (focus)="clearPlaceholder($event)" 
             (blur)="restorePlaceholder($event, 'beispielname@email.com')">
           </div>
-          <div class="error">*Diese E-Mail E-Mail-Adresse ist leider ungültig.</div>
+          <div class="error" [ngClass]="{'d-none': errorForm.email}">*Diese E-Mail E-Mail-Adresse ist leider ungültig.</div>
         </div>
         <div class="control">
           <div class="container-input-login">
@@ -35,7 +35,7 @@
             (focus)="clearPlaceholder($event)" 
             (blur)="restorePlaceholder($event, 'Passwort')">
           </div>
-          <div class="error">*Falsches Passwort oder E-Mail. Bitte noch einmal versuchen</div>
+          <div class="error" [ngClass]="{'d-none': errorForm.password}">*Falsches Passwort oder E-Mail. Bitte noch einmal versuchen</div>
         </div>
         <div class="container-passwort-forgot">
             <a [routerLink]="['/recover-password']">Passwort vergessen?</a>
@@ -49,7 +49,7 @@
           Anmdelden mit Google
         </div>
         <div class="container-submit">
-          <button class="submit" type="submit">Anmelden</button>
+          <button class="submit" type="submit" [ngClass]="{'btn-disabled': isAllField, 'btn': !isAllField}" [disabled]="isAllField">Anmelden</button>
           <button class="gast" type="button">Gäste-Login</button>
         </div>
       </form>

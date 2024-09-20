@@ -20,7 +20,7 @@ export class RegisterComponent {
   errorForm: register = {
     name: true,
     email: true,
-    password: true,
+    password: true
   }
   
   clearPlaceholder(event: any) {

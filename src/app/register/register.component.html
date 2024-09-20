@@ -69,7 +69,7 @@
           <div class="error" [ngClass]="{'d-none': errorForm.password}">*Bitte geben Sie ein Passwort ein.</div>
         </div>     
         <div class="container-submit">
-          <button class="submit" [ngClass]="{'btn-disabled': isAllField, 'btn': !isAllField}" type="submit" >Weiter</button>
+          <button class="submit" [ngClass]="{'btn-disabled': isAllField, 'btn': !isAllField}" type="submit" [disabled]="isAllField" >Weiter</button>
         </div>
       </form>
     </div>
