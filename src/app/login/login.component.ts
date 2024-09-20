@@ -15,11 +15,23 @@ type login = {
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  isPresentation:boolean = false;
   isAllField: boolean = true;
   errorForm: login = {
     email: true,
     password: true,
   }
+
+  constructor(){
+    // setTimeout(() => {
+    //   this.presentationPlayed()
+    // }, 3500);
+  }
+
+  presentationPlayed(){
+    this.isPresentation = true;
+  }
+
   clearPlaceholder(event: any) {
     event.target.placeholder = '';
   }
