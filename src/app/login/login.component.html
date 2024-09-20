@@ -1,9 +1,15 @@
 <section>
-  <div class="container-logo-name">
+  <div class="container-logo-name" [ngClass]="{'d-none': !isPresentation}">
     <div class="img-container-desktop">
       <img class="logo-desktop" src="./assets/img/Logo-dabubble.png" alt="Logo-dabubble">
     </div>
     <span class="text-logo-desktop">DABubble</span>
+  </div>
+  <div class="container-logo-static-mobile" [ngClass]="{'d-none': !isPresentation}">
+    <div class="img-container-static-mobile">
+      <img class="logo-static-mobile" src="./assets/img/Logo-dabubble.png" alt="Logo-dabubble">
+    </div>
+    <span class="text-logo-static-mobile">DABubble</span>
   </div>
   <article>
     <div class="main-container">
