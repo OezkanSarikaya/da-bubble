@@ -17,8 +17,12 @@ section{
   width: 100%;
   position: relative;
   @extend .d-center;
-  flex-direction: column;
   gap: 0;
+}
+
+.container-logo-name,
+.container-register-desktop {
+  display: none;
 }
 
 .container-presentation{
@@ -180,6 +184,18 @@ span.text-logo{
   fill: $main-gray;
 }
 
+.mb-18{
+  margin-bottom: 18px;
+}
+
+.btn{
+  @extend .button-app;
+}
+
+.btn-disabled{
+  @extend .button-app-disabled;
+}
+
 .container-register{
   @extend .d-center;
   flex-direction: column;
@@ -207,15 +223,15 @@ span.text-logo{
 .container-submit{
   @extend .d-center;
   gap: 20px;
-  button.submit {
-    @extend .button-app;
-    
-  }
   button.gast {
     @extend .button-app;
     color: $main-color;
     border-color: $main-color;
     background-color: $white-color;
+    &:hover{
+      background-color: $main-color;
+      color: $white-color;
+    }
   }
 }
 
@@ -230,6 +246,10 @@ span.text-logo{
     background-color: $white-color;
     border-color: $main-color;
     font-size: 14px;
+    &:hover{
+      background-color: $main-color;
+      color: $white-color;
+    }
   }
 }
 
@@ -274,9 +294,39 @@ span.text-logo{
   .form{
     gap:20px
   }
+  .container-input-login{
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+@media (min-width: 390px) {
+  .card {
+		padding: 32px;
+	}
 }
 
 @media (min-width: 1200px) {
+  .container-register{
+    display: none;
+  }
+
+  .container-logo-name,
+	.container-register-desktop {
+		display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+	}
+
+  article{
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .container-presentation{
     animation: container-logo-up-desktop 650ms ease-out 2500ms forwards;
   }

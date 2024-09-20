@@ -11,7 +11,9 @@ import { RouterModule } from '@angular/router';
 })
 export class RecoverPasswordComponent {
   isAllField: boolean = true;
+  emailError: boolean = true;
   
+ 
   clearPlaceholder(event: any) {
     event.target.placeholder = '';
   }

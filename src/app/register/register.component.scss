@@ -1,0 +1,264 @@
+@import "../../assets/css/helper.scss";
+
+.presentation {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	pointer-events: none;
+	transform: translateY(-40vh);
+	@extend .d-center;
+}
+
+section {
+	height: 100vh;
+	width: 100%;
+	position: relative;
+	@extend .d-center;
+	flex-direction: column;
+	gap: 0;
+}
+
+.container-back{
+  position: absolute;
+  top:16px;
+  left: 16px;
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+  @extend .d-center;
+  cursor: pointer;
+  svg{
+    width: 100% !important;
+    height: 100% !important;
+    fill:$black-color;
+  }
+  &:hover{
+    background-color: rgba($color: $main-secondary, $alpha: 0.2);
+    border-radius: 50%;
+  }
+  &:hover svg{
+    fill:$main-secondary;
+  }
+}
+
+.btn{
+  @extend .button-app;
+}
+
+.btn-disabled{
+  @extend .button-app-disabled;
+}
+
+
+
+.container-presentation {
+	position: relative;
+	@extend .d-center;
+	z-index: 100;
+	width: 100%;
+	gap: 8px;
+}
+
+.img-container {
+	@extend .d-center;
+	z-index: 10;
+	img.logo {
+		width: 72px;
+		height: 64px;
+	}
+}
+
+span.text-logo {
+	color: $white-color;
+	font-size: 24px;
+	font-weight: 700;
+	color: $black-color;
+}
+
+.main-container {
+	@extend .d-center;
+	flex-direction: column;
+	margin-top: 75px;
+}
+
+.card {
+  position: relative;
+	@extend .d-center;
+	flex-direction: column;
+	gap: 12px;
+	max-width: 398px;
+	padding: 14px;
+	margin: 16px;
+	background-color: $white-color;
+	@extend .border-radius;
+
+	h1 {
+		margin: 0;
+		font-size: 32px;
+		font-weight: 700;
+		color: $main-color;
+		text-align: center;
+    max-width: 193px;
+	}
+
+	h3 {
+		margin: 0;
+		font-size: 17px;
+		font-weight: normal;
+		text-align: center;
+	}
+}
+
+.form {
+	@extend .form-control;
+}
+
+.control {
+	svg {
+		width: 24px;
+		height: 24px;
+	}
+	input {
+		border: none;
+		background-color: transparent;
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+.container-input-login {
+	@extend .container-input;
+	justify-content: start !important;
+	padding-left: 24px !important;
+	margin-bottom: 8px;
+}
+
+.alert-text {
+  text-align: center;
+	color: $main-gray;
+  max-width: 354px;
+}
+
+.color-svg {
+	fill: $main-gray;
+}
+
+.container-register {
+	@extend .d-center;
+	flex-direction: column;
+	gap: 2px;
+	p {
+		margin: 0;
+	}
+}
+
+.container-submit {
+	@extend .d-center;
+	width: 100%;
+	justify-content: flex-end;
+	button.submit {
+    font-size: 18px;
+    font-family: "Nunito", "Helvetica Neue", sans-serif;
+	}
+}
+
+.privacy-container {
+	@extend .d-none;
+}
+
+.container-logo-name,
+.empty-right-container {
+	@extend .d-none;
+}
+
+@media (min-height: 650px) {
+	section {
+		gap: 12px;
+	}
+	.presentation {
+		transform: translateY(-35vh);
+	}
+}
+
+@media (min-height: 800px) {
+	section {
+		gap: 20px;
+	}
+	.card {
+		gap: 15px;
+		padding: 16px;
+	}
+	.form {
+		gap: 20px;
+	}
+	.presentation {
+		transform: translateY(-35vh);
+	}
+  .container-input-login{
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+@media (min-height: 900px) {
+	.presentation {
+		transform: translateY(-28vh);
+	}
+}
+
+@media (min-width: 390px) {
+  h1{
+    max-width: max-content !important;
+  }
+  .card {
+		padding: 32px;
+	}
+}
+
+@media (min-width: 1200px) {
+	section {
+		flex-direction: row;
+		> * {
+			flex: 1;
+		}
+	}
+
+	.card {
+		max-width: 600px !important;
+    padding: 32px 53px !important;
+	}
+
+	.presentation {
+		display: none;
+	}
+
+	.container-logo-name,
+	.empty-right-container {
+		display: block;
+	}
+
+	.container-logo-name {
+		align-self: flex-start;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		display: flex;
+		justify-content: center;
+		margin-top: 75px;
+	}
+
+  .privacy-container{
+    position: absolute;
+		bottom: 42px;
+		display: flex;
+		gap:16px;
+  }
+
+  h1{
+    font-size: 36px !important;
+    max-width: max-content !important;
+  }
+}
