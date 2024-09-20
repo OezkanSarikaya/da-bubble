@@ -4,7 +4,6 @@
   background-color: white;
   height: 88vh;
   padding: 20px;
-  
 }
 
 .iconSize24 {
@@ -24,45 +23,72 @@
 }
 
 .dropDownHeader {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .dropdown-content {
-    @extend .d-center;
-    // justify-content: flex-start;
-    align-items: start;
-    gap:8px;
-    flex-direction: column;
-    margin-left:48px;
-
+  @extend .d-center;
+  // justify-content: flex-start;
+  align-items: start;
+  gap: 8px;
+  flex-direction: column;
+  margin-left: 32px;
 }
 
 .userList {
-    @extend .d-center;
-    gap:16px;
-    padding:4px 20px;
-    cursor: pointer;
-    &:hover {
-        background-color:$bg-field-color;
-        border-radius: 30px;
-        
-    }
+  position: relative;
+  @extend .d-center;
+  gap: 16px;
+  padding: 4px 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: $bg-field-color;
+    border-radius: 30px;
+  }
 }
 
 .channelListItem {
-    @extend .d-center;
-
+  @extend .d-center;
+  gap: 8px;
+  margin-left: 16px;
 }
 
-// .channels {background-color:pink}
+.userProfile50 {
+  // position:relative;
+}
+
+.status {
+  border: 2px solid #ffffff;
+  width: 14px;
+  height: 14px;
+  top: 40px;
+  left: 56px;
+  gap: 0px;
+  border: 2px 0px 0px 0px;
+  opacity: 0px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+}
+
+.online {
+  @extend .status;
+  background: #92c83e;
+}
+
+.offline {
+  @extend .status;
+  background: #686868;
+}
 
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
-    .workspace {
-        width:366px;
-        border-radius: 30px;
-        height: 85vh;
-        margin:0 16px;
-    }
+  .workspace {
+    width: 366px;
+    border-radius: 30px;
+    height: 85vh;
+    margin: 0 16px;
+  }
 }
