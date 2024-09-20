@@ -19,6 +19,7 @@ section{
   @extend .d-center;
   flex-direction: column;
   gap: 0;
+  // min-height: 382px;
 }
 
 .container-presentation{
@@ -273,6 +274,10 @@ span.text-logo{
   }
   .form{
     gap:20px
+  }
+  .container-input-login{
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
   }
 }
 

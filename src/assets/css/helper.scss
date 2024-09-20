@@ -48,7 +48,7 @@ $red-color: red;
    .container-input{
     @extend .d-center;
     gap: 8px;
-    @extend .border-radius;;
+    border-radius: 25px;
     padding: 4px 8px;
     background-color: $bg-field-color;
     border: 1px solid transparent;
@@ -70,8 +70,7 @@ $red-color: red;
 
 .error{
   font-size: 10px;
-  color: $white-color; 
-  // color: $red-color; 
+  color: $red-color; 
 }
 
 .max-width {
