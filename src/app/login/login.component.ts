@@ -15,7 +15,7 @@ type login = {
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  isAllField: boolean = false;
+  isAllField: boolean = true;
   errorForm: login = {
     email: true,
     password: true,

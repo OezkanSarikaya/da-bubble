@@ -17,9 +17,12 @@ section{
   width: 100%;
   position: relative;
   @extend .d-center;
-  flex-direction: column;
   gap: 0;
-  // min-height: 382px;
+}
+
+.container-logo-name,
+.container-register-desktop {
+  display: none;
 }
 
 .container-presentation{
@@ -243,6 +246,10 @@ span.text-logo{
     background-color: $white-color;
     border-color: $main-color;
     font-size: 14px;
+    &:hover{
+      background-color: $main-color;
+      color: $white-color;
+    }
   }
 }
 
@@ -293,7 +300,33 @@ span.text-logo{
   }
 }
 
+@media (min-width: 390px) {
+  .card {
+		padding: 32px;
+	}
+}
+
 @media (min-width: 1200px) {
+  .container-register{
+    display: none;
+  }
+
+  .container-logo-name,
+	.container-register-desktop {
+		display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+	}
+
+  article{
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .container-presentation{
     animation: container-logo-up-desktop 650ms ease-out 2500ms forwards;
   }
