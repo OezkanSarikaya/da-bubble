@@ -12,11 +12,16 @@ import { SearchComponent } from '../search/search.component';
 export class WorkspaceComponent {
   isChannelOpen = true;
   isPrivateMessageOpen = true;
+  isWorkspaceOpen = true;
   togglePrivateMessage() {
     this.isPrivateMessageOpen = !this.isPrivateMessageOpen;
   }
 
   toggleChannels() {
     this.isChannelOpen = !this.isChannelOpen;
+  }
+
+  toggleWorkspace() {
+    this.isWorkspaceOpen = !this.isWorkspaceOpen;
   }
 }
