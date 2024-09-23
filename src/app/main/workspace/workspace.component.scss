@@ -1,9 +1,12 @@
 @import "../../../assets/css/helper.scss";
 
+
+
 .workspace {
   background-color: white;
   height: 88vh;
   padding: 20px;
+  transition: all 125ms ease-in-out;
 }
 
 .toggleWorkspaceMenu {
@@ -116,6 +119,16 @@
   path {
     fill: white;
   }
+}
+
+.WorkspaceOpen {
+  width: 366px !important; 
+  margin-left:16px !important;
+}
+
+.WorkspaceClosed {
+  width: 0px !important; 
+  margin-left:-366px !important;
 }
 
 // Media Queries Mobile First

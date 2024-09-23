@@ -1,4 +1,6 @@
-<section class="workspace"  *ngIf="isWorkspaceOpen">
+<section class="workspace" [ngClass]="{ 'WorkspaceOpen': isWorkspaceOpen, 'WorkspaceClosed': !isWorkspaceOpen }">
+<!-- <section class="workspace"  *ngIf="isWorkspaceOpen"> -->
+  
   <div class="workspaceName">
     <div>
       <img src="../../../assets/img/Workspace logo.png" alt="" />
