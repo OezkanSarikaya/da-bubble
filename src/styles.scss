@@ -11,6 +11,10 @@ body {
   input::placeholder {
     font-family: "Nunito", "Helvetica Neue", sans-serif; 
   }
+  textarea::placeholder {
+    font-family: "Nunito", "Helvetica Neue", sans-serif; 
+    font-size:18px;
+  }
 }
 
 

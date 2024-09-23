@@ -121,19 +121,23 @@
   }
 }
 
-.WorkspaceOpen {
-  width: 366px !important; 
-  margin-left:16px !important;
-}
 
-.WorkspaceClosed {
-  width: 0px !important; 
-  margin-left:-366px !important;
-}
 
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
+
+  .WorkspaceOpen {
+    width: 366px !important; 
+    margin-left:16px !important;
+  }
+  
+  .WorkspaceClosed {
+    width: 0px !important; 
+    margin-left:-366px !important;
+  }
+
+
   .addMessage {
     display: none;
   }
