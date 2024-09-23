@@ -22,7 +22,14 @@
   }
 }
 
-.dropDownHeader {
+.channelSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropDownHeader,
+.addChannel {
   cursor: pointer;
 }
 
@@ -51,6 +58,9 @@
   @extend .d-center;
   gap: 8px;
   margin-left: 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  cursor: pointer;
 }
 
 .userProfile50 {
@@ -89,9 +99,28 @@
   display: none;
 }
 
+.addMessage {
+  position: absolute;
+  bottom: 40px;
+  right: 16px;
+  background-color: $main-color;
+  padding: 16px;
+  border-radius: 50%;
+  box-shadow: 0px 6px 10px 0px #00000033;
+  cursor: pointer;
+
+  path {
+    fill: white;
+  }
+}
+
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
+  .addMessage {
+    display: none;
+  }
+
   .workspace {
     width: 366px;
     border-radius: 30px;
@@ -102,10 +131,10 @@
     display: none;
   }
   .workspaceName {
-    display:flex;
+    display: flex;
     justify-content: space-between;
     div {
-      display:flex;
+      display: flex;
       align-items: center;
       gap: 16px;
       font-size: 24px;

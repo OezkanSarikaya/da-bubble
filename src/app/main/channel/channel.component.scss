@@ -9,17 +9,47 @@
   box-shadow: 0px 2px 10px -2px #00000014;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.channelMembers {
+  display: flex;
+  align-items: center;
+  gap:16px;
+}
+
+.memberCount {
+
+font-size: 20px;
+font-weight: 600;
+line-height: 27.28px;
+text-align: left;
+
+}
+
+.members {
+  img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: -16px;
+    border: 2px white solid;
+  }
 }
 
 .channelName {
   @extend .d-center;
+  gap: 8px;
   span {
     font-size: 24px;
+    font-weight: 700;
   }
   justify-content: flex-start;
 }
 
-.channelBody, .channelBottom {
+.channelBody,
+.channelBottom {
   padding: 20px;
 }
 
@@ -37,23 +67,20 @@
     border-radius: 30px;
     color: black;
     font-size: 18px;
-    background:white;
+    background: white;
   }
 }
 
 .channelBottom textarea {
-//   width: Fixed (919px)px;
-height: 145px;
-// top: 755px;
-// left: 35px;
-padding: 20px ;
-gap: 40px;
-border-radius: 20px ;
-border: 1px solid #ADB0D9;
-width:calc(100% - 40px);
-
-
-
+  //   width: Fixed (919px)px;
+  height: 145px;
+  // top: 755px;
+  // left: 35px;
+  padding: 20px;
+  gap: 40px;
+  border-radius: 20px;
+  border: 1px solid #adb0d9;
+  width: calc(100% - 40px);
 }
 
 // Media Queries Mobile First
