@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 
@@ -10,9 +10,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent {
-  isThreadOpen = true;
-  toggleThread() {
-    this.isThreadOpen = !this.isThreadOpen;
+  // isThreadOpen = true;
+  @Input()
+  isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+  @Output() hideThread = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
+
+  // Methode zum Ausblenden der Thread-Komponente
+  hide() {
+    this.hideThread.emit(); // Sendet das Ereignis an die Eltern-Komponente
   }
+  // toggleThread() {
+  //   this.isThreadOpen = !this.isThreadOpen;
+  // }
 
 }

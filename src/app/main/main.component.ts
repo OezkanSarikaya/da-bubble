@@ -12,5 +12,22 @@ import { ThreadComponent } from './thread/thread.component';
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
+ // Zustand, ob die Thread-Komponente sichtbar ist
+ isThreadVisible: boolean = true;
 
+ // Methode zum Ändern des Zustands
+ toggleThreadVisibility() {
+   this.isThreadVisible = !this.isThreadVisible;
+ }
+
+ // Methode zum expliziten Einblenden der Thread-Komponente
+ showThread() {
+   this.isThreadVisible = true;
+ }
+
+ // Methode zum expliziten Ausblenden der Thread-Komponente
+ hideThread() {
+   this.isThreadVisible = false;
+ }
+ 
 }

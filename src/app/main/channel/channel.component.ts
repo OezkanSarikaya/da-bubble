@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 
 @Component({
@@ -9,10 +9,10 @@ import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
   styleUrl: './channel.component.scss'
 })
 export class ChannelComponent {
-  isThreadOpen = true;
-  openThread() {
-    alert('Ich möchte die Thread Section einlenden!');
-    this.isThreadOpen = false;
-    
+  @Output() showThread = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
+
+  // Methode, die das Einblenden auslöst
+  onShowThread() {
+    this.showThread.emit();
   }
 }
