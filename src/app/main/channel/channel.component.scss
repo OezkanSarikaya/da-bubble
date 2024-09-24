@@ -201,6 +201,12 @@
   border-radius: 0px 30px 30px 30px;
 }
 
+.answers {
+  cursor: pointer;
+  color:$main-secondary;
+  &:hover {font-weight:bold;}
+}
+
 app-chatmsgbox {padding:20px;}
 
 // Media Queries Mobile First

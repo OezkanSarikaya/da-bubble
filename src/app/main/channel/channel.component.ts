@@ -9,5 +9,10 @@ import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
   styleUrl: './channel.component.scss'
 })
 export class ChannelComponent {
-
+  isThreadOpen = true;
+  openThread() {
+    alert('Ich möchte die Thread Section einlenden!');
+    this.isThreadOpen = false;
+    
+  }
 }
