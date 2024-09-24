@@ -1,10 +1,12 @@
 @import "../../../assets/css/helper.scss";
 
-
+body {
+  background-color: white !important;
+}
 
 .workspace {
   background-color: white;
-  height: 88vh;
+  height: 100vh;
   padding: 20px;
   transition: all 125ms ease-in-out;
 }

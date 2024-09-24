@@ -2,10 +2,12 @@
 
 .thread {
   @extend .d-none;
+  transition: all 125ms ease-in-out;
 }
 
-app-chatmsgbox {padding:20px;}
-
+app-chatmsgbox {
+  padding: 20px;
+}
 
 @media screen and (min-width: 800px) {
   .thread {
@@ -22,21 +24,21 @@ app-chatmsgbox {padding:20px;}
 
   .threadName {
     padding: 25px 45px;
-  box-shadow: 0px 2px 10px -2px #00000014;
+    box-shadow: 0px 2px 10px -2px #00000014;
     display: flex;
     align-items: center;
     justify-content: space-between;
     div {
       display: flex;
       align-items: center;
-      gap:16px;
+      gap: 16px;
     }
     h3 {
       font-size: 24px;
       font-weight: 700;
       line-height: 32.74px;
       text-align: left;
-      margin:0;
+      margin: 0;
     }
     span {
       font-size: 14px;
@@ -45,8 +47,20 @@ app-chatmsgbox {padding:20px;}
       text-align: left;
       color: $main-light;
     }
-    img {
+    svg {
       width: 24px;
+      cursor: pointer;
+      padding:6px;
+     
+      &:hover {
+        color: $main-secondary;
+        background-color: $bg-field-color;
+        border-radius: 50%;
+      }
+      &:hover rect,
+      &:hover path {
+        fill: $main-secondary;
+      }
     }
   }
 }
@@ -60,5 +74,16 @@ app-chatmsgbox {padding:20px;}
     height: 89vh;
     margin: 0 16px;
     background-color: white;
+  }
+
+  .ThreadOpen {
+    width: 340px !important; 
+    // margin-right:16px !important;
+  }
+  
+  .ThreadClosed {
+    width: 0px !important; 
+    margin-left:-340px !important;
+    opacity: 0;
   }
 }
