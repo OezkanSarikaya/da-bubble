@@ -1,0 +1,74 @@
+@import "../../../assets/css/helper.scss";
+
+.channelBottom .messageArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 103px;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid #adb0d9;
+  width: calc(100% - 40px);
+}
+
+.channelBottom .messageArea textarea {
+  width: 100%;
+  flex: 1;
+  resize: none;
+  border: unset;
+  outline: unset;
+  font-size: 18px;
+  font-family: "Nunito", "Helvetica Neue", sans-serif;
+}
+
+.messageBottomLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  svg {
+    cursor: pointer;
+  }
+}
+
+.sendIcon {
+  &:hover {
+    rect {
+      fill: $main-light;
+    }
+    path {
+      fill: $main-light;
+    }
+  }
+}
+
+.messageIcons {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    padding: 6px;
+
+    &:hover {
+      color: $main-secondary;
+      background-color: $bg-field-color;
+      border-radius: 50%;
+    }
+    &:hover rect,
+    &:hover path {
+      fill: $main-secondary;
+    }
+  }
+
+  .rightBorder {
+    width: 1px;
+    height: 40px;
+    background-color: silver;
+  }
+}

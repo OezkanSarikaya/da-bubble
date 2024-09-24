@@ -70,10 +70,6 @@
   cursor: pointer;
 }
 
-.userProfile50 {
-  // position:relative;
-}
-
 .status {
   border: 2px solid #ffffff;
   width: 14px;
@@ -135,6 +131,7 @@
   .WorkspaceClosed {
     width: 0px !important; 
     margin-left:-366px !important;
+    opacity: 0;
   }
 
 
@@ -151,10 +148,8 @@
 
   .toggleWorkspaceMenuInner {
     display: flex;
-    // justify-content: space-between;
     align-items: center;
     rotate: -90deg;
-    // background-color: pink;
     white-space: nowrap;
     gap: 8px;
   }
@@ -170,14 +165,12 @@
     box-shadow: 4px 4px 7px 0px #00000033;
     width: 60px;
     height: 347px;
-    // top: 581px;
     bottom:10%;
     border-radius: 0px 30px 30px 0px;
     transition: color 125ms ease-in-out;
     &:hover {
       color: $main-secondary;
     }
-
     &:hover rect,
     &:hover path {
       stroke: $main-secondary;
