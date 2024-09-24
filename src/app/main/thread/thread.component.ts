@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './thread.component.scss'
 })
 export class ThreadComponent {
-  // isThreadOpen = true;
+
   @Input()
   isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
   @Output() hideThread = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
@@ -19,8 +19,6 @@ export class ThreadComponent {
   hide() {
     this.hideThread.emit(); // Sendet das Ereignis an die Eltern-Komponente
   }
-  // toggleThread() {
-  //   this.isThreadOpen = !this.isThreadOpen;
-  // }
+
 
 }

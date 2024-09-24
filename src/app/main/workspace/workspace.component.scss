@@ -4,6 +4,88 @@ body {
   background-color: white !important;
 }
 
+.addChannelContainer {
+  
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 20px;
+  // width: 100%;
+  height: calc(100% - 80px);
+
+  background-color: white;
+  z-index: 10;
+
+  button {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24.55px;
+    width: fit-content;
+    position: absolute;
+    right:20px;
+    bottom:40px;
+  }
+
+  .formField {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  p {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 23.19px;
+    text-align: left;
+    margin: 0;
+  }
+  label {
+    display: block;
+
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24.55px;
+    text-align: left;
+    small {
+      color: #686868;
+    }
+  }
+
+  input {
+    width: Fill (390px) px;
+    height: Fixed (60px) px;
+    padding: 18px 20px 18px 20px;
+    gap: 20px;
+    border-radius: 40px;
+    border: 1px 0px 0px 0px;
+    opacity: 0px;
+    border: 1px solid #adb0d9;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32.74px;
+    text-align: left;
+    margin: 0;
+  }
+  header {
+    @extend.d-center;
+    justify-content: space-between;
+    svg {
+      cursor: pointer;
+    }
+  }
+}
+
+.dnone {
+  display: none;
+}
+
 .workspace {
   background-color: white;
   height: 100vh;
@@ -57,9 +139,11 @@ body {
   gap: 16px;
   padding: 4px 20px;
   cursor: pointer;
+  border-radius: 30px;
+  transition: background-color 125ms ease-in-out;
   &:hover {
     background-color: $bg-field-color;
-    border-radius: 30px;
+
   }
 }
 
@@ -119,23 +203,66 @@ body {
   }
 }
 
-
-
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
 
-  .WorkspaceOpen {
-    width: 300px !important; 
-    margin-left:16px !important;
-  }
-  
-  .WorkspaceClosed {
-    width: 0px !important; 
-    margin-left:-366px !important;
-    opacity: 0;
+  .backdrop {
+    // transition: all 125ms ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width:100vw;
+    height:100vh;
+    background-color:rgba(0,0,0,0.5);
+    // opacity:100;
+    z-index:2;
   }
 
+
+  .addChannelContainer {
+    max-width: 832px;
+    max-height: 539px;
+    height:auto;
+    border-radius: 30px;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    margin: 0 auto;
+    margin-top:25vh;
+    padding-bottom:120px;
+    button {
+      position: absolute;
+      right:20px;
+      bottom:40px;
+    }
+    svg {
+      width: 24px;
+      cursor: pointer;
+      padding:6px;
+     
+      &:hover {
+        color: $main-secondary;
+        background-color: $bg-field-color;
+        border-radius: 50%;
+      }
+      &:hover rect,
+      &:hover path {
+        fill: $main-secondary;
+      }
+    }
+  }
+
+  .WorkspaceOpen {
+    width: 300px !important;
+    margin-left: 16px !important;
+  }
+
+  .WorkspaceClosed {
+    width: 0px !important;
+    margin-left: -366px !important;
+    opacity: 0;
+  }
 
   .addMessage {
     display: none;
@@ -167,7 +294,7 @@ body {
     box-shadow: 4px 4px 7px 0px #00000033;
     width: 60px;
     height: 347px;
-    bottom:10%;
+    bottom: 10%;
     border-radius: 0px 30px 30px 0px;
     transition: color 125ms ease-in-out;
     &:hover {
@@ -190,7 +317,6 @@ body {
       rotate: -90deg;
     }
     svg.open {
-
       rotate: 90deg;
     }
   }

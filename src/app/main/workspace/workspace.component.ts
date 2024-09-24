@@ -10,9 +10,12 @@ import { SearchComponent } from '../search/search.component';
   styleUrl: './workspace.component.scss',
 })
 export class WorkspaceComponent {
+  isCreateChannelOpen = false;
   isChannelOpen = true;
   isPrivateMessageOpen = true;
   isWorkspaceOpen = true;
+  isAddChannelOpen = false;
+
   togglePrivateMessage() {
     this.isPrivateMessageOpen = !this.isPrivateMessageOpen;
   }
@@ -23,5 +26,8 @@ export class WorkspaceComponent {
 
   toggleWorkspace() {
     this.isWorkspaceOpen = !this.isWorkspaceOpen;
+  }
+  toggleAddChannel() {
+    this.isAddChannelOpen = !this.isAddChannelOpen;
   }
 }
