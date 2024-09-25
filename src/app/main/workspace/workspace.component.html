@@ -256,7 +256,7 @@
 
 <div 
      class="backdrop" 
-     [ngClass]="{ 'visible': isAddChannelOpen}"
+     [ngClass]="{ 'visible': isAddChannelOpen, 'hidden': !isBackdropVisible}"
      (click)="toggleAddChannel()">
 </div>
 
