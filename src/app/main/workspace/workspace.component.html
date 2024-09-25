@@ -189,6 +189,8 @@
       <div class="online"></div>
       <span>Steffen Hoffmann</span>
     </div>
+
+
   </div>
 </div>
   <svg class="addMessage"
@@ -251,9 +253,14 @@
   </div>
 </div>
 
-<div class="backdrop" [ngClass]="{ dnone: !isAddChannelOpen }"></div>
 
-<div class="addChannelContainer" [ngClass]="{ dnone: !isAddChannelOpen }">
+<div 
+     class="backdrop" 
+     [ngClass]="{ 'visible': isAddChannelOpen}"
+     (click)="toggleAddChannel()">
+</div>
+
+<div *ngIf="isAddChannelOpen" class="addChannelContainer" [ngClass]="{ dnone: !isAddChannelOpen }">
   <header>
     <h3>Channel erstellen</h3>
     <svg

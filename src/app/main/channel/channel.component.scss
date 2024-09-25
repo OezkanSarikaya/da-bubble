@@ -44,6 +44,9 @@
 .channelName {
   @extend .d-center;
   gap: 8px;
+  &:hover {
+    background-color: red;
+  }
   span {
     font-size: 24px;
     font-weight: 700;
