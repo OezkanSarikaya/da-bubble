@@ -19,6 +19,11 @@
   gap: 16px;
 }
 
+.channelBody {
+  // overflow: scroll;
+  overflow-x: hidden;
+}
+
 .memberCount {
   font-size: 20px;
   font-weight: 600;

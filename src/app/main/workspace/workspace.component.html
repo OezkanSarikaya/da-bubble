@@ -2,9 +2,7 @@
   class="workspace"
   [ngClass]="{
     WorkspaceOpen: isWorkspaceOpen,
-    WorkspaceClosed: !isWorkspaceOpen,
-    dnone: isAddChannelOpen,
-    
+    WorkspaceClosed: !isWorkspaceOpen
   }"
 >
   <div class="workspaceName">
@@ -15,7 +13,7 @@
     <img src="../../../assets/img/edit_square.svg" alt="" />
   </div>
   <app-search class="workspaceSearch"></app-search>
-
+<div class="workspaceContent">
   <div class="channelSelector">
     <div class="channels dropdown-container">
       <img
@@ -33,7 +31,12 @@
         <h3>Channels</h3>
       </div>
     </div>
-    <img class="addChannel" src="../../../assets/img/add.svg" alt="" (click)="toggleAddChannel()" />
+    <img
+      class="addChannel"
+      src="../../../assets/img/add.svg"
+      alt=""
+      (click)="toggleAddChannel()"
+    />
   </div>
 
   <div class="dropdown-content" *ngIf="isChannelOpen">
@@ -125,10 +128,70 @@
       <div class="online"></div>
       <span>Steffen Hoffmann</span>
     </div>
-  </div>
 
-  <svg
-    class="addMessage"
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile1.png"
+        alt=""
+        class="userProfile50"
+      />
+      <div class="online"></div>
+      <span>Frederick Beck (Du)</span>
+    </div>
+
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile2.png"
+        alt=""
+        class="userProfile50"
+      />
+      <div class="online"></div>
+
+      <span>Sofia Müller</span>
+    </div>
+
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile3.png"
+        alt=""
+        class="userProfile50"
+      />
+      <div class="online"></div>
+      <span>Noah Braun</span>
+    </div>
+
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile6.png"
+        alt=""
+        class="userProfile50"
+      />
+      <div class="offline"></div>
+      <span>Elise Roth</span>
+    </div>
+
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile5.png"
+        alt=""
+        class="userProfile50"
+      />
+      <div class="offline"></div>
+      <span>Elias Neumann</span>
+    </div>
+
+    <div class="userList">
+      <img
+        src="../../../assets/img/img_profile/profile4.png"
+        alt=""
+        class="userProfile50"
+      />
+      <div class="online"></div>
+      <span>Steffen Hoffmann</span>
+    </div>
+  </div>
+</div>
+  <svg class="addMessage"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -188,13 +251,13 @@
   </div>
 </div>
 
-<div class="backdrop" [ngClass]="{dnone: !isAddChannelOpen}"></div>
+<div class="backdrop" [ngClass]="{ dnone: !isAddChannelOpen }"></div>
 
-<div class="addChannelContainer" [ngClass]="{dnone: !isAddChannelOpen}">
+<div class="addChannelContainer" [ngClass]="{ dnone: !isAddChannelOpen }">
   <header>
     <h3>Channel erstellen</h3>
     <svg
-    (click)="toggleAddChannel()"    
+      (click)="toggleAddChannel()"
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -220,22 +283,21 @@
       </g>
     </svg>
   </header>
- 
-    <p>
-      Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
-      themenbezogen sein.<br />
-      #marketing zum Beispiel.
-    </p>
 
-    <div class="formField">
-      <label>Channel-name</label>
-      <input type="text" placeholder="# z.B. Kooperationsprojekte" />
-    </div>
-    <div class="formField">
-      <label>Beschreibung <small>(optional)</small></label>
-      <input type="text" placeholder="Dein Text hier" />
-    </div>
+  <p>
+    Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
+    themenbezogen sein.<br />
+    #marketing zum Beispiel.
+  </p>
 
-    <button class="button-app">Erstellen</button>
+  <div class="formField">
+    <label>Channel-name</label>
+    <input type="text" placeholder="# z.B. Kooperationsprojekte" />
+  </div>
+  <div class="formField">
+    <label>Beschreibung <small>(optional)</small></label>
+    <input type="text" placeholder="Dein Text hier" />
+  </div>
 
+  <button class="button-app">Erstellen</button>
 </div>

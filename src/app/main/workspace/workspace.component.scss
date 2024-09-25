@@ -4,6 +4,7 @@ body {
   background-color: white !important;
 }
 
+
 .addChannelContainer {
   
   display: flex;
@@ -87,6 +88,7 @@ body {
 }
 
 .workspace {
+  // position: relative;
   background-color: white;
   height: 100vh;
   padding: 20px;
@@ -130,7 +132,7 @@ body {
   align-items: start;
   gap: 8px;
   flex-direction: column;
-  margin-left: 32px;
+  margin-left: 30px;
 }
 
 .userList {
@@ -206,6 +208,12 @@ body {
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
+
+  .workspaceContent {
+    // background-color: red;
+    overflow-x: hidden;
+    height:78vh;
+  }
 
   .backdrop {
     // transition: all 125ms ease-in-out;
