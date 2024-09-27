@@ -36,9 +36,14 @@
   font-weight: 700;
   line-height: 43.65px;
   text-align: left;
+  transition: all 125ms ease-in-out;
   cursor: pointer;
   &:hover {
     color: $main-light;
+    path {
+      fill: $main-light;
+    }
+    
   }
 }
 
@@ -49,8 +54,6 @@
 .userDropDownIcon {
   display: none;
 }
-
-
 
 .popupLoggedInUser {
   padding: 30px 26px;
@@ -66,7 +69,7 @@
   transition: all 125ms ease-in-out;
   // display: none;
   transform: translateY(200px);
- 
+
   .shortLine {
     width: 62px;
     height: 6px;
@@ -125,10 +128,49 @@
 }
 
 @media screen and (min-width: 800px) {
+
   .header {
     gap: 48px;
     margin-bottom: 8px;
+    position: relative;
   }
+
+  .popupLoggedInUser {
+    transform: unset;
+    position: absolute;
+    right: 0px !important;
+    left: unset;
+    top: 80px;
+    width: 222px;
+    height: 121px;
+    padding: 30px;
+    gap: 15px;
+    border-radius: 30px 0px 30px 30px;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    span {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 32.74px;
+      text-align: left;
+    }
+
+    .shortLine {
+      display: none;
+    }
+    .navItem {
+      justify-content: center;
+      border-radius:30px;
+      transition: all 125ms ease-in-out;
+      &:hover {
+        background-color:$bg-field-color;
+        color:$main-color;
+      }
+      img {
+        display: none;
+      }
+    }
+  }
+
 
   .headerSearch {
     display: inline;
