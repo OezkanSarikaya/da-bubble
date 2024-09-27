@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ChannelComponent {
   isChannelInfoOpen = false;
+  isChannelMembersOpen = false;
   isBackdropVisible = false;
   @Output() showThread = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
 
@@ -18,6 +19,33 @@ export class ChannelComponent {
   onShowThread() {
     this.showThread.emit();
   }
+
+
+  toggleChannelMembers() {
+    // this.isChannelInfoOpen = !this.isChannelInfoOpen;
+
+    if (!this.isChannelMembersOpen) {
+      // Backdrop wird angezeigt
+      this.isBackdropVisible = true;
+      // Kleines Timeout, um das Display: none aufzuheben, bevor die Opacity-Animation startet
+      setTimeout(() => {
+        this.isChannelMembersOpen = true;
+        document.body.classList.add('no-scroll'); // Scrollen auf der Seite deaktivieren
+      }, 10);
+    } else {
+      // Blende den Backdrop aus
+      this.isChannelMembersOpen = false;
+      // Nach der Animation (300ms) wird der Backdrop komplett entfernt
+      setTimeout(() => {
+        this.isBackdropVisible = false;
+        document.body.classList.remove('no-scroll');
+      }, 300);  // Dauer der CSS-Transition (300ms)
+    }
+
+
+  }
+
+
 
   toggleChannelInfo() {
     // this.isChannelInfoOpen = !this.isChannelInfoOpen;
