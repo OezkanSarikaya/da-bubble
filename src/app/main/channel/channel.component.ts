@@ -67,7 +67,5 @@ export class ChannelComponent {
         document.body.classList.remove('no-scroll');
       }, 300);  // Dauer der CSS-Transition (300ms)
     }
-
-
   }
 }

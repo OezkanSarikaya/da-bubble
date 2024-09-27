@@ -5,10 +5,6 @@
   background-color: $bg-field-color;
   padding: 0px 16px;
   justify-content: space-between;
-
-
-
-
 }
 
 .logo {
@@ -16,8 +12,8 @@
   justify-content: flex-start;
   width: 398px !important;
   // background-color: pink;
-  padding-left:16px;
-  gap:16px;
+  padding-left: 16px;
+  gap: 16px;
   img {
     height: 45px;
   }
@@ -29,14 +25,12 @@
 
 .headerSearch {
   display: none;
-
 }
-
 
 .loggedInUser {
   position: relative;
   @extend.d-center;
-  gap:4px;
+  gap: 4px;
   font-family: Nunito;
   font-size: 32px;
   font-weight: 700;
@@ -44,9 +38,8 @@
   text-align: left;
   cursor: pointer;
   &:hover {
-    color:$main-light;
+    color: $main-light;
   }
-  
 }
 
 .loggedInUserName {
@@ -57,13 +50,89 @@
   display: none;
 }
 
+
+
+.popupLoggedInUser {
+  padding: 30px 26px;
+  gap: 25px;
+  border-radius: 30px 30px 0px 0px;
+  background-color: white;
+  box-shadow: 0px -3px 10px 0px #00000033;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  transition: all 125ms ease-in-out;
+  // display: none;
+  transform: translateY(200px);
+ 
+  .shortLine {
+    width: 62px;
+    height: 6px;
+    gap: 0px;
+    border-radius: 23px;
+    background: #d9d9d9;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+  .navList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .navItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 27.28px;
+    text-align: left;
+    padding: 10px 30px;
+    cursor: pointer;
+  }
+}
+
+.showPopupLoggedInUser {
+  // background-color: red;
+  transform: translateY(0px);
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  opacity: 1;
+}
+
 @media screen and (min-width: 800px) {
-.header {gap:48px;
-margin-bottom:8px;}
+  .header {
+    gap: 48px;
+    margin-bottom: 8px;
+  }
 
   .headerSearch {
-    display: inline;  
-    width:100%;
+    display: inline;
+    width: 100%;
   }
 
   .loggedInUserName {
@@ -78,7 +147,7 @@ margin-bottom:8px;}
     border: 2px solid #ffffff;
     width: 14px;
     height: 14px;
-    top: 50px;  
+    top: 50px;
     gap: 0px;
     border: 2px 0px 0px 0px;
     opacity: 0px;
@@ -102,7 +171,6 @@ margin-bottom:8px;}
     // width:calc(366px + 8px);
     h1 {
       font-size: 32px;
-
     }
   }
 }
