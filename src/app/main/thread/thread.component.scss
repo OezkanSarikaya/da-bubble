@@ -6,7 +6,7 @@
 }
 
 app-chatmsgbox {
-  padding: 20px;
+  // padding: 20px;
 }
 
 @media screen and (min-width: 800px) {
@@ -74,14 +74,18 @@ app-chatmsgbox {
     height: 89vh;
     margin: 0 16px;
     background-color: white;
+    transition: all 5000ms ease-in-out;
   }
 
   .ThreadOpen {
     width: 340px !important; 
     // margin-right:16px !important;
+    margin-left:0px !important;
+    transition: all 5000ms ease-in-out;
   }
   
   .ThreadClosed {
+    transition: all 5000ms ease-in-out;
     width: 0px !important; 
     margin-left:-340px !important;
     opacity: 0;

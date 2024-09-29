@@ -8,8 +8,10 @@
   padding: 20px;
   border-radius: 20px;
   border: 1px solid #adb0d9;
-  width: calc(100% - 40px);
+  // width: calc(100% - 40px);
 }
+
+.channelBottom {padding:20px;}
 
 .channelBottom .messageArea textarea {
   width: 100%;

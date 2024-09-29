@@ -37,6 +37,9 @@
   line-height: 43.65px;
   text-align: left;
   transition: all 125ms ease-in-out;
+  svg {
+    display: none;
+  }
   cursor: pointer;
   &:hover {
     color: $main-light;
@@ -128,6 +131,11 @@
 }
 
 @media screen and (min-width: 800px) {
+
+  .loggedInUser svg {
+      display: block;
+    }
+
 
   .header {
     gap: 48px;
