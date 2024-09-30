@@ -1,7 +1,15 @@
 <header class="header">
-  <div class="logo">
+
+  <div class="logo" [ngClass]="{hidden: isChannelVisible }">
     <img src="../../../assets/img/Logo-dabubble.png" alt="" />
     <h1>DABubble</h1>
+  </div>
+
+
+  <div class="workspaceName" [ngClass]="{hidden: !isChannelVisible }" (click)="hide()">
+    <img class="backArrow" src="../../../assets/img/keyboard_arrow_down.svg" alt="">
+    <img class="devspaceLogo" src="../../../assets/img/Workspace logo.png" alt="" />
+    <span>Devspace</span>
   </div>
   <div class="headerSearch">
     <app-search></app-search>

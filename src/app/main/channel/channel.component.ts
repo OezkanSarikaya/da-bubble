@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +15,8 @@ export class ChannelComponent {
   isAddChannelMembersOpen = false;
   isBackdropVisible = false;
 
-
+  @Input()
+  isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
   @Output() showThread = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 
@@ -13,6 +13,15 @@ export class HeaderComponent {
   popupLoggedInUser = false;
   isBackdropVisible = false;
   closePopup = false;
+  @Input()
+  isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+
+  @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
+
+  // Methode zum Ausblenden der Thread-Komponente
+  hide() {
+    this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
+  }
  
 
   // openLoggedInUser() {

@@ -1,5 +1,9 @@
 @import "../../../assets/css/helper.scss";
 
+.desktopEmptyChannel {
+  display: none;
+}
+
 .popupBody {
   display: flex;
   flex-direction: column;
@@ -172,10 +176,6 @@
     font-weight: 700;
   }
   justify-content: flex-start;
-}
-
-.channelBottom {
-  // padding: 20px;
 }
 
 .timeLine {
@@ -424,7 +424,6 @@ app-chatmsgbox {
   opacity: 1;
 }
 
-
 .channelMembersPopup {
   display: flex;
   flex-direction: column;
@@ -453,7 +452,9 @@ app-chatmsgbox {
     cursor: pointer;
     border-radius: 30px;
     transition: background-color 125ms ease-in-out;
-    svg {width:32px;}
+    svg {
+      width: 32px;
+    }
     &:hover {
       background-color: $bg-field-color;
     }
@@ -584,6 +585,62 @@ app-chatmsgbox {
     height: 89vh;
     margin: 0 16px;
     background-color: white;
+  }
+
+  .desktopEmptyChannel {
+    padding: 0;
+    position: unset;
+    display: flex;
+    justify-content: space-between;
+    // align-items: start;
+    flex-direction: column;
+    // justify-content: center;
+    border-radius: 30px;
+    height: 89vh;
+    margin: 0 16px;
+    background-color: white;
+    .newMessage {
+      padding: 0 !important;
+      .channelHeader {
+        width: 100%;
+        flex-direction: column;
+        align-items: start;
+        gap: 20px;
+       
+        span {
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 32.74px;
+          text-align: left;
+        }
+        input {
+  //  display: block;
+  width:95%;
+          padding: 15px 20px 15px 20px;
+          gap: 10px;
+          border-radius: 30px;
+
+          border: 1px solid #adb0d9;
+        }
+      }
+      // cursor: pointer;
+      display: flex;
+      border-radius: 100px;
+      padding: 6px 10px;
+      gap: 8px;
+      transition: all 125ms ease-in-out;
+
+      span {
+        font-size: 20px;
+        font-weight: 700;
+      }
+      justify-content: flex-start;
+    }
+
+    h1 {
+      font-size: 30px;
+      padding: 20px;
+    }
   }
 
   .channelInfo {

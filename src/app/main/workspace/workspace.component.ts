@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 
 @Component({
@@ -16,6 +16,23 @@ export class WorkspaceComponent {
   isWorkspaceOpen = true;
   isAddChannelOpen = false;
   isBackdropVisible: boolean = false;
+
+  @Output() showChannel = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
+
+  @Input()
+  isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+
+  @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
+
+  // Methode zum Ausblenden der Thread-Komponente
+  hide() {
+    this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
+  }
+
+  // Methode, die das Einblenden auslöst
+  onShowChannel() {
+    this.showChannel.emit();    
+  }
 
   togglePrivateMessage() {
     this.isPrivateMessageOpen = !this.isPrivateMessageOpen;

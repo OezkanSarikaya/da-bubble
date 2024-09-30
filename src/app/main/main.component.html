@@ -1,8 +1,8 @@
 
-<app-header></app-header>
+<app-header [isChannelVisible]="isChannelSelected" (hideChannel)="hideChannel()"></app-header>
 <main class="mainContainer">
-<app-workspace></app-workspace>
-<app-channel (showThread)="showThread()"></app-channel>
+<app-workspace [isChannelVisible]="isChannelSelected" (hideChannel)="hideChannel()" (showChannel)="showChannel()"></app-workspace>
+<app-channel [isChannelVisible]="isChannelSelected" (showThread)="showThread()"></app-channel>
 <app-thread [isVisible]="isThreadVisible" (hideThread)="hideThread()"></app-thread>
 </main>
 
