@@ -20,6 +20,7 @@ export class MainComponent {
   // Zustand, ob die Thread-Komponente sichtbar ist
   isThreadVisible: boolean = false;
   isChannelSelected: boolean = false;
+  isNewMessageOpen = false;
 
   // Methode zum Ändern des Zustands
   toggleThreadVisibility() {
@@ -38,13 +39,29 @@ export class MainComponent {
   }
 
   hideChannel() {
+    if (!this.isChannelSelected) {
+      this.toggleNewMessage();
+    }
     this.isChannelSelected = false;
     this.hideThread();
+  
+    
     // alert('Channel offen?: '+this.isChannelSelected);
   }
 
   // Methode zum expliziten Ausblenden der Thread-Komponente
   hideThread() {
     this.isThreadVisible = false;
+  }
+
+  toggleNewMessage() {
+    this.isNewMessageOpen = !this.isNewMessageOpen;
+    // alert('Neue Nachricht '+this.isNewMessageOpen);
+    if (this.isNewMessageOpen) {
+      document.body.classList.add('no-scroll'); // Scrollen auf der Seite deaktivieren
+    }
+    else {
+      document.body.classList.remove('no-scroll'); // Scrollen auf der Seite deaktivieren
+    }
   }
 }

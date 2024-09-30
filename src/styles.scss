@@ -1,34 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
-@import './assets/css/fonts.css';
-@import './assets/css/helper.scss';
+@import "./assets/css/fonts.css";
+@import "./assets/css/helper.scss";
 
-body { 
-  font-family: "Nunito", "Helvetica Neue", sans-serif; 
+body {
+  font-family: "Nunito", "Helvetica Neue", sans-serif;
   @extend .max-width;
-  padding:0;
-  box-sizing: border-box;  
+  padding: 0;
+  box-sizing: border-box;
   background-color: $bg-field-color;
   input::placeholder {
-    font-family: "Nunito", "Helvetica Neue", sans-serif; 
+    font-family: "Nunito", "Helvetica Neue", sans-serif;
   }
   textarea::placeholder {
-    font-family: "Nunito", "Helvetica Neue", sans-serif; 
-    font-size:18px;
+    font-family: "Nunito", "Helvetica Neue", sans-serif;
+    font-size: 18px;
   }
 }
 
-
-
-button, a{
+button,
+a {
   cursor: pointer;
 }
 
-a{
+a {
   text-decoration: none;
   color: $main-secondary;
 }
 
-.d-none{
+.d-none {
   display: none;
 }
 
@@ -36,7 +35,6 @@ a{
 ::-webkit-scrollbar {
   width: 10px;
 }
-
 
 /* Track */
 ::-webkit-scrollbar-track {
@@ -53,10 +51,8 @@ a{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: $main-secondary;
- 
 }
 
 .no-scroll {
   overflow: hidden; /* Verhindert vertikales und horizontales Scrollen */
 }
-

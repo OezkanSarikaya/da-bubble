@@ -1,7 +1,39 @@
 @import "../../../assets/css/helper.scss";
 
 .desktopEmptyChannel {
-  display: none;
+  display: flex;
+  background-color: white;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  height: calc(100vh - 80px);
+  justify-content: space-between;
+  // align-items: start;
+  flex-direction: column;
+  .channelHeader {
+    // width: 100%;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+
+    span {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32.74px;
+      text-align: left;
+    }
+    input {
+      // display: inline-block;
+      // display: none;
+      // width: 100%;
+      margin: 0;
+      padding: 15px 20px 15px 20px;
+      gap: 10px;
+      border-radius: 30px;
+      border: 1px solid #adb0d9;
+    }
+  }
 }
 
 .popupBody {
@@ -412,7 +444,7 @@ app-chatmsgbox {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 125ms ease-in-out;
   z-index: 2;
 }
 
@@ -564,7 +596,7 @@ app-chatmsgbox {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 125ms ease-in-out;
     z-index: 1;
   }
 
@@ -606,7 +638,7 @@ app-chatmsgbox {
         flex-direction: column;
         align-items: start;
         gap: 20px;
-       
+
         span {
           font-size: 24px;
           font-weight: 700;
@@ -614,12 +646,10 @@ app-chatmsgbox {
           text-align: left;
         }
         input {
-  //  display: block;
-  width:95%;
+          width: 95%;
           padding: 15px 20px 15px 20px;
           gap: 10px;
           border-radius: 30px;
-
           border: 1px solid #adb0d9;
         }
       }

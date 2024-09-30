@@ -15,12 +15,15 @@ export class HeaderComponent {
   closePopup = false;
   @Input()
   isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+  @Input()
+  isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
 
   // Methode zum Ausblenden der Thread-Komponente
   hide() {
     this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
+    
   }
  
 

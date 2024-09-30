@@ -5,7 +5,7 @@ import { SearchComponent } from '../search/search.component';
 @Component({
   selector: 'app-workspace',
   standalone: true,
-  imports: [CommonModule,SearchComponent],
+  imports: [CommonModule, SearchComponent],
   templateUrl: './workspace.component.html',
   styleUrl: './workspace.component.scss',
 })
@@ -15,6 +15,7 @@ export class WorkspaceComponent {
   isPrivateMessageOpen = true;
   isWorkspaceOpen = true;
   isAddChannelOpen = false;
+
   isBackdropVisible: boolean = false;
 
   @Output() showChannel = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
@@ -22,7 +23,13 @@ export class WorkspaceComponent {
   @Input()
   isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
+  @Input()
+  isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+
+
+
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
+  @Output() toggleNewMessage = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
 
   // Methode zum Ausblenden der Thread-Komponente
   hide() {
@@ -31,7 +38,17 @@ export class WorkspaceComponent {
 
   // Methode, die das Einblenden auslöst
   onShowChannel() {
-    this.showChannel.emit();    
+    this.showChannel.emit();
+  }
+
+  // Methode, die das Einblenden auslöst
+  ontoggleNewMessage() {
+
+    this.toggleNewMessage.emit();
+   
+    
+    
+    
   }
 
   togglePrivateMessage() {
@@ -61,7 +78,7 @@ export class WorkspaceComponent {
       setTimeout(() => {
         this.isBackdropVisible = false;
         document.body.classList.remove('no-scroll');
-      }, 300);  // Dauer der CSS-Transition (300ms)
+      }, 300); // Dauer der CSS-Transition (300ms)
     }
   }
 }

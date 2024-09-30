@@ -1,9 +1,24 @@
-
-<app-header [isChannelVisible]="isChannelSelected" (hideChannel)="hideChannel()"></app-header>
+<app-header
+  [isNewMessageVisible]="isNewMessageOpen"
+  [isChannelVisible]="isChannelSelected"
+  (hideChannel)="hideChannel()"
+  (toggleNewMessage)="toggleNewMessage()"
+></app-header>
 <main class="mainContainer">
-<app-workspace [isChannelVisible]="isChannelSelected" (hideChannel)="hideChannel()" (showChannel)="showChannel()"></app-workspace>
-<app-channel [isChannelVisible]="isChannelSelected" (showThread)="showThread()"></app-channel>
-<app-thread [isVisible]="isThreadVisible" (hideThread)="hideThread()"></app-thread>
+  <app-workspace
+    [isChannelVisible]="isChannelSelected"
+    [isNewMessageVisible]="isNewMessageOpen"
+    (hideChannel)="hideChannel()"
+    (showChannel)="showChannel()"
+    (toggleNewMessage)="toggleNewMessage()"
+  ></app-workspace>
+  <app-channel
+    [isNewMessageVisible]="isNewMessageOpen"
+    [isChannelVisible]="isChannelSelected"
+    (showThread)="showThread()"
+  ></app-channel>
+  <app-thread
+    [isVisible]="isThreadVisible"
+    (hideThread)="hideThread()"
+  ></app-thread>
 </main>
-
-

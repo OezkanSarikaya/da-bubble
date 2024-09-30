@@ -16,6 +16,9 @@ export class ChannelComponent {
   isBackdropVisible = false;
 
   @Input()
+  isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+
+  @Input()
   isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
   @Output() showThread = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
