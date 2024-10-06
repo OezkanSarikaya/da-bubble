@@ -21,6 +21,9 @@ export class ChannelComponent {
   @Input()
   isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
+  @Input()
+  isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+
   @Output() showThread = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
 
   // Methode, die das Einblenden auslöst

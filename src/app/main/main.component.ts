@@ -3,6 +3,7 @@ import { HeaderComponent } from './header/header.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { ChannelComponent } from './channel/channel.component';
 import { ThreadComponent } from './thread/thread.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main',
@@ -12,6 +13,7 @@ import { ThreadComponent } from './thread/thread.component';
     WorkspaceComponent,
     ChannelComponent,
     ThreadComponent,
+    CommonModule
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',

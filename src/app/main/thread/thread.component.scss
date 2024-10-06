@@ -1,72 +1,82 @@
 @import "../../../assets/css/helper.scss";
 
 .thread {
-  @extend .d-none;
-  transition: all 125ms ease-in-out;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0 margin 0;
+  height: calc(100vh - 80px);
+  // width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  
 }
 
-app-chatmsgbox {
-  // padding: 20px;
+
+
+
+.ThreadOpen {
+  width: 100% !important;
+  margin-left: 0px !important;
+
+
 }
 
-@media screen and (min-width: 800px) {
-  .thread {
-    display: block;
-    background-color: white;
-    // height: 88vh;
-    // padding: 20px;
-    transition: all 125ms ease-in-out;
-    width: 340px;
-    border-radius: 30px;
-    height: 85vh;
-    margin: 0 16px;
-  }
+.ThreadClosed {
+  width: 0px !important;
+  margin-left: -340px !important;
+  opacity: 0;
+  display: none;
+}
 
-  .threadName {
-    padding: 25px 45px;
-    box-shadow: 0px 2px 10px -2px #00000014;
+.threadName {
+  padding: 25px 45px;
+  box-shadow: 0px 2px 10px -2px #00000014;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  div {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    div {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    gap: 16px;
+  }
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32.74px;
+    text-align: left;
+    margin: 0;
+  }
+  span {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19.1px;
+    text-align: left;
+    color: $main-light;
+  }
+  svg {
+    width: 24px;
+    cursor: pointer;
+    padding: 6px;
+
+    &:hover {
+      color: $main-secondary;
+      background-color: $bg-field-color;
+      border-radius: 50%;
     }
-    h3 {
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 32.74px;
-      text-align: left;
-      margin: 0;
-    }
-    span {
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 19.1px;
-      text-align: left;
-      color: $main-light;
-    }
-    svg {
-      width: 24px;
-      cursor: pointer;
-      padding:6px;
-     
-      &:hover {
-        color: $main-secondary;
-        background-color: $bg-field-color;
-        border-radius: 50%;
-      }
-      &:hover rect,
-      &:hover path {
-        fill: $main-secondary;
-      }
+    &:hover rect,
+    &:hover path {
+      fill: $main-secondary;
     }
   }
 }
 
 @media screen and (min-width: 800px) {
   .thread {
+    position: unset;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -74,20 +84,16 @@ app-chatmsgbox {
     height: 89vh;
     margin: 0 16px;
     background-color: white;
-    transition: all 5000ms ease-in-out;
   }
 
   .ThreadOpen {
-    width: 340px !important; 
-    // margin-right:16px !important;
-    margin-left:0px !important;
-    transition: all 5000ms ease-in-out;
+    width: 340px !important;
+    margin-left: 0px !important;
   }
-  
+
   .ThreadClosed {
-    transition: all 5000ms ease-in-out;
-    width: 0px !important; 
-    margin-left:-340px !important;
+    width: 0px !important;
+    margin-left: -340px !important;
     opacity: 0;
     display: none;
   }

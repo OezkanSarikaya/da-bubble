@@ -26,6 +26,10 @@ export class WorkspaceComponent {
   @Input()
   isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
+  
+  @Input()
+  isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+
 
 
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
