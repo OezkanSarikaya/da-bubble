@@ -19,7 +19,8 @@
       </div>
       <h1>Konto erstellen</h1>
       <h3>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</h3>
-      <form class="form">
+      <form class="form" (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
+        <!-- <form class="form"> -->
         <div class="control">
           <div class="container-input-login">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,11 +31,13 @@
               <path d="M12 12C10.9 12 9.95833 11.6083 9.175 10.825C8.39167 10.0417 8 9.1 8 8C8 6.9 8.39167 5.95833 9.175 5.175C9.95833 4.39167 10.9 4 12 4C13.1 4 14.0417 4.39167 14.825 5.175C15.6083 5.95833 16 6.9 16 8C16 9.1 15.6083 10.0417 14.825 10.825C14.0417 11.6083 13.1 12 12 12ZM18 20H6C5.45 20 4.97933 19.8043 4.588 19.413C4.196 19.021 4 18.55 4 18V17.2C4 16.6333 4.146 16.1123 4.438 15.637C4.72933 15.1623 5.11667 14.8 5.6 14.55C6.63333 14.0333 7.68333 13.6457 8.75 13.387C9.81667 13.129 10.9 13 12 13C13.1 13 14.1833 13.129 15.25 13.387C16.3167 13.6457 17.3667 14.0333 18.4 14.55C18.8833 14.8 19.2707 15.1623 19.562 15.637C19.854 16.1123 20 16.6333 20 17.2V18C20 18.55 19.8043 19.021 19.413 19.413C19.021 19.8043 18.55 20 18 20ZM6 18H18V17.2C18 17.0167 17.9543 16.85 17.863 16.7C17.771 16.55 17.65 16.4333 17.5 16.35C16.6 15.9 15.6917 15.5623 14.775 15.337C13.8583 15.1123 12.9333 15 12 15C11.0667 15 10.1417 15.1123 9.225 15.337C8.30833 15.5623 7.4 15.9 6.5 16.35C6.35 16.4333 6.22933 16.55 6.138 16.7C6.046 16.85 6 17.0167 6 17.2V18ZM12 10C12.55 10 13.021 9.804 13.413 9.412C13.8043 9.02067 14 8.55 14 8C14 7.45 13.8043 6.97933 13.413 6.588C13.021 6.196 12.55 6 12 6C11.45 6 10.9793 6.196 10.588 6.588C10.196 6.97933 10 7.45 10 8C10 8.55 10.196 9.02067 10.588 9.412C10.9793 9.804 11.45 10 12 10Z" class="color-svg"/>
               </g>
               </svg>
-            <input type="text" placeholder="Name und Nachname"
-            (focus)="clearPlaceholder($event)" 
-            (blur)="restorePlaceholder($event, 'Name und Nachname')">
+            <input [(ngModel)]="person.fullName" type="text" required placeholder="Name und Nachname" #fullName="ngModel" name="fullName"
+       
+            >
           </div>
-          <div class="error" [ngClass]="{'d-none': errorForm.name}">*Bitte schreiben Sie einen Namen.</div>
+          @if (!fullName.valid && !fullName.disabled && fullName.touched) {
+          <div class="error">*Bitte schreiben Sie einen Namen.</div>
+          }
         </div>   
         <div class="control">
           <div class="container-input-login">
@@ -46,11 +49,15 @@
               <path d="M5 25C4.3125 25 3.72417 24.7554 3.235 24.2663C2.745 23.7763 2.5 23.1875 2.5 22.5V7.5C2.5 6.8125 2.745 6.22417 3.235 5.735C3.72417 5.245 4.3125 5 5 5H25C25.6875 5 26.2763 5.245 26.7663 5.735C27.2554 6.22417 27.5 6.8125 27.5 7.5V22.5C27.5 23.1875 27.2554 23.7763 26.7663 24.2663C26.2763 24.7554 25.6875 25 25 25H5ZM25 10L15.6562 15.8438C15.5521 15.9062 15.4425 15.9529 15.3275 15.9837C15.2133 16.0154 15.1042 16.0312 15 16.0312C14.8958 16.0312 14.7867 16.0154 14.6725 15.9837C14.5575 15.9529 14.4479 15.9062 14.3438 15.8438L5 10V22.5H25V10ZM15 13.75L25 7.5H5L15 13.75ZM5 10.3125V8.46875V8.5V8.48375V10.3125Z" class="color-svg"/>
               </g>
             </svg>
-            <input type="text" placeholder="beispielname@email.com"
-            (focus)="clearPlaceholder($event)" 
-            (blur)="restorePlaceholder($event, 'beispielname@email.com')">
+            <input [(ngModel)]="person.email" required name="email" #email="ngModel" type="text" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" placeholder="beispielname@email.com"
+         
+            >
           </div>
-          <div class="error" [ngClass]="{'d-none': errorForm.email}">*Diese E-Mail E-Mail-Adresse ist leider ungültig.</div>
+
+          @if (!email.valid && !email.disabled && email.touched) {
+          <div class="error">*Diese E-Mail E-Mail-Adresse ist leider ungültig.</div>
+          }
+        
         </div> 
         <div class="control">
           <div class="container-input-login">
@@ -62,14 +69,26 @@
               <path d="M5 25C4.3125 25 3.72417 24.7554 3.235 24.2663C2.745 23.7763 2.5 23.1875 2.5 22.5V7.5C2.5 6.8125 2.745 6.22417 3.235 5.735C3.72417 5.245 4.3125 5 5 5H25C25.6875 5 26.2763 5.245 26.7663 5.735C27.2554 6.22417 27.5 6.8125 27.5 7.5V22.5C27.5 23.1875 27.2554 23.7763 26.7663 24.2663C26.2763 24.7554 25.6875 25 25 25H5ZM25 10L15.6562 15.8438C15.5521 15.9062 15.4425 15.9529 15.3275 15.9837C15.2133 16.0154 15.1042 16.0312 15 16.0312C14.8958 16.0312 14.7867 16.0154 14.6725 15.9837C14.5575 15.9529 14.4479 15.9062 14.3438 15.8438L5 10V22.5H25V10ZM15 13.75L25 7.5H5L15 13.75ZM5 10.3125V8.46875V8.5V8.48375V10.3125Z" class="color-svg"/>
               </g>
             </svg>
-            <input type="text" placeholder="Passwort"
-            (focus)="clearPlaceholder($event)" 
-            (blur)="restorePlaceholder($event, 'Passwort')">
+            <input [(ngModel)]="person.password" required name="password" #password="ngModel" type="text" placeholder="Passwort"
+           
+            
+            >
           </div>
-          <div class="error" [ngClass]="{'d-none': errorForm.password}">*Bitte geben Sie ein Passwort ein.</div>
+          @if (!password.valid && !password.disabled && password.touched) {
+          <div class="error">*Bitte geben Sie ein Passwort ein.</div>
+          }
         </div>     
         <div class="container-submit">
-          <button class="submit" [ngClass]="{'btn-disabled': isAllField, 'btn': !isAllField}" type="submit" [disabled]="isAllField" >Weiter</button>
+
+
+          @if (registerForm.valid) {
+            <button class="submit btn" type="submit">Weiter</button>
+
+          }
+          @else {
+          <button class="submit btn-disabled" type="submit">Weiter</button>
+        }
+          
         </div>
       </form>
     </div>
