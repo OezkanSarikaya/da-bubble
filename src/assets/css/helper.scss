@@ -89,6 +89,12 @@ $red-color: red;
   }
 }
 
+.container-input-login{
+  input{
+    width: 100%;
+  }
+}
+
 .error {
   font-size: 10px;
   color: $red-color;

@@ -8,9 +8,10 @@ import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
 type register = {
-  name: boolean;
-  email: boolean;
-  password: boolean;
+  fullName: string;
+  email: string;
+  password: string;
+  acceptTerm: boolean
 };
 
 @Component({
@@ -21,10 +22,11 @@ type register = {
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  person = {
+  person: register = {
     fullName: '',
     email: '',
     password: '',
+    acceptTerm: false
   };
 
   // isAllField: boolean = false;
