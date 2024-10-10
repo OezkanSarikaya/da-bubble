@@ -1,0 +1,294 @@
+@import '../../assets/css/helper.scss';
+
+.presentation {
+	position: absolute;
+	top: -65px;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	pointer-events: none;
+	transform: translateY(-40vh);
+	@extend .d-center;
+}
+
+section {
+	height: 95vh;
+	width: 100%;
+	position: relative;
+	@extend .d-center;
+	flex-direction: column;
+	gap: 0;
+}
+
+.container-back{
+  position: absolute;
+  top:20px;
+  left: 16px;
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+  @extend .d-center;
+  cursor: pointer;
+  svg{
+    width: 100% !important;
+    height: 100% !important;
+    fill:$black-color;
+  }
+  &:hover{
+    background-color: rgba($color: $main-secondary, $alpha: 0.2);
+    border-radius: 50%;
+  }
+  &:hover svg{
+    fill:$main-secondary;
+  }
+}
+
+.btn{
+  @extend .button-app;
+  background-color: $white-color;
+  color: $main-color;
+  border: 1px solid $main-color;
+  &:hover {
+    background-color: $main-color;
+    color: $white-color;
+  }
+}
+
+.btn-next{
+  @extend .button-app;
+}
+
+.img-container {
+	@extend .d-center;
+	z-index: 10;
+	img.logo {
+		width: 72px;
+		height: 64px;
+	}
+}
+
+span.text-logo {
+	color: $white-color;
+	font-size: 24px;
+	font-weight: 700;
+	color: $black-color;
+}
+
+.main-container {
+  width: 100%;
+  margin-top: 135px;
+}
+
+.card{
+  position: relative;
+  background-color: $white-color;
+  @extend .border-radius;
+  padding: 26px 21px;
+  margin: 16px;
+  @extend .d-center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 8px;
+  
+}
+
+h1{
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: $main-color;
+  text-align: center;
+  max-width: 193px;
+}
+
+.container-avatar-selected{
+  width: 100%;
+  @extend .d-center;
+}
+
+.name-user{
+  font-weight: 700;
+  font-size: 32px;
+  margin: 0;
+}
+
+.text-choose-avatar{
+  width: 100%;
+  justify-content: flex-start;
+  margin: 0;
+  font-size: 20px;
+}
+
+.container-file-photo{
+  @extend .d-center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.text-choose-avatar-small{
+  justify-content: flex-start;
+  margin: 0;
+  font-size: 14px;
+}
+
+.avatar-selected{
+  width: 120px;
+  height: 120px;
+  border: 8px solid transparent;
+  border-radius: 50%;
+  &:hover{
+    border: 8px solid rgba($color: $main-gray, $alpha: 0.2);
+  }
+}
+
+.container-all-avatars{
+  @extend .d-center;
+  justify-content: space-between;
+}
+
+.avatar-pathern{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  &:hover{
+    cursor: pointer;
+    border: 4px solid rgba($color: $main-gray, $alpha: 0.2);
+  }
+}
+
+.container-button-next{
+  width: 100%;
+  @extend .d-center;
+  justify-content: flex-end
+}
+
+
+
+// .main-container {
+// 	@extend .d-center;
+// 	flex-direction: column;
+// 	margin-top: 0;
+//   width: 100%;
+
+// }
+
+// .card {
+//   position: relative;
+// 	@extend .d-center;
+// 	flex-direction: column;
+// 	gap: 12px;
+// 	width: 100%;
+// 	padding: 14px;
+// 	margin: 16px;
+// 	background-color: $white-color;
+// 	@extend .border-radius;
+
+// 	h1 {
+// 		margin: 0;
+// 		font-size: 32px;
+// 		font-weight: 700;
+// 		color: $main-color;
+// 		text-align: center;
+//     max-width: 193px;
+// 	}
+
+// }
+
+
+// .privacy-container {
+// 	@extend .d-none;
+// }
+
+.container-logo-name,
+.empty-right-container {
+	@extend .d-none;
+}
+
+@media (min-height: 650px) {
+	section {
+		gap: 12px;
+	}
+	.presentation {
+		transform: translateY(-35vh);
+	}
+}
+
+@media (min-height: 800px) {
+	section {
+		gap: 20px;
+	}
+	.card {
+		gap: 15px;
+		padding: 16px;
+	}
+	
+	.presentation {
+		transform: translateY(-35vh);
+	}
+
+}
+
+
+
+@media (min-height: 900px) {
+	.presentation {
+		transform: translateY(-28vh);
+	}
+
+	.privacy-container{
+		position: absolute;
+		bottom: 42px;
+		display: flex;
+		gap:16px;
+	}
+}
+
+
+@media (min-width: 390px) {
+  h1{
+    max-width: max-content !important;
+  }
+  .card {
+		padding: 32px;
+	}
+}
+
+@media (min-width: 1200px) {
+	section {
+		flex-direction: row;
+		> * {
+			flex: 1;
+		}
+	}
+
+	.card {
+		max-width: 600px !important;
+    padding: 32px 53px !important;
+	}
+
+	.presentation {
+		display: none;
+	}
+
+	.container-logo-name,
+	.empty-right-container {
+		display: block;
+	}
+
+	.container-logo-name {
+		align-self: flex-start;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		display: flex;
+		justify-content: center;
+		margin-top: 75px;
+	}
+
+  h1{
+    font-size: 36px !important;
+    max-width: max-content !important;
+  }
+}
+

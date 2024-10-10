@@ -1,11 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-// import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { FormsModule, NgForm } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-// import { doc, setDoc } from "firebase/firestore"; 
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { FormsModule, NgForm } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 
 type register = {
   fullName: string;
@@ -14,27 +11,21 @@ type register = {
   acceptTerm: boolean
 };
 
+
 @Component({
-  selector: 'app-register',
+  selector: 'app-avatar',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  imports: [RouterModule, FormsModule],
+  templateUrl: './avatar.component.html',
+  styleUrl: './avatar.component.scss'
 })
-export class RegisterComponent {
+export class AvatarComponent {
   person: register = {
     fullName: '',
     email: '',
     password: '',
     acceptTerm: false
   };
-
-  // isAllField: boolean = false;
-  // errorForm: register = {
-  //   name: true,
-  //   email: true,
-  //   password: true,
-  // };
 
   constructor(private auth: Auth, private router: Router) {}
 
@@ -66,16 +57,6 @@ export class RegisterComponent {
     }
 
   }
-
-  // clearPlaceholder(event: any) {
-  //   event.target.placeholder = '';
-  // }
-
-  // restorePlaceholder(event: any, placeholderText: string) {
-  //   if (!event.target.value) {
-  //     event.target.placeholder = placeholderText;
-  //   }
-  // }
 
   onSubmit(ngForm: NgForm) {
     // alert(this.person.email);

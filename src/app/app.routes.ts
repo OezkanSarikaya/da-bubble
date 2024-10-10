@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { MainComponent } from './main/main.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { AvatarComponent } from './avatar/avatar.component';
 
 export const routes: Routes = [
   {path: "", component: LoginComponent},
@@ -12,5 +13,6 @@ export const routes: Routes = [
   {path: "register", component: RegisterComponent},
   {path: "main", component: MainComponent},
   {path: "imprint", component: ImprintComponent},
-  {path: "privacy", component: PrivacyComponent}
+  {path: "privacy", component: PrivacyComponent},
+  {path: "avatar", component: AvatarComponent}
 ];
