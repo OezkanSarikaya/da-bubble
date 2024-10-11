@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 // import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Register } from '../interfaces/register';
+import { UserService } from '../services/user.service';
+// import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 // import { doc, setDoc } from "firebase/firestore"; 
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+// import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
-type register = {
-  fullName: string;
-  email: string;
-  password: string;
-  acceptTerm: boolean
-};
+// type register = {
+//   fullName: string;
+//   email: string;
+//   password: string;
+//   acceptTerm: boolean
+// };
 
 @Component({
   selector: 'app-register',
@@ -22,7 +24,7 @@ type register = {
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  person: register = {
+  person: Register = {
     fullName: '',
     email: '',
     password: '',
@@ -36,36 +38,36 @@ export class RegisterComponent {
   //   password: true,
   // };
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
-  private firestore: Firestore = inject(Firestore);
+  // private firestore: Firestore = inject(Firestore);
 
-  async register(email: string, password: string, fullname: string) {
-    createUserWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
-        console.log('User registered:', userCredential);
-      })
-      .catch((error) => {
-        console.error('Registration error:', error);
-      });
+  // async register(email: string, password: string, fullname: string) {
+  //   createUserWithEmailAndPassword(this.auth, email, password)
+  //     .then((userCredential) => {
+  //       console.log('User registered:', userCredential);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Registration error:', error);
+  //     });
 
-      // Add a new document in collection "cities"
-    // await setDoc(doc(db, "cities", "LA"), {
-    //   name: "Los Angeles",
-    //   state: "CA",
-    //   country: "USA"
-    // });
+  //     // Add a new document in collection "cities"
+  //   // await setDoc(doc(db, "cities", "LA"), {
+  //   //   name: "Los Angeles",
+  //   //   state: "CA",
+  //   //   country: "USA"
+  //   // });
 
 
-    try {
-      const userCollection = collection(this.firestore, 'users'); // Referenziert die 'users'-Sammlung
-      const result = await addDoc(userCollection, { "fullname":fullname, "email":email, "avatar":"" }); // Fügt ein Dokument zur Sammlung hinzu 
+  //   try {
+  //     const userCollection = collection(this.firestore, 'users'); // Referenziert die 'users'-Sammlung
+  //     const result = await addDoc(userCollection, { "fullname":fullname, "email":email, "avatar":"" }); // Fügt ein Dokument zur Sammlung hinzu 
        
-    } catch (error) {
-      console.error('Error adding user: ', error);
-    }
+  //   } catch (error) {
+  //     console.error('Error adding user: ', error);
+  //   }
 
-  }
+  // }
 
   // clearPlaceholder(event: any) {
   //   event.target.placeholder = '';
@@ -81,6 +83,7 @@ export class RegisterComponent {
     // alert(this.person.email);
 
     if (ngForm.submitted && ngForm.form.valid) {
+      this.userService.setUser(this.person);
       this.router.navigate(['avatar'])    
       // this.register(this.person.email, this.person.password, this.person.fullName);
       // ngForm.resetForm();
