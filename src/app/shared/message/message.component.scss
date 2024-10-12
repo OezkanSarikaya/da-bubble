@@ -1,0 +1,12 @@
+@import '../../../assets/css/helper.scss';
+
+section{
+  color: $white-color;
+  background-color: $main-color;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  border-top-left-radius: $border-radius-single;
+  border-top-right-radius: $border-radius-single;
+  border-bottom-left-radius: $border-radius-single;
+}

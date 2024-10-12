@@ -5,11 +5,12 @@ import { UserService } from "../services/user.service";
 import { Register } from "../interfaces/register";
 import { Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
+import { MessageComponent } from "../shared/message/message.component";
 
 @Component({
 	selector: "app-avatar",
 	standalone: true,
-	imports: [RouterModule, FormsModule, CommonModule],
+	imports: [RouterModule, FormsModule, CommonModule, MessageComponent], 
 	templateUrl: "./avatar.component.html",
 	styleUrl: "./avatar.component.scss",
 })
@@ -24,6 +25,7 @@ export class AvatarComponent {
 		"./assets/img/img_profile/profile5.png",
 		"./assets/img/img_profile/profile6.png",
 	];
+  showMessage: boolean = false;
 
 	constructor(private router: Router, private userService: UserService) {}
 

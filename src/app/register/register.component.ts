@@ -5,16 +5,6 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Register } from '../interfaces/register';
 import { UserService } from '../services/user.service';
-// import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-// import { doc, setDoc } from "firebase/firestore"; 
-// import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-
-// type register = {
-//   fullName: string;
-//   email: string;
-//   password: string;
-//   acceptTerm: boolean
-// };
 
 @Component({
   selector: 'app-register',
@@ -31,7 +21,7 @@ export class RegisterComponent {
     acceptTerm: false,
     avatar: ''
   };
-
+ 
   constructor(private router: Router, private userService: UserService) {}
 
   onSubmit(ngForm: NgForm) {

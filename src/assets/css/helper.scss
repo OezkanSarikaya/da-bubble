@@ -9,6 +9,7 @@ $main-gray: #686868;
 $black-color: black;
 $white-color: white;
 $red-color: red;
+$border-radius-single: 16px;
 
 .d-center {
   display: flex;
@@ -34,7 +35,6 @@ $red-color: red;
   border-color: transparent;
   border-radius: 25px;
   font-family: "Nunito";
-  font-size: 12px;
   transition: all 125ms ease-in-out;
   &:hover {
     background-color: $main-light;
@@ -121,4 +121,8 @@ $red-color: red;
 .userProfile70 {
   border-radius: 50%;
   width: 70px;
+}
+
+.message-user-position{
+  transform: translate(53px, -66px);
 }

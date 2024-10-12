@@ -2,7 +2,7 @@
 
 .presentation {
 	position: absolute;
-	top: 0;
+	top: -29px;
 	left: 0;
 	bottom: 0;
 	right: 0;
@@ -80,7 +80,7 @@ span.text-logo {
 .main-container {
 	@extend .d-center;
 	flex-direction: column;
-	margin-top: 125px;
+	margin-top: 64px;
 }
 
 .card {

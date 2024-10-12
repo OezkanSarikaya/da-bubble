@@ -27,12 +27,6 @@
           @for (profile of avatars; track $index) {
             <img class="avatar-pathern" [src]="profile" alt="profile1" (click)="selectAvatar(profile)">
           }
-          <!-- <img class="avatar-pathern" src="./assets/img/img_profile/profile1.png" alt="profile1"> -->
-          <!-- <img class="avatar-pathern" src="./assets/img/img_profile/profile2.png" alt="profile2">
-          <img class="avatar-pathern" src="./assets/img/img_profile/profile3.png" alt="profile3">
-          <img class="avatar-pathern" src="./assets/img/img_profile/profile4.png" alt="profile4">
-          <img class="avatar-pathern" src="./assets/img/img_profile/profile5.png" alt="profile5">
-          <img class="avatar-pathern" src="./assets/img/img_profile/profile6.png" alt="profile6"> -->
         </div>
         <div class="container-file-photo">
           <p class="text-choose-avatar-small">eigenes Bild verwenden</p>
@@ -43,12 +37,13 @@
         </div>
       
     </div>
-    <!-- <div class="privacy-container">
-      <a [routerLink]="['/imprint']">Impressum</a>
-      <a [routerLink]="['/privacy']">Datenschutz</a>
-    </div> -->
   </div>
   <aside class="empty-right-container"></aside>
+  <!-- <div class="message-user">
+    @if(true){
+      <app-message [message]="'Konto erfolgreich erstellt'" [ngClass]="{'no-show-msg': true}"></app-message>
+    }
+  </div> -->
 </section>
 <div class="presentation">
   <div class="container-presentation">
