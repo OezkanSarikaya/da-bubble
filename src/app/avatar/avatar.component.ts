@@ -1,91 +1,58 @@
-import { Component, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
-import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { Register } from '../interfaces/register';
-
-type register = {
-  fullName: string;
-  email: string;
-  password: string;
-  acceptTerm: boolean
-};
-
+import { Component } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { Router, RouterModule } from "@angular/router";
+import { UserService } from "../services/user.service";
+import { Register } from "../interfaces/register";
+import { Subscription } from "rxjs";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-avatar',
-  standalone: true,
-  imports: [RouterModule, FormsModule],
-  templateUrl: './avatar.component.html',
-  styleUrl: './avatar.component.scss'
+	selector: "app-avatar",
+	standalone: true,
+	imports: [RouterModule, FormsModule, CommonModule],
+	templateUrl: "./avatar.component.html",
+	styleUrl: "./avatar.component.scss",
 })
 export class AvatarComponent {
-  // person: register = {
-  //   fullName: '',
-  //   email: '',
-  //   password: '',
-  //   acceptTerm: false
-  // };
+	person$!: Register;
+	subscription: Subscription = new Subscription();
+	avatars = [
+		"./assets/img/img_profile/profile1.png",
+		"./assets/img/img_profile/profile2.png",
+		"./assets/img/img_profile/profile3.png",
+		"./assets/img/img_profile/profile4.png",
+		"./assets/img/img_profile/profile5.png",
+		"./assets/img/img_profile/profile6.png",
+	];
 
-  person!: Register;
+	constructor(private router: Router, private userService: UserService) {}
 
-  constructor(private auth: Auth, private router: Router, private userService: UserService) {}
+	ngOnInit(): void {
+		const sub = this.userService.getUser().subscribe((p) => {
+			this.person$ = p;
+      this.person$.avatar = "./assets/img/profile.svg";
+		});
+		this.subscription.add(sub);
+		console.log(this.person$);
+	}
 
-  private firestore: Firestore = inject(Firestore);
+	ngOnDestroy(): void {
+		this.subscription.unsubscribe();
+	}
 
-  ngOnInit(): void {
-    this.userService.getUser().subscribe(p => {
-      this.person = p;
-    }); 
-    console.log(this.person);
+  selectAvatar(avatarURL: string){
+    this.person$.avatar = avatarURL;
   }
 
-  async register(email: string, password: string, fullname: string) {
-    createUserWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
-        console.log('User registered:', userCredential);
-      })
-      .catch((error) => {
-        console.error('Registration error:', error);
-      });
-
-      // Add a new document in collection "cities"
-    // await setDoc(doc(db, "cities", "LA"), {
-    //   name: "Los Angeles",
-    //   state: "CA",
-    //   country: "USA"
-    // });
-
-
-    try {
-      const userCollection = collection(this.firestore, 'users'); // Referenziert die 'users'-Sammlung
-      const result = await addDoc(userCollection, { "fullname":fullname, "email":email, "avatar":"" }); // Fügt ein Dokument zur Sammlung hinzu 
-       
-    } catch (error) {
-      console.error('Error adding user: ', error);
-    }
-
-  }
-
-  registerDataBase(){
-    if(this.person.acceptTerm){
-      this.register(this.person.email, this.person.password, this.person.fullName);
-    }
-  }
-
-  // onSubmit(ngForm: NgForm) {
-  //   // alert(this.person.email);
-
-  //   if (ngForm.submitted && ngForm.form.valid) {
-  //     this.router.navigate(['avatar'])    
-  //     // this.register(this.person.email, this.person.password, this.person.fullName);
-  //     // ngForm.resetForm();
-  //   }
-
-
-
-  //   // this.register(this.person.email, this.person.password)
-  // }
+	registerDataBase() {
+		if (this.person$.acceptTerm) {
+			this.userService.register(
+				this.person$.email,
+				this.person$.password,
+				this.person$.fullName,
+        this.person$.avatar,
+			);
+      this.router.navigate(['/main'])
+		}
+	}
 }

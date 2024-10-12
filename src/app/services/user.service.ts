@@ -13,7 +13,8 @@ export class UserService {
     fullName: '',
     email: '',
     password: '',
-    acceptTerm: false
+    acceptTerm: false,
+    avatar: ''
   };
   private newUser$: BehaviorSubject<Register> = new BehaviorSubject<Register>(this.newUser)
 
@@ -28,7 +29,7 @@ export class UserService {
     this.newUser$.next(user);
   }
 
-  async register(email: string, password: string, fullname: string) {
+  async register(email: string, password: string, fullname: string, avatarURL: string) {
     createUserWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         console.log('User registered:', userCredential);
@@ -37,22 +38,18 @@ export class UserService {
         console.error('Registration error:', error);
       });
 
-      // Add a new document in collection "cities"
-    // await setDoc(doc(db, "cities", "LA"), {
-    //   name: "Los Angeles",
-    //   state: "CA",
-    //   country: "USA"
-    // });
-
-
     try {
       const userCollection = collection(this.firestore, 'users'); // Referenziert die 'users'-Sammlung
-      const result = await addDoc(userCollection, { "fullname":fullname, "email":email, "avatar":"" }); // Fügt ein Dokument zur Sammlung hinzu 
+      const result = await addDoc(userCollection, { "fullname":fullname, "email":email, "avatar":avatarURL }); // Fügt ein Dokument zur Sammlung hinzu 
        
     } catch (error) {
       console.error('Error adding user: ', error);
     }
+  }
+
+  async login(){
 
   }
+
 
 }

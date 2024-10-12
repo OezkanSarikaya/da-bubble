@@ -24,12 +24,15 @@
         <h3 class="name-user">Frederick Beck</h3>
         <p class="text-choose-avatar">Aus der Liste whählen...</p>
         <div class="container-all-avatars">
-          <img class="avatar-pathern" src="./assets/img/img_profile/profile1.png" alt="profile1">
-          <img class="avatar-pathern" src="./assets/img/img_profile/profile2.png" alt="profile2">
+          @for (profile of avatars; track $index) {
+            <img class="avatar-pathern" [src]="profile" alt="profile1" (click)="selectAvatar(profile)">
+          }
+          <!-- <img class="avatar-pathern" src="./assets/img/img_profile/profile1.png" alt="profile1"> -->
+          <!-- <img class="avatar-pathern" src="./assets/img/img_profile/profile2.png" alt="profile2">
           <img class="avatar-pathern" src="./assets/img/img_profile/profile3.png" alt="profile3">
           <img class="avatar-pathern" src="./assets/img/img_profile/profile4.png" alt="profile4">
           <img class="avatar-pathern" src="./assets/img/img_profile/profile5.png" alt="profile5">
-          <img class="avatar-pathern" src="./assets/img/img_profile/profile6.png" alt="profile6">
+          <img class="avatar-pathern" src="./assets/img/img_profile/profile6.png" alt="profile6"> -->
         </div>
         <div class="container-file-photo">
           <p class="text-choose-avatar-small">eigenes Bild verwenden</p>

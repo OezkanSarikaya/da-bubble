@@ -2,5 +2,6 @@ export interface Register {
   fullName: string;
   email: string;
   password: string;
-  acceptTerm: boolean
+  acceptTerm: boolean;
+  avatar: string
 }
