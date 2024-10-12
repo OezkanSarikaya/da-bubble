@@ -105,6 +105,7 @@ span.text-logo{
 }
 
 .container-input-login{
+  margin-bottom: 8px;
   @extend .container-input;
   justify-content: start !important;
   padding-left: 24px !important;
@@ -219,7 +220,7 @@ img.logo-static-mobile{
     padding: 10px 16px;
   }
   .form{
-    gap:14px
+    gap:10px
   }
 
   .container-register{

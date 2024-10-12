@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -20,10 +22,21 @@ export class HeaderComponent {
 
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
 
+  constructor(private userService: UserService, private router: Router){}
+
   // Methode zum Ausblenden der Thread-Komponente
   hide() {
     this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
     
+  }
+
+  async logOut(){
+    try {
+      await this.userService.logout();
+      this.router.navigate(['/']); 
+    } catch (error) {
+      console.log('Logout failed', error);
+    }
   }
  
 

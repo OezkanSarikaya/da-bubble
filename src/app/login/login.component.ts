@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UserService } from '../services/user.service';
+import { Login } from '../interfaces/login';
+import { FormsModule, NgForm } from '@angular/forms';
 
-type login = {
+type loginError = {
   email: boolean,
   password: boolean
 }
@@ -11,56 +14,40 @@ type login = {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  isPresentation:boolean = false;
+  //Chane here false after coding
+  isPresentation:boolean = true;
   isAllField: boolean = true;
-  errorForm: login = {
-    email: true,
-    password: true,
+  
+  personLogin: Login ={
+    email: '',
+    password: ''
   }
 
- 
-
-  // constructor(private afAuth: AngularFireAuth) {
-    constructor() {
+  constructor(private userService: UserService, private router: Router) {
     setTimeout(() => {
       this.presentationPlayed()
     }, 3500);
   }
 
-  // login(email: string, password: string) {
-  //   this.afAuth.signInWithEmailAndPassword(email, password)
-  //     .then((userCredential) => {
-  //       console.log('User logged in:', userCredential);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Login error:', error);
-  //     });
-  // }
-
-  // logout() {
-  //   this.afAuth.signOut().then(() => {
-  //     console.log('User logged out');
-  //   });
-  // }
-
-
-
   presentationPlayed(){
     this.isPresentation = true;
   }
 
-  clearPlaceholder(event: any) {
-    event.target.placeholder = '';
-  }
-
-  restorePlaceholder(event: any, placeholderText: string) {
-    if (!event.target.value) {
-      event.target.placeholder = placeholderText;
+  async login(ngForm: NgForm){
+    if (ngForm.submitted && ngForm.form.valid) {
+      const userCredential = await this.userService.login(this.personLogin.email, this.personLogin.password);
+      if(userCredential.user && userCredential.user.email){
+        console.log(userCredential);
+        this.router.navigate(['/main']);
+      }else{
+        console.error('Login failed');
+      }
     }
   }
+
 }

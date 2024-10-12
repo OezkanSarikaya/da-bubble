@@ -33,7 +33,6 @@ export class AvatarComponent {
       this.person$.avatar = "./assets/img/profile.svg";
 		});
 		this.subscription.add(sub);
-		console.log(this.person$);
 	}
 
 	ngOnDestroy(): void {

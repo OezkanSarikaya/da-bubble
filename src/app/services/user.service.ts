@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut  } from '@angular/fire/auth';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Register } from '../interfaces/register';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -47,8 +47,24 @@ export class UserService {
     }
   }
 
-  async login(){
+  async login(email: string, password: string): Promise<any> {
+    const auth = getAuth();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential; 
+    } catch (error) {
+      console.error("Error during login:", error);
+      return null;  
+    }
+  }
 
+  async logout(): Promise<any>{
+    const auth = getAuth();
+    try {
+      await signOut(auth); 
+    } catch (error) {
+      console.error('Error during sing out', error);
+    } 
   }
 
 
