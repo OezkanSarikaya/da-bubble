@@ -39,11 +39,9 @@
     </div>
   </div>
   <aside class="empty-right-container"></aside>
-  <!-- <div class="message-user">
-    @if(true){
-      <app-message [message]="'Konto erfolgreich erstellt'" [ngClass]="{'no-show-msg': true}"></app-message>
-    }
-  </div> -->
+  <div class="message-user" [ngClass]="{'show-msg': showMessage, 'hide-msg': !showMessage}">
+    <app-message [message]="'Konto erfolgreich erstellt'" (messageShown)="registerDataBase()"></app-message>
+  </div>
 </section>
 <div class="presentation">
   <div class="container-presentation">

@@ -124,5 +124,19 @@ $border-radius-single: 16px;
 }
 
 .message-user-position{
-  transform: translate(53px, -66px);
+  // transform: translate(53px, -66px);
+  position: fixed;
+  top: 84%;
+  right: -58%;  /* Empieza fuera de la pantalla */
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Cuando se muestra, entra desde la derecha */
+.show-msg-position {
+  transform: translateX(-100%); /* Se mueve hacia la izquierda */
+}
+
+/* Cuando se oculta, vuelve a la derecha */
+.hide-msg-position  {
+  transform: translateX(100%);  /* Se mueve hacia la derecha fuera de la pantalla */
 }

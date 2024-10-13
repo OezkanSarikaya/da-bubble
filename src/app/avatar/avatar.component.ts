@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
 import { UserService } from "../services/user.service";
@@ -26,6 +26,7 @@ export class AvatarComponent {
 		"./assets/img/img_profile/profile6.png",
 	];
   showMessage: boolean = false;
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
 
 	constructor(private router: Router, private userService: UserService) {}
 
@@ -45,6 +46,13 @@ export class AvatarComponent {
     this.person$.avatar = avatarURL;
   }
 
+  animationMessage(){
+    this.showMessage = true;
+    setTimeout(() => {
+      this.showMessage = false;
+    }, 2000);
+  }
+
 	registerDataBase() {
 		if (this.person$.acceptTerm) {
 			this.userService.register(
@@ -53,7 +61,10 @@ export class AvatarComponent {
 				this.person$.fullName,
         this.person$.avatar,
 			);
-      this.router.navigate(['/main'])
+      this.animationMessage();
+      setTimeout(() => {
+        this.router.navigate(['/'])
+      }, 3000);
 		}
 	}
 }

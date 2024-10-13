@@ -24,6 +24,16 @@ section {
   @extend .message-user-position;
 }
 
+.show-msg {
+  @extend .show-msg-position;
+}
+
+/* Cuando se oculta, vuelve a la derecha */
+.hide-msg  {
+  @extend .hide-msg-position
+}
+
+
 .no-show-msg{
   transform: translateX(20px);
 }
