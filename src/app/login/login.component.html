@@ -86,7 +86,7 @@
     <a [routerLink]="['/register']">Konto erstellen</a>
   </aside>
   <div class="message-user" [ngClass]="{'show-msg': showMessage, 'hide-msg': !showMessage}">
-    <app-message [message]="'Anmelden'"></app-message>
+    <app-message [message]="messageToShow"></app-message>
   </div>
 </section>
 <div class="presentation" [ngClass]="{'d-none': isPresentation}">

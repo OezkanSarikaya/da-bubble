@@ -30,4 +30,8 @@ export class RegisterComponent {
       this.router.navigate(['avatar'])    
     }
   }
+
+  goBack(){
+    this.userService.goBack();
+  }
 }

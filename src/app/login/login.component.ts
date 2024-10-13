@@ -28,6 +28,11 @@ export class LoginComponent {
     email: '',
     password: ''
   }
+  messageToShow: string = '';
+  messages = {
+    success: 'Anmelden',
+    failed: 'Falsche Kombination'
+  }
 
   constructor(private userService: UserService, private router: Router) {
     setTimeout(() => {
@@ -51,12 +56,14 @@ export class LoginComponent {
       const userCredential = await this.userService.login(this.personLogin.email, this.personLogin.password);
       if(userCredential.user && userCredential.user.email){
         console.log(userCredential);
+        this.messageToShow = this.messages.success;
         this.animationMessage();
         setTimeout(() => {
           this.router.navigate(['/main']);
         }, 3000);
       }else{
-        console.error('Login failed');
+        this.messageToShow = this.messages.failed;
+        this.animationMessage();
       }
     }
   }

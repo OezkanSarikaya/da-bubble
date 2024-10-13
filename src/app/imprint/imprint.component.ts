@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-imprint',
@@ -9,5 +10,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './imprint.component.scss'
 })
 export class ImprintComponent {
-
+  constructor(private userService: UserService){}
+  goBack(){
+    this.userService.goBack();
+  }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-privacy',
@@ -10,4 +11,8 @@ import { RouterModule } from '@angular/router';
 })
 export class PrivacyComponent {
 
+  constructor(private userService: UserService){}
+  goBack(){
+    this.userService.goBack();
+  }
 }

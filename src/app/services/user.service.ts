@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, confirmPasswordReset    } from '@angular/fire/auth';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDoc, doc, query, where, getDocs } from '@angular/fire/firestore';
 import { Register } from '../interfaces/register';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environment/environment';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class UserService {
   };
   private newUser$: BehaviorSubject<Register> = new BehaviorSubject<Register>(this.newUser)
 
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private location: Location) {}
   private firestore: Firestore = inject(Firestore);
 
   getUser(): Observable<Register>{
@@ -31,20 +32,22 @@ export class UserService {
   }
 
   async register(email: string, password: string, fullname: string, avatarURL: string) {
-    createUserWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
-        console.log('User registered:', userCredential);
-      })
-      .catch((error) => {
-        console.error('Registration error:', error);
-      });
+    // createUserWithEmailAndPassword(this.auth, email, password)
+    //   .then((userCredential) => {
+    //     console.log('User registered:', userCredential);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Registration error:', error);
+    //   });
 
     try {
+      await createUserWithEmailAndPassword(this.auth, email, password)
       const userCollection = collection(this.firestore, 'users'); // Referenziert die 'users'-Sammlung
       const result = await addDoc(userCollection, { "fullname":fullname, "email":email, "avatar":avatarURL }); // Fügt ein Dokument zur Sammlung hinzu 
-       
+      return result;
     } catch (error) {
       console.error('Error adding user: ', error);
+      return null;
     }
   }
 
@@ -55,7 +58,8 @@ export class UserService {
       return userCredential; 
     } catch (error) {
       console.error("Error during login:", error);
-      return null;  
+      const empty = ''
+      return empty;  
     }
   }
 
@@ -75,9 +79,20 @@ export class UserService {
       handleCodeInApp: true,
     };
     try {
-      await sendPasswordResetEmail(auth, email, actionCodeSettings)
+      const usersRef = collection(this.firestore, 'users'); 
+      const q = query(usersRef, where("email", "==", email)); 
+      const querySnapshot = await getDocs(q); 
+      console.log(querySnapshot);
+      if(!querySnapshot.empty){
+        await sendPasswordResetEmail(auth, email, actionCodeSettings);
+        return true;
+      }else{
+        console.log('error');
+        return false;
+      }
     } catch (error) {
       console.error("Error:", error);
+      return false;
     }
   }
 
@@ -90,5 +105,9 @@ export class UserService {
         console.error("Error:", error);
       }
     }
+  }
+
+  goBack(){
+    this.location.back()
   }
 }

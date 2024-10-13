@@ -26,7 +26,11 @@ export class AvatarComponent {
 		"./assets/img/img_profile/profile6.png",
 	];
   showMessage: boolean = false;
-  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  messageToShow: string = '';
+  messages = {
+    success: 'Konto erfolgreich erstellt',
+    failed: 'E-Mail existiert bereits'
+  }
 
 	constructor(private router: Router, private userService: UserService) {}
 
@@ -42,6 +46,10 @@ export class AvatarComponent {
 		this.subscription.unsubscribe();
 	}
 
+  goBack(){
+    this.userService.goBack();
+  }
+
   selectAvatar(avatarURL: string){
     this.person$.avatar = avatarURL;
   }
@@ -53,18 +61,25 @@ export class AvatarComponent {
     }, 2000);
   }
 
-	registerDataBase() {
+	async registerDataBase() {
 		if (this.person$.acceptTerm) {
-			this.userService.register(
+			const user = await this.userService.register(
 				this.person$.email,
 				this.person$.password,
 				this.person$.fullName,
         this.person$.avatar,
 			);
-      this.animationMessage();
-      setTimeout(() => {
-        this.router.navigate(['/'])
-      }, 3000);
+      if(user){
+        this.messageToShow = this.messages.success;
+        this.animationMessage();
+        setTimeout(() => {
+          this.router.navigate(['/'])
+        }, 3000);
+      }else{
+        console.log('error');
+        this.messageToShow = this.messages.failed;
+        this.animationMessage();
+      }
 		}
 	}
 }
