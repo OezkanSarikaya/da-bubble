@@ -124,19 +124,36 @@ $border-radius-single: 16px;
 }
 
 .message-user-position{
-  // transform: translate(53px, -66px);
   position: fixed;
   top: 84%;
-  right: -58%;  /* Empieza fuera de la pantalla */
+  right: -58%; 
   transition: transform 0.5s ease-in-out;
 }
 
-/* Cuando se muestra, entra desde la derecha */
 .show-msg-position {
-  transform: translateX(-100%); /* Se mueve hacia la izquierda */
+  transform: translateX(-100%); 
 }
 
-/* Cuando se oculta, vuelve a la derecha */
 .hide-msg-position  {
-  transform: translateX(100%);  /* Se mueve hacia la derecha fuera de la pantalla */
+  transform: translateX(100%); 
+}
+
+
+@media (min-width: 390px){
+  .message-user-position{
+    right: 0%; 
+  }
+}
+
+@media (max-width: 760px){
+  .message-user-position{
+    right: -28%; 
+  }
+}
+
+
+@media (max-width: 380px){
+  .message-user-position{
+    right: -58%;
+  }
 }

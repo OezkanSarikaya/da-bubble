@@ -20,6 +20,18 @@ section{
   gap: 0;
 }
 
+.message-user{
+  @extend .message-user-position;
+}
+
+.show-msg {
+  @extend .show-msg-position;
+}
+
+.hide-msg  {
+  @extend .hide-msg-position
+}
+
 .container-logo-name,
 .container-register-desktop {
   display: none;
