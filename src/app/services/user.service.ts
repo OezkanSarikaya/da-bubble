@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut  } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, confirmPasswordReset    } from '@angular/fire/auth';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Register } from '../interfaces/register';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -67,5 +68,27 @@ export class UserService {
     } 
   }
 
+  async recoveryPassword(email: string){
+    const auth = getAuth();
+    const actionCodeSettings = {
+      url: environment.resetPasswordURL, 
+      handleCodeInApp: true,
+    };
+    try {
+      await sendPasswordResetEmail(auth, email, actionCodeSettings)
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
+  async resetPassword(oobCode: string | null, newPassword: string){
+    if (oobCode) {
+      const auth = getAuth();
+      try {
+        await confirmPasswordReset(auth, oobCode, newPassword)
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  }
 }
