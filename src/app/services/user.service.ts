@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
   providedIn: 'root'
 })
 export class UserService {
-
+  var = '';
   newUser: Register = {
     fullName: '',
     email: '',
@@ -32,14 +32,6 @@ export class UserService {
   }
 
   async register(email: string, password: string, fullname: string, avatarURL: string) {
-    // createUserWithEmailAndPassword(this.auth, email, password)
-    //   .then((userCredential) => {
-    //     console.log('User registered:', userCredential);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Registration error:', error);
-    //   });
-
     try {
       await createUserWithEmailAndPassword(this.auth, email, password)
       const userCollection = collection(this.firestore, 'users'); // Referenziert die 'users'-Sammlung
@@ -110,4 +102,10 @@ export class UserService {
   goBack(){
     this.location.back()
   }
+
+  uploadImage($event: any){
+    const file = $event.target.files[0];
+    console.log(file);
+  }
+
 }

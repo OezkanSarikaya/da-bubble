@@ -20,6 +20,10 @@ section {
 	gap: 0;
 }
 
+.file-input{
+  display: none;
+}
+
 .message-user{
   @extend .message-user-position;
 }

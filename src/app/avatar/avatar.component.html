@@ -30,12 +30,12 @@
         </div>
         <div class="container-file-photo">
           <p class="text-choose-avatar-small">eigenes Bild verwenden</p>
-          <button type="button" class="btn">Datei hochladen</button>
+          <input type="file" class="file-input" #fileInput (change)="uploadImage($event)">
+          <button type="button" class="btn" (click)="openFile()">Datei hochladen</button>
         </div>
         <div class="container-button-next">
           <button type="button" class="btn-next" (click)="registerDataBase()">Weiter</button>
         </div>
-      
     </div>
   </div>
   <aside class="empty-right-container"></aside>

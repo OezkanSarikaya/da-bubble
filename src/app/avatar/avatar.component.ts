@@ -31,6 +31,7 @@ export class AvatarComponent {
     success: 'Konto erfolgreich erstellt',
     failed: 'E-Mail existiert bereits'
   }
+	@ViewChild('fileInput') fileInput: any;
 
 	constructor(private router: Router, private userService: UserService) {}
 
@@ -62,24 +63,35 @@ export class AvatarComponent {
   }
 
 	async registerDataBase() {
-		if (this.person$.acceptTerm) {
-			const user = await this.userService.register(
-				this.person$.email,
-				this.person$.password,
-				this.person$.fullName,
-        this.person$.avatar,
-			);
-      if(user){
-        this.messageToShow = this.messages.success;
-        this.animationMessage();
-        setTimeout(() => {
-          this.router.navigate(['/'])
-        }, 3000);
-      }else{
-        console.log('error');
-        this.messageToShow = this.messages.failed;
-        this.animationMessage();
-      }
-		}
+
+		// if (this.person$.acceptTerm) {
+		// 	const user = await this.userService.register(
+		// 		this.person$.email,
+		// 		this.person$.password,
+		// 		this.person$.fullName,
+    //     this.person$.avatar,
+		// 	);
+    //   if(user){
+    //     this.messageToShow = this.messages.success;
+    //     this.animationMessage();
+    //     setTimeout(() => {
+    //       this.router.navigate(['/'])
+    //     }, 3000);
+    //   }else{
+    //     console.log('error');
+    //     this.messageToShow = this.messages.failed;
+    //     this.animationMessage();
+    //   }
+		// }
 	}
+
+	openFile(){
+		this.fileInput.nativeElement.click();
+	}
+
+	uploadImage($event: any) {
+    if ($event.target.files && $event.target.files[0]) {
+      this.userService.uploadImage($event); 
+    }
+  }
 }
