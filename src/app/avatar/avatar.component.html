@@ -19,9 +19,9 @@
         </div>
         <h1>Wähle dein Avatar</h1>
         <div class="container-avatar-selected">
-          <img class="avatar-selected" src="./assets/img/profile.svg" alt="default avatar">
+          <img class="avatar-selected" [src]="previewImage || avatarDefault" alt="default avatar">
         </div>
-        <h3 class="name-user">Frederick Beck</h3>
+        <h3 class="name-user">{{person$.fullName}}</h3>
         <p class="text-choose-avatar">Aus der Liste whählen...</p>
         <div class="container-all-avatars">
           @for (profile of avatars; track $index) {
@@ -30,7 +30,7 @@
         </div>
         <div class="container-file-photo">
           <p class="text-choose-avatar-small">eigenes Bild verwenden</p>
-          <input type="file" class="file-input" #fileInput (change)="uploadImage($event)">
+          <input type="file" class="file-input" #fileInput (change)="selectImage($event)">
           <button type="button" class="btn" (click)="openFile()">Datei hochladen</button>
         </div>
         <div class="container-button-next">

@@ -5,6 +5,7 @@ import { Register } from '../interfaces/register';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environment/environment';
 import { Location } from '@angular/common';
+import { ref, Storage, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class UserService {
   };
   private newUser$: BehaviorSubject<Register> = new BehaviorSubject<Register>(this.newUser)
 
-  constructor(private auth: Auth, private location: Location) {}
+  constructor(private auth: Auth, private location: Location, private storage:Storage) {}
   private firestore: Firestore = inject(Firestore);
 
   getUser(): Observable<Register>{
@@ -103,9 +104,24 @@ export class UserService {
     this.location.back()
   }
 
-  uploadImage($event: any){
+  selectImage($event: any){
     const file = $event.target.files[0];
-    console.log(file);
+    return file;
+    // console.log(file);
+  }
+
+  async uploadImage(file: any){
+    try {
+      const imgRef = ref(this.storage, `avatars/${file.name}`);
+      await uploadBytes(imgRef, file); //Upload image
+
+      const downloadURL = await getDownloadURL(imgRef); //reference in firebase to save in the user avatarURL
+      return downloadURL;
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      return null;
+    }
+    
   }
 
 }
