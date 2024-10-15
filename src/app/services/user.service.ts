@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, confirmPasswordReset    } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, confirmPasswordReset, GoogleAuthProvider, signInWithPopup    } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, getDoc, doc, query, where, getDocs } from '@angular/fire/firestore';
 import { Register } from '../interfaces/register';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -122,6 +122,17 @@ export class UserService {
       return null;
     }
     
+  }
+
+  async loginWithGoogle(): Promise<any> {
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(this.auth, provider);
+      return userCredential; 
+    } catch (error) {
+      console.error('Error during Google login:', error);
+      return null;
+    }
   }
 
 }

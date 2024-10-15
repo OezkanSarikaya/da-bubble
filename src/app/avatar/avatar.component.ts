@@ -6,7 +6,6 @@ import { Register } from "../interfaces/register";
 import { Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { MessageComponent } from "../shared/message/message.component";
-import { ref, Storage, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 
 @Component({
 	selector: "app-avatar",
@@ -18,7 +17,6 @@ import { ref, Storage, uploadBytes, getDownloadURL } from '@angular/fire/storage
 export class AvatarComponent {
 	person$!: Register;
 	avatarSelected!: any;
-	previewImage!: any;
 	subscription: Subscription = new Subscription();
 	avatarDefault: string = "./assets/img/profile.svg";
 	avatars = [
@@ -108,14 +106,14 @@ export class AvatarComponent {
 			// Cargar la imagen en base64 para mostrar una vista previa (opcional)
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewImage  = e.target.result; //Only to show like preview view // Esto solo es para vista previa
+        this.person$.avatar  = e.target.result; //Only to show like preview view // Esto solo es para vista previa
       };
       reader.readAsDataURL(file);  //Read image in base64 format // Leer la imagen como base64 para previsualización
     }
   }
 
 	async savingImgAvatar(){
-		let avatarUrl: string = this.avatarDefault;
+		let avatarUrl: string = this.person$.avatar;
 		if(this.avatarSelected){
 			const uploadResult   = await this.userService.uploadImage(this.avatarSelected);
 			if(uploadResult  ){

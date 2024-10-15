@@ -57,8 +57,11 @@
             <span>ODER</span>
             <div class="divider"></div>
           </div>
-          <div>
-            Anmdelden mit Google
+          <div class="container-google">
+            <button (click)="loginWithGoogle()">
+              <img src="assets/img/google-logo.png" alt="Google Logo" class="google-logo">
+              <span>Anmelden mit Google</span>
+            </button>
           </div>
           <div class="container-submit">
             @if (loginForm.valid) {

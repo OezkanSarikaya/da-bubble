@@ -154,6 +154,8 @@ h1{
 .avatar-selected{
   width: 60px;
   height: 60px;
+  object-fit: cover;
+  object-position: center;
   border: 8px solid transparent;
   border-radius: 50%;
   &:hover{

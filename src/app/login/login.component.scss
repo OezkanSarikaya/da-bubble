@@ -111,8 +111,10 @@ span.text-logo{
     background-color: transparent;
     &:focus{
       outline: none;
-    }
-  
+    } 
+    &::placeholder {
+      font-size: 14px !important;
+    } 
   }
 }
 
@@ -121,6 +123,31 @@ span.text-logo{
   @extend .container-input;
   justify-content: start !important;
   padding-left: 24px !important;
+}
+
+.container-google{
+  width: 100%;
+  @extend .d-center;
+  button{
+    @extend .d-center;
+    gap: 10px;
+    width: 100%;
+    border: transparent;
+    border-radius: 25px;
+    padding: 10px;
+    background-color: $bg-field-color;
+    color: $main-color;
+    
+    img{
+      width: 24px;
+      height: 24px;
+    }
+  }
+  span{
+    font-size: 14px;
+    font-weight: 400;
+  }
+
 }
 
 .color-svg{
@@ -278,7 +305,24 @@ img.logo-static-mobile{
   .card {
 		padding: 32px;
 	}
+  .container-google{
+    span{
+      font-size: 17px;
+    }
+  }
 }
+
+@media (min-width: 500px) {
+  .control {
+    input{
+      &::placeholder {
+        font-size: 16px !important; 
+      } 
+    }
+  }
+}
+
+
 
 @media (min-width: 1200px) {
   .container-logo-static-mobile{
@@ -502,7 +546,6 @@ img.logo-static-mobile{
   }
   to{
     opacity: 0;
-    // background-image: linear-gradient($bg-field-color, $bg-field-color);
     z-index: -1000;
   }
 }

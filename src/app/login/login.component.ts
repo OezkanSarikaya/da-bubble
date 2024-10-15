@@ -74,4 +74,19 @@ export class LoginComponent {
     this.router.navigate(['/main']);
   }
 
+  async loginWithGoogle() {
+    try {
+      const userCredential = await this.userService.loginWithGoogle();
+      if (userCredential) {
+        console.log('Logged in with Google:', userCredential);
+        this.router.navigate(['/main']); 
+      } else {
+        console.error('Google login failed');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
+
 }
