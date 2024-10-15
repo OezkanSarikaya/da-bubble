@@ -68,4 +68,10 @@ export class LoginComponent {
     }
   }
 
+  async gastLogin(){
+    const userCredential = await this.userService.login('gast@test.com', '123456');
+    console.log(userCredential);
+    this.router.navigate(['/main']);
+  }
+
 }
