@@ -135,4 +135,20 @@ export class UserService {
     }
   }
 
+  saveDataRegisterLocalStorage(newUser: any){
+    localStorage.setItem('user-register', JSON.stringify(newUser));
+  }
+
+  loadDataRegisterLocalStorage(){
+    let userRegisterText = (localStorage.getItem('user-register'));
+    if(userRegisterText){
+      let userRegister = JSON.parse(userRegisterText);
+      return userRegister;
+    }
+  }
+
+  cleanDataRegisterLocalStorage(){
+    localStorage.removeItem('user-register');
+  }
+
 }

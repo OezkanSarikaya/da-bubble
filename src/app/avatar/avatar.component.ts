@@ -43,6 +43,12 @@ export class AvatarComponent {
       this.person$.avatar = this.avatarDefault;
 		});
 		this.subscription.add(sub);
+		//Loading data if person refresh
+		if(!this.person$.acceptTerm){
+			let userLoaded = this.userService.loadDataRegisterLocalStorage();
+			this.person$ = userLoaded;
+			this.person$.avatar = this.avatarDefault;
+		}		
 	}
 
 	ngOnDestroy(): void {
@@ -74,6 +80,7 @@ export class AvatarComponent {
 					this.person$.fullName,
 					this.person$.avatar,
 				);
+				this.userService.cleanDataRegisterLocalStorage();
 				if(user){
 					this.messageToShow = this.messages.success;
 					this.animationMessage();

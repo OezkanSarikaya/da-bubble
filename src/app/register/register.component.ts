@@ -27,6 +27,7 @@ export class RegisterComponent {
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
       this.userService.setUser(this.person);
+      this.userService.saveDataRegisterLocalStorage(this.person);
       this.router.navigate(['avatar'])    
     }
   }
