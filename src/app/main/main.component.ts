@@ -4,6 +4,7 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { ChannelComponent } from './channel/channel.component';
 import { ThreadComponent } from './thread/thread.component';
 import { CommonModule } from '@angular/common';
+import { PopupUserProfileComponent } from '../shared/popup-user-profile/popup-user-profile.component';
 
 @Component({
   selector: 'app-main',
@@ -13,7 +14,8 @@ import { CommonModule } from '@angular/common';
     WorkspaceComponent,
     ChannelComponent,
     ThreadComponent,
-    CommonModule
+    CommonModule,
+    PopupUserProfileComponent
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
