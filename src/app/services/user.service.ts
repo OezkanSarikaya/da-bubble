@@ -110,9 +110,9 @@ export class UserService {
     // console.log(file);
   }
 
-  async uploadImage(file: any){
+  async uploadImage(file: any, fullName: string){
     try {
-      const imgRef = ref(this.storage, `avatars/${file.name}`);
+      const imgRef = ref(this.storage, `avatars/${file.name}-${fullName}`);
       await uploadBytes(imgRef, file); //Upload image
 
       const downloadURL = await getDownloadURL(imgRef); //reference in firebase to save in the user avatarURL

@@ -115,7 +115,7 @@ export class AvatarComponent {
 	async savingImgAvatar(){
 		let avatarUrl: string = this.person$.avatar;
 		if(this.avatarSelected){
-			const uploadResult   = await this.userService.uploadImage(this.avatarSelected);
+			const uploadResult   = await this.userService.uploadImage(this.avatarSelected, this.person$.fullName);
 			if(uploadResult  ){
 				avatarUrl = uploadResult
 			}
