@@ -51,6 +51,71 @@ section{
   }
 }
 
+.container-name-active{
+  @extend .d-center;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+
+.container-text-email{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas: 
+      "logo text"
+      "empty email";
+  gap: 10px;
+  align-items: center; 
+  .logo { 
+    grid-area: logo; 
+    svg{
+      width: 30px;
+      height: 30px;
+    }
+    }
+  .text { grid-area: text; }
+  .empty { grid-area: empty; }
+  .email { grid-area: email; }
+}
+
+
+.active-container{
+  @extend .d-center;
+  justify-content: flex-start !important;
+  width: 100%;
+  gap: 15px;
+  span{
+    color: $online-color;
+    font-size: 20px;
+  }
+}
+
+.name-user{
+  font-size: 32px;
+  font-weight: 700;
+  width: 100%;
+  margin: 0;
+}
+
+.status {
+  border: 2px solid #ffffff;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.online {
+  @extend .status;
+  background: $online-color;
+}
+
+.offline {
+  @extend .status;
+  background: $offline-color;
+}
+
 .container-avatar-selected{
   width: 100%;
   @extend .d-center;
