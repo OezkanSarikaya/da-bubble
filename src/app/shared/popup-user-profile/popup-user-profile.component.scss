@@ -6,18 +6,33 @@ section{
 	gap: 12px;
 	max-width: 398px;
 	padding: 14px;
-	margin: 16px;
+	margin: 16px 16px auto auto;
 	background-color: $white-color;
 	@extend .border-radius;
   filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.2)); 
 }
 
+@media (max-width: 465px){
+  section{
+    margin-left: 16px !important;
+  }
+}
+
+@media (min-width: 465px){
+  .card{
+    padding: 16px !important;
+  }
+}
+
 .card{
   width: 100%;
   @extend .d-center;
-  gap: 38px;
+  gap: 16px;
+  padding: 0 16px;
+  // gap: 38px;
 	flex-direction: column;
 }
+
 .card-header{
   width: 100%;
   @extend .d-center;
@@ -58,6 +73,38 @@ section{
   gap: 15px;
 }
 
+.btn{
+  @extend .button-app;
+  font-size: 18px;
+}
+
+.center{
+  @extend .d-center;
+  gap: 10px;
+}
+
+.container-name-edit{
+  width: 100%;
+  @extend .d-center;
+  justify-content: space-between;
+}
+
+.name-user{
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.container-edit{
+  background-color: rgba($color: $main-gray, $alpha: 0.2);
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  padding: 2px;
+  @extend .d-center;
+  cursor: pointer;
+}
+
 .container-text-email{
   width: 100%;
   display: grid;
@@ -90,13 +137,6 @@ section{
     color: $online-color;
     font-size: 20px;
   }
-}
-
-.name-user{
-  font-size: 32px;
-  font-weight: 700;
-  width: 100%;
-  margin: 0;
 }
 
 .status {
