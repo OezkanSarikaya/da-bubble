@@ -106,128 +106,15 @@
   </div>
   <div class="dropdown-content" *ngIf="isPrivateMessageOpen">
     
-    <div class="userList">
+    <div class="userList" *ngFor="let person of persons">
       <img
-        src="../../../assets/img/img_profile/profile1.png"
+        src="{{ person.avatar }}"
         alt=""
         class="userProfile50"
       />
       <div class="online"></div>
-      <span>Frederick Beck (Du)</span>
+      <span>{{ person.fullname }}</span>
     </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile2.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="online"></div>
-
-      <span>Sofia Müller</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile3.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="online"></div>
-      <span>Noah Braun</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile6.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="offline"></div>
-      <span>Elise Roth</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile5.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="offline"></div>
-      <span>Elias Neumann</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile4.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="online"></div>
-      <span>Steffen Hoffmann</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile1.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="online"></div>
-      <span>Frederick Beck (Du)</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile2.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="online"></div>
-
-      <span>Sofia Müller</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile3.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="online"></div>
-      <span>Noah Braun</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile6.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="offline"></div>
-      <span>Elise Roth</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile5.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="offline"></div>
-      <span>Elias Neumann</span>
-    </div>
-
-    <div class="userList">
-      <img
-        src="../../../assets/img/img_profile/profile4.png"
-        alt=""
-        class="userProfile50"
-      />
-      <div class="online"></div>
-      <span>Steffen Hoffmann</span>
-    </div>
-
 
   </div>
 </div>

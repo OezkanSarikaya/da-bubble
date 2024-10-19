@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
+import { PersonService } from '../../services/person.service';
 
 @Component({
   selector: 'app-workspace',
@@ -10,6 +11,9 @@ import { SearchComponent } from '../search/search.component';
   styleUrl: './workspace.component.scss',
 })
 export class WorkspaceComponent {
+  persons: any[] = []; // Array zum Speichern der Benutzerdaten
+  isLoading: boolean = true; // Ladeindikator
+
   isCreateChannelOpen = false;
   isChannelOpen = true;
   isPrivateMessageOpen = true;
@@ -17,6 +21,25 @@ export class WorkspaceComponent {
   isAddChannelOpen = false;
 
   isBackdropVisible: boolean = false;
+
+  constructor(private personService: PersonService) {}
+
+
+
+  ngOnInit(): void {
+    // Benutzerdaten beim Initialisieren der Komponente abrufen
+    this.personService.getAllUsers().subscribe(
+      (data) => {
+        this.persons = data;  // Benutzer in das Array laden
+        this.isLoading = false;  // Ladeindikator beenden
+      },
+      (error) => {
+        console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
 
   @Output() showChannel = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
 
@@ -26,11 +49,8 @@ export class WorkspaceComponent {
   @Input()
   isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
-  
   @Input()
   isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-
-
 
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
   @Output() toggleNewMessage = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
@@ -47,12 +67,7 @@ export class WorkspaceComponent {
 
   // Methode, die das Einblenden auslöst
   ontoggleNewMessage() {
-
     this.toggleNewMessage.emit();
-   
-    
-    
-    
   }
 
   togglePrivateMessage() {
