@@ -20,7 +20,7 @@ type loginError = {
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  //Chane here false after coding
+  //Change here false after coding
   isPresentation:boolean = true;
   isAllField: boolean = true;
   showMessage: boolean = false;

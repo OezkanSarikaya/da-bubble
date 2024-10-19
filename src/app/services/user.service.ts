@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, confirmPasswordReset, GoogleAuthProvider, signInWithPopup    } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, onAuthStateChanged, getAuth, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, confirmPasswordReset, GoogleAuthProvider, signInWithPopup    } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, getDoc, doc, query, where, getDocs } from '@angular/fire/firestore';
 import { Register } from '../interfaces/register';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -20,8 +20,28 @@ export class UserService {
     avatar: ''
   };
   private newUser$: BehaviorSubject<Register> = new BehaviorSubject<Register>(this.newUser)
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private auth: Auth, private location: Location, private storage:Storage) {}
+  constructor(private auth: Auth, private location: Location, private storage:Storage) {
+
+    this.checkAuthState();
+  }
+
+
+
+  private checkAuthState() {
+    const auth = getAuth();  // Firebase Auth-Instanz holen
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.isAuthenticatedSubject.next(true);  // Benutzer ist eingeloggt
+      } else {
+        this.isAuthenticatedSubject.next(false); // Kein Benutzer eingeloggt
+      }
+    });
+  }
+
+
   private firestore: Firestore = inject(Firestore);
 
   getUser(): Observable<Register>{
@@ -48,6 +68,7 @@ export class UserService {
     const auth = getAuth();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      this.isAuthenticatedSubject.next(true); 
       return userCredential; 
     } catch (error) {
       console.error("Error during login:", error);
@@ -60,6 +81,7 @@ export class UserService {
     const auth = getAuth();
     try {
       await signOut(auth); 
+      this.isAuthenticatedSubject.next(false); 
     } catch (error) {
       console.error('Error during sing out', error);
     } 

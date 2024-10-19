@@ -7,12 +7,15 @@ import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { AvatarComponent } from './avatar/avatar.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+// import { AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
+import { AuthGuard  } from '@angular/fire/auth-guard';
 
 export const routes: Routes = [
   {path: "", component: LoginComponent},
   {path: "recover-password", component: RecoverPasswordComponent},
-  {path: "register", component: RegisterComponent},
-  {path: "main", component: MainComponent},
+  {path: "register", component: RegisterComponent}, 
+  {path: "main", component: MainComponent, canActivate: [AuthGuard]},
+  // {path: "main", component: MainComponent},
   {path: "imprint", component: ImprintComponent},
   {path: "privacy", component: PrivacyComponent},
   {path: "avatar", component: AvatarComponent},
