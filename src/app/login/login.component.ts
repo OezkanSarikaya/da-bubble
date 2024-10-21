@@ -35,8 +35,14 @@ export class LoginComponent {
   }
 
   constructor(private userService: UserService, private router: Router) {
+    // setTimeout(() => {
+    //   this.presentationPlayed()
+    // }, 3500);
+  }
+
+  ngOnInit() {
     setTimeout(() => {
-      this.presentationPlayed()
+      this.presentationPlayed();
     }, 3500);
   }
 

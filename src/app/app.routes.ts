@@ -9,12 +9,14 @@ import { AvatarComponent } from './avatar/avatar.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 // import { AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
 import { AuthGuard  } from '@angular/fire/auth-guard';
+import { authGuard } from './auth.guard'; // Deine Auth Guard Datei
 
 export const routes: Routes = [
   {path: "", component: LoginComponent},
+  // {path: "login", component: LoginComponent},
   {path: "recover-password", component: RecoverPasswordComponent},
   {path: "register", component: RegisterComponent}, 
-  {path: "main", component: MainComponent, canActivate: [AuthGuard]},
+  {path: "main", component: MainComponent, canActivate: [authGuard]},
   // {path: "main", component: MainComponent},
   {path: "imprint", component: ImprintComponent},
   {path: "privacy", component: PrivacyComponent},

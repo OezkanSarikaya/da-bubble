@@ -22,7 +22,7 @@ import {
   getDocs,
 } from '@angular/fire/firestore';
 import { Register } from '../interfaces/register';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { environment } from '../environment/environment';
 import { Location } from '@angular/common';
 import {
@@ -48,7 +48,7 @@ export class UserService {
   private newUser$: BehaviorSubject<Register> = new BehaviorSubject<Register>(
     this.newUser
   );
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated$: Observable<boolean> =
     this.isAuthenticatedSubject.asObservable();
   private currentUserSubject: BehaviorSubject<any | null> = new BehaviorSubject(
@@ -75,6 +75,7 @@ export class UserService {
     const auth = getAuth(); // Firebase Auth-Instanz holen
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log("User is authenticated:", user.email);  // Debug-Log
         this.isAuthenticatedSubject.next(true);
 
         // Hole die erweiterten Benutzerdaten von Firestore
@@ -93,6 +94,7 @@ export class UserService {
           this.currentUserSubject.next(fullUserData);
         }
       } else {
+        console.log("User is not authenticated.");  // Debug-Log
         this.isAuthenticatedSubject.next(false);
         this.currentUserSubject.next(null);
       }
@@ -139,6 +141,8 @@ export class UserService {
         password
       );
       this.isAuthenticatedSubject.next(true);
+      // this.isAuthenticatedSubject  = true;
+       
 
       // Hole die erweiterten Benutzerdaten von Firestore nach dem Login
       const userData = await this.personService.getUserDataByEmail(email);
