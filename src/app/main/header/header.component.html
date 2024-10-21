@@ -14,11 +14,11 @@
   <div class="headerSearch">
     <app-search></app-search>
   </div>
-  <div class="loggedInUser" (click)="openLoggedInUser()">
-    <span class="loggedInUserName">Frederick Beck</span>
+  <div class="loggedInUser" (click)="openLoggedInUser()" *ngIf="currentUser">
+    <span class="loggedInUserName">{{ currentUser.fullName }}</span>
     <img
       class="userProfile50"
-      src="../../../assets/img/img_profile/profile1.png"
+      src="{{ currentUser.avatar }}"
       alt=""
     />
     <div class="online"></div>

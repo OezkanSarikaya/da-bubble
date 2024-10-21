@@ -12,7 +12,7 @@ import { PersonService } from '../../services/person.service';
 })
 export class WorkspaceComponent {
   persons: any[] = []; // Array zum Speichern der Benutzerdaten
-  isLoading: boolean = true; // Ladeindikator
+  // isLoading: boolean = true; // Ladeindikator
 
   isCreateChannelOpen = false;
   isChannelOpen = true;
@@ -31,11 +31,11 @@ export class WorkspaceComponent {
     this.personService.getAllUsers().subscribe(
       (data) => {
         this.persons = data;  // Benutzer in das Array laden
-        this.isLoading = false;  // Ladeindikator beenden
+        // this.isLoading = false;  // Ladeindikator beenden
       },
       (error) => {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-        this.isLoading = false;
+        // this.isLoading = false;
       }
     );
   }

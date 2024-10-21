@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit  } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
@@ -11,18 +11,23 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  currentUser: any = null;
   popupLoggedInUser = false;
   isBackdropVisible = false;
   closePopup = false;
-  @Input()
-  isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-  @Input()
-  isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-
+  @Input() isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+  @Input() isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
 
   constructor(private userService: UserService, private router: Router){}
+
+  ngOnInit() {
+    // Abonniere den aktuellen Benutzer
+    this.userService.currentUser$.subscribe(user => {
+      this.currentUser = user;      
+    });
+  }
 
   // Methode zum Ausblenden der Thread-Komponente
   hide() {
@@ -38,13 +43,6 @@ export class HeaderComponent {
       console.log('Logout failed', error);
     }
   }
- 
-
-  // openLoggedInUser() {
-  //   this.popupLoggedInUser = !this.popupLoggedInUser;
-  
-  // }
-
 
 
   openLoggedInUser() {

@@ -19,7 +19,7 @@ export const authGuard: CanActivateFn = (route, state) => {
         router.navigate(['']);
         // setTimeout(() => {
         //   router.navigate(['']);
-        // }, 0);  // Sicherstellen, dass die Umleitung verzögert wird
+        // }, 1000);  // Sicherstellen, dass die Umleitung verzögert wird
         return false;  // Zugriff verweigern
       }
     })
