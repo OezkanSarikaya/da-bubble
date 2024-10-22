@@ -106,7 +106,7 @@
   </div>
   <div class="dropdown-content" *ngIf="isPrivateMessageOpen">
     
-    <div class="userList" *ngFor="let person of persons">
+    <!-- <div class="userList" *ngFor="let person of persons">
       <img
         src="{{ person.avatar }}"
         alt=""
@@ -114,7 +114,23 @@
       />
       <div class="online"></div>
       <span>{{ person.fullname }}</span>
+    </div> -->
+
+
+
+    <!-- <div class="userList" *ngFor="let person of persons">
+      <img src="{{ person.avatar }}" alt="" class="userProfile50" />
+      <div [ngClass]="onlineStatusMap[person.id] === 'online' ? 'online' : 'offline'"></div>
+      <span>{{ person.fullname }}</span>
+    </div> -->
+
+    <div class="userList" *ngFor="let person of persons">
+      <img src="{{ person.avatar }}" alt="" class="userProfile50" />
+      <div [class.online]="person.isOnline" [class.offline]="!person.isOnline"></div>
+      <span>{{ person.fullname }}</span>
     </div>
+
+
 
   </div>
 </div>

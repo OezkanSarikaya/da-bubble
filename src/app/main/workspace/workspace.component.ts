@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
+import { UserService } from '../../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-workspace',
@@ -10,9 +12,10 @@ import { PersonService } from '../../services/person.service';
   templateUrl: './workspace.component.html',
   styleUrl: './workspace.component.scss',
 })
-export class WorkspaceComponent {
-  persons: any[] = []; // Array zum Speichern der Benutzerdaten
-  // isLoading: boolean = true; // Ladeindikator
+export class WorkspaceComponent implements OnInit, OnDestroy {
+  persons: any[] = [];
+  onlineStatusMap: { [key: string]: string } = {}; // Map zur Speicherung des Status für jeden Benutzer
+  private subscriptions: Subscription[] = [];
 
   isCreateChannelOpen = false;
   isChannelOpen = true;
@@ -22,11 +25,23 @@ export class WorkspaceComponent {
 
   isBackdropVisible: boolean = false;
 
-  constructor(private personService: PersonService) {}
+  constructor(private personService: PersonService,private userService: UserService) {}
 
 
 
   ngOnInit(): void {
+    // Hole die Liste der Benutzer
+    this.getUsers();
+
+    // Setze einen Realtime-Listener für den Online-Status jedes Benutzers
+    this.persons.forEach((person) => {
+      const subscription = this.userService.getUserStatus(person.id).subscribe((status) => {
+        this.onlineStatusMap[person.id] = status; // Status speichern (online/offline)
+      });
+      this.subscriptions.push(subscription); // Subscription speichern
+    });
+
+
     // Benutzerdaten beim Initialisieren der Komponente abrufen
     this.personService.getAllUsers().subscribe(
       (data) => {
@@ -38,6 +53,33 @@ export class WorkspaceComponent {
         // this.isLoading = false;
       }
     );
+  }
+
+  // getUsers() {
+  //   // Hier verwendest du den PersonService oder UserService, um die Liste der Benutzer zu holen
+  //   // Zum Beispiel:
+    
+  //   this.userService.getUsers().subscribe((users) => {
+  //     this.persons = users;
+  //   });
+  // }
+
+
+  getUsers() {
+    this.userService.getUsers().subscribe((users) => {
+      this.persons = users;
+      // Für jeden Benutzer den Status abonnieren
+      this.persons.forEach(person => {
+        this.userService.getUserStatus(person.id).subscribe(status => {
+          person.isOnline = status === 'online';
+        });
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe von allen Realtime-Listenern
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
 
