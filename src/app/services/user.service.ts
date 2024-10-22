@@ -21,6 +21,7 @@ import {
   where,
   getDocs,
 } from '@angular/fire/firestore';
+import { Database, ref as dbRef, set, onValue, getDatabase } from '@angular/fire/database';
 import { Register } from '../interfaces/register';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { environment } from '../environment/environment';
@@ -38,6 +39,7 @@ import { PersonService } from './person.service'; // Importiere den PersonServic
   providedIn: 'root',
 })
 export class UserService {
+  private db: Database;
   newUser: Register = {
     fullName: '',
     email: '',
@@ -64,6 +66,7 @@ export class UserService {
     private personService: PersonService,
     private router: Router
   ) {
+    this.db = inject(Database); 
     this.checkAuthState();
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
@@ -71,11 +74,27 @@ export class UserService {
     }
   }
 
+  setUserStatus(userId: string, status: string) {
+    const userStatusRef = dbRef(this.db, `status/${userId}`);
+    set(userStatusRef, status);
+  }
+
+  getUserStatus(userId: string) {
+    const statusSubject = new BehaviorSubject<string>('offline');
+    const userStatusRef = dbRef(this.db, `status/${userId}`);
+    onValue(userStatusRef, (snapshot) => {
+      const status = snapshot.val();
+      statusSubject.next(status);
+      console.log(`User ${userId} is ${status}`);
+    });
+    return statusSubject.asObservable(); // Rückgabe als Observable
+  }
+
   private checkAuthState() {
     const auth = getAuth(); // Firebase Auth-Instanz holen
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log("User is authenticated:", user.email);  // Debug-Log
+        // console.log("User is authenticated:", user.email);  // Debug-Log
         this.isAuthenticatedSubject.next(true);
 
         // Hole die erweiterten Benutzerdaten von Firestore
@@ -94,7 +113,7 @@ export class UserService {
           this.currentUserSubject.next(fullUserData);
         }
       } else {
-        console.log("User is not authenticated.");  // Debug-Log
+        // console.log("User is not authenticated.");  // Debug-Log
         this.isAuthenticatedSubject.next(false);
         this.currentUserSubject.next(null);
       }
