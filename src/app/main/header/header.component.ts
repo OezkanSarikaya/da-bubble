@@ -3,6 +3,8 @@ import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +22,11 @@ export class HeaderComponent implements OnInit {
   @Input() isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
 
-  constructor(private userService: UserService, private router: Router){}
+  constructor(private userService: UserService, private router: Router, private store:Store<any>){}
+
+  triggerUserProfilePopUp(){
+    this.store.dispatch(triggerPopUserProfile());
+  }
 
   ngOnInit() {
     // Abonniere den aktuellen Benutzer

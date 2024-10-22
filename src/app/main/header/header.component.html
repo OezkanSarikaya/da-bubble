@@ -39,7 +39,7 @@
   <div class="popupLoggedInUser" [ngClass]="{ showPopupLoggedInUser: popupLoggedInUser,hidden: !isBackdropVisible }">
     <div class="shortLine" (click)="openLoggedInUser()"></div>
     <div class="navList">
-      <div class="navItem">
+      <div class="navItem" (click)="triggerUserProfilePopUp()">
         <img src="../../../assets/img/account_circle.svg" alt="" />
         <span>Profil</span>
       </div>

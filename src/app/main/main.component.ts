@@ -5,6 +5,10 @@ import { ChannelComponent } from './channel/channel.component';
 import { ThreadComponent } from './thread/thread.component';
 import { CommonModule } from '@angular/common';
 import { PopupUserProfileComponent } from '../shared/popup-user-profile/popup-user-profile.component';
+import { Store } from '@ngrx/store';
+import { triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
+import { Observable } from 'rxjs';
+import { triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
 
 @Component({
   selector: 'app-main',
@@ -25,6 +29,16 @@ export class MainComponent {
   isThreadVisible: boolean = false;
   isChannelSelected: boolean = false;
   isNewMessageOpen = false;
+
+  userProfilePopUp$: Observable<boolean> = new Observable();
+
+  constructor(private store:Store<any>){}
+
+  ngOnInit(): void {
+    this.userProfilePopUp$ = this.store.select(triggerUserProfilePopUpSelector)
+    
+  }
+
 
   // Methode zum Ändern des Zustands
   toggleThreadVisibility() {
@@ -68,4 +82,5 @@ export class MainComponent {
       document.body.classList.remove('no-scroll'); // Scrollen auf der Seite deaktivieren
     }
   }
+
 }

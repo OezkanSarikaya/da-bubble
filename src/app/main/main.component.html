@@ -26,7 +26,9 @@
     (hideThread)="hideThread()"
   ></app-thread>
   <!-- Fixen -->
-  <!-- <article class="container-user-profile">
-    <app-popup-user-profile></app-popup-user-profile>
-  </article> -->
+   @if(userProfilePopUp$ | async ){
+     <article class="container-user-profile">
+       <app-popup-user-profile></app-popup-user-profile>
+     </article>
+   }
 </main>
