@@ -6,9 +6,9 @@ import { ThreadComponent } from './thread/thread.component';
 import { CommonModule } from '@angular/common';
 import { PopupUserProfileComponent } from '../shared/popup-user-profile/popup-user-profile.component';
 import { Store } from '@ngrx/store';
-import { triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
+import { hideThreadComponent, triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
 import { Observable } from 'rxjs';
-import { showHideThreadSelector, triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
+import { showHideThreadSelector, triggerChanelSelector, triggerNewMessage, triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
 
 @Component({
   selector: 'app-main',
@@ -26,30 +26,35 @@ import { showHideThreadSelector, triggerUserProfilePopUpSelector } from '../stat
 })
 export class MainComponent {
   // Zustand, ob die Thread-Komponente sichtbar ist
-  isThreadVisible: boolean = false;
+  // isThreadVisible: boolean = false;
   isChannelSelected: boolean = false;
   isNewMessageOpen = false;
 
   userProfilePopUp$: Observable<boolean> = new Observable();
   isThreadVisible$: Observable<boolean> = new Observable();
+  isChannelSelected$: Observable<boolean> = new Observable();
+  //I have to implement that but I have to talk with ozkan
+  isNewMessageOpen$: Observable<boolean> = new Observable();
 
   constructor(private store:Store<any>){}
 
   ngOnInit(): void {
     this.userProfilePopUp$ = this.store.select(triggerUserProfilePopUpSelector);
-    this.isThreadVisible$ = this.store.select(showHideThreadSelector)
+    this.isThreadVisible$ = this.store.select(showHideThreadSelector);
+    this.isNewMessageOpen$ = this.store.select(triggerNewMessage)
+    this.isChannelSelected$ = this.store.select(triggerChanelSelector)
   }
 
 
   // Methode zum Ändern des Zustands
-  toggleThreadVisibility() {
-    this.isThreadVisible = !this.isThreadVisible;
-  }
+  // toggleThreadVisibility() {
+  //   this.isThreadVisible = !this.isThreadVisible;
+  // }
 
   // Methode zum expliziten Einblenden der Thread-Komponente
-  showThread() {
-    this.isThreadVisible = true;
-  }
+  // showThread() {
+  //   this.isThreadVisible = true;
+  // }
 
   // Methode zum expliziten Einblenden der Channel-Komponente
   showChannel() {
@@ -62,16 +67,17 @@ export class MainComponent {
       this.toggleNewMessage();
     }
     this.isChannelSelected = false;
-    this.hideThread();
+    this.store.dispatch(hideThreadComponent())
+    // this.hideThread();
   
     
     // alert('Channel offen?: '+this.isChannelSelected);
   }
 
   // Methode zum expliziten Ausblenden der Thread-Komponente
-  hideThread() {
-    this.isThreadVisible = false;
-  }
+  // hideThread() {
+  //   this.isThreadVisible = false;
+  // }
 
   toggleNewMessage() {
     this.isNewMessageOpen = !this.isNewMessageOpen;

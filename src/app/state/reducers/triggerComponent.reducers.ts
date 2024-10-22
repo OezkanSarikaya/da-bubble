@@ -1,11 +1,15 @@
 import { createReducer, on } from "@ngrx/store";
-import { hideThreadComponent, showThreadComponent, triggerPopUserProfile,  } from "../actions/triggerComponents.actions";
+import { hideThreadComponent, isNewMessage, showThreadComponent, triggerChanelComponent, triggerPopUserProfile,  } from "../actions/triggerComponents.actions";
 
 export const initalState:  {
   userProfilePopUp: boolean,
-  threadComponent: boolean
+  threadComponent: boolean,
+  chanelComponent: boolean
+  newMessage: boolean
 } = {userProfilePopUp: false,
-    threadComponent: false
+    threadComponent: false,
+    chanelComponent: false,
+    newMessage: false
 };
 
 
@@ -19,5 +23,11 @@ export const triggerComponentsReducer = createReducer(
   }),
   on(hideThreadComponent, (state)=>{
     return {...state, threadComponent: false}
+  }),
+  on(triggerChanelComponent, (state)=>{
+    return {...state, newMessage: !state.chanelComponent}
+  }),
+  on(isNewMessage, (state)=>{
+    return {...state, newMessage: !state.newMessage}
   })
 );

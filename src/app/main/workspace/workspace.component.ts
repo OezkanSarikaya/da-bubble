@@ -91,8 +91,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   @Input()
   isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
-  @Input()
-  isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+  // @Input()
+  // isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
   @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
   @Output() toggleNewMessage = new EventEmitter<void>(); // Gibt das Ausblenden nach außen

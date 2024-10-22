@@ -6,20 +6,16 @@
 ></app-header>
 <main class="mainContainer">
   <app-workspace
-    [ngClass]="{ hideOnMobile: isThreadVisible }"
+    [ngClass]="{ hideOnMobile: isThreadVisible$ | async }"
     [isChannelVisible]="isChannelSelected"
     [isNewMessageVisible]="isNewMessageOpen"
-    [isVisible]="isThreadVisible"
     (hideChannel)="hideChannel()"
     (showChannel)="showChannel()"
     (toggleNewMessage)="toggleNewMessage()"
   ></app-workspace>
   <app-channel
-    [ngClass]="{ hideOnMobile: isThreadVisible }"
+    [ngClass]="{ hideOnMobile: isThreadVisible$ | async  }"
     [isNewMessageVisible]="isNewMessageOpen"
-    [isChannelVisible]="isChannelSelected"
-    [isVisible]="isThreadVisible"
-    (showThread)="showThread()"
   ></app-channel>
   @if(isThreadVisible$ | async){
     <app-thread></app-thread>

@@ -11,3 +11,13 @@ export const showHideThreadSelector = createSelector(
   selectTriggerComponents,
   (state) => state.threadComponent
 )
+
+export const triggerChanelSelector = createSelector(
+  selectTriggerComponents,
+  (state) => state.chanelComponent
+)
+
+export const triggerNewMessage = createSelector(
+  selectTriggerComponents,
+  (state) => state.newMessage
+)
