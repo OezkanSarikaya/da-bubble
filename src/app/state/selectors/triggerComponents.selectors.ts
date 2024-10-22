@@ -6,3 +6,8 @@ export const triggerUserProfilePopUpSelector = createSelector(
   selectTriggerComponents,
   (state) => state.userProfilePopUp
 )
+
+export const showHideThreadSelector = createSelector(
+  selectTriggerComponents,
+  (state) => state.threadComponent
+)

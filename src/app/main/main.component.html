@@ -21,10 +21,9 @@
     [isVisible]="isThreadVisible"
     (showThread)="showThread()"
   ></app-channel>
-  <app-thread
-    [isVisible]="isThreadVisible"
-    (hideThread)="hideThread()"
-  ></app-thread>
+  @if(isThreadVisible$ | async){
+    <app-thread></app-thread>
+  }
   <!-- Fixen -->
    @if(userProfilePopUp$ | async ){
      <article class="container-user-profile">

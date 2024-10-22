@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { showThreadComponent } from '../../state/actions/triggerComponents.actions';
 
 @Component({
   selector: 'app-channel',
@@ -24,11 +26,11 @@ export class ChannelComponent {
   @Input()
   isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
-  @Output() showThread = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
+  constructor(private store: Store){}
 
   // Methode, die das Einblenden auslöst
   onShowThread() {
-    this.showThread.emit();
+    this.store.dispatch(showThreadComponent())
   }
 
   toggleChannelMembers() {

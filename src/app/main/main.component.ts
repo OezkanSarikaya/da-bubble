@@ -8,7 +8,7 @@ import { PopupUserProfileComponent } from '../shared/popup-user-profile/popup-us
 import { Store } from '@ngrx/store';
 import { triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
 import { Observable } from 'rxjs';
-import { triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
+import { showHideThreadSelector, triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
 
 @Component({
   selector: 'app-main',
@@ -31,12 +31,13 @@ export class MainComponent {
   isNewMessageOpen = false;
 
   userProfilePopUp$: Observable<boolean> = new Observable();
+  isThreadVisible$: Observable<boolean> = new Observable();
 
   constructor(private store:Store<any>){}
 
   ngOnInit(): void {
-    this.userProfilePopUp$ = this.store.select(triggerUserProfilePopUpSelector)
-    
+    this.userProfilePopUp$ = this.store.select(triggerUserProfilePopUpSelector);
+    this.isThreadVisible$ = this.store.select(showHideThreadSelector)
   }
 
 
