@@ -22,7 +22,7 @@ export const authGuard: CanActivateFn = (route, state) => {
               console.log('User authenticated:', user.email);
               return true;  // Benutzer ist authentifiziert
             } else {
-              console.log('User not authenticated, redirecting to login...');
+              // console.log('User not authenticated, redirecting to login...');
               router.navigate(['/']);
               return false;  // Zugriff verweigern
             }
@@ -33,7 +33,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       if (isAuthenticated) {
         return of(true);  // Benutzer ist bereits authentifiziert
       } else {
-        console.log('User not authenticated, redirecting to login...');
+        // console.log('User not authenticated, redirecting to login...');
         router.navigate(['/']);
         return of(false);  // Zugriff verweigern
       }

@@ -61,7 +61,7 @@ export class LoginComponent {
     if (ngForm.submitted && ngForm.form.valid) {
       const userCredential = await this.userService.login(this.personLogin.email, this.personLogin.password);
       if(userCredential.user && userCredential.user.email){
-        console.log(userCredential);
+        // console.log(userCredential);
         this.messageToShow = this.messages.success;
         this.animationMessage();
         setTimeout(() => {
@@ -76,7 +76,7 @@ export class LoginComponent {
 
   async gastLogin(){
     const userCredential = await this.userService.login('gast@test.com', '123456');
-    console.log(userCredential);
+    // console.log(userCredential);
     this.router.navigate(['/main']);
   }
 
