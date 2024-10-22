@@ -14,11 +14,11 @@
       </div>
     </div>
     <div class="container-avatar-selected">
-      <img class="avatar-selected" [src]="avatar" alt="default avatar">
+      <img class="avatar-selected" [src]="currentUser.avatar" alt="default avatar">
     </div>
     <div class="container-name-active">
       <div class="container-name-edit">
-        <p class="name-user">Patrick  Beck</p>
+        <p class="name-user">{{currentUser.fullName}}</p>
         <div class="container-edit">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <mask id="mask0_842_12274" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
@@ -48,7 +48,7 @@
         </div>
         <div class="text">E-Mail-Adresse</div>
         <div class="empty"></div>
-        <div class="email">email&#64;beispiel.com</div>
+        <div class="email">{{currentUser.email}}</div>
     </div>
     <div>
       <button class="btn center">
