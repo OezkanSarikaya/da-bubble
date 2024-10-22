@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { UserService } from './services/user.service';
 
 
 @Component({
@@ -12,4 +13,15 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'da-bubble';
+
+  constructor(private userService: UserService) { }
+
+  ngOnInit() {
+    window.onbeforeunload = () => {
+      const currentUser = this.userService.getCurrentUser();
+      if (currentUser) {
+        this.userService.setUserStatus(currentUser.uid, 'offline');
+      }
+    };
+  }
 }

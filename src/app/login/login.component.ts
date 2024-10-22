@@ -62,6 +62,7 @@ export class LoginComponent {
       const userCredential = await this.userService.login(this.personLogin.email, this.personLogin.password);
       if(userCredential.user && userCredential.user.email){
         // console.log(userCredential);
+        // this.userService.setUserStatus(userCredential.user.uid, 'online');
         this.messageToShow = this.messages.success;
         this.animationMessage();
         setTimeout(() => {

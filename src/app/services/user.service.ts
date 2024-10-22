@@ -21,9 +21,15 @@ import {
   where,
   getDocs,
 } from '@angular/fire/firestore';
-import { Database, ref as dbRef, set, onValue, getDatabase } from '@angular/fire/database';
+import {
+  Database,
+  ref as dbRef,
+  set,
+  onValue,
+  getDatabase,
+} from '@angular/fire/database';
 import { Register } from '../interfaces/register';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, from } from 'rxjs';
 import { environment } from '../environment/environment';
 import { Location } from '@angular/common';
 import {
@@ -66,7 +72,7 @@ export class UserService {
     private personService: PersonService,
     private router: Router
   ) {
-    this.db = inject(Database); 
+    this.db = inject(Database);
     this.checkAuthState();
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
@@ -126,6 +132,16 @@ export class UserService {
     return this.newUser$.asObservable();
   }
 
+  // Diese Methode holt alle Benutzer aus der 'users'-Sammlung in Firestore
+  getUsers(): Observable<any[]> {
+    const userCollection = collection(this.firestore, 'users');
+    return from(
+      getDocs(userCollection).then((snapshot) => {
+        return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      })
+    );
+  }
+
   setUser(user: Register): void {
     this.newUser$.next(user);
   }
@@ -161,8 +177,7 @@ export class UserService {
       );
       this.isAuthenticatedSubject.next(true);
       // this.isAuthenticatedSubject  = true;
-       
-
+      this.setUserStatus(userCredential.user.uid, 'online');
       // Hole die erweiterten Benutzerdaten von Firestore nach dem Login
       const userData = await this.personService.getUserDataByEmail(email);
       if (userData) {
@@ -187,11 +202,18 @@ export class UserService {
 
   async logout(): Promise<any> {
     const auth = getAuth();
+    const currentUser = this.getCurrentUser();
+    
     try {
+      if (currentUser) {
+        // Setze den Status auf 'offline'
+        this.setUserStatus(currentUser.uid, 'offline');
+      }
       await signOut(auth);
       this.isAuthenticatedSubject.next(false);
       localStorage.removeItem('currentUser');
       this.currentUserSubject.next(null);
+      
       // this.router.navigate(['/login']);
     } catch (error) {
       console.error('Error during sing out', error);
