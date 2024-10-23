@@ -16,7 +16,7 @@ export class PersonService {
   // Methode zum Abrufen aller Benutzerdaten
   getAllUsers(): Observable<any[]> {
     const personsCollection = collection(this.firestore, 'users');
-    return collectionData(personsCollection, { idField: 'id' }); // Echtzeit-Stream
+    return collectionData(personsCollection, { idField: 'uid' }); // Echtzeit-Stream
   }
 
     // Funktion zum Abrufen von Benutzerdaten basierend auf der E-Mail

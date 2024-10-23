@@ -84,32 +84,37 @@ export class UserService {
     const userStatusRef = dbRef(this.db, `status/${userId}`);
     set(userStatusRef, status)
       .then(() => {
-        // console.log(`User status for ${userId} set to ${status}`);
+        console.log(`User status for ${userId} set to ${status}`);
       })
       .catch((error) => {
         console.error('Error setting user status:', error);
       });
   }
 
+
   getUserStatus(uid: string): Observable<string> {
     const userStatusRef = dbRef(this.db, `status/${uid}`);
-
+    
+    // Überwache den Status des Benutzers
     return new Observable((observer) => {
       onValue(userStatusRef, (snapshot) => {
         const status = snapshot.val();
+        
         if (status) {
-          observer.next(status); // Online- oder Offline-Status als String zurückgeben
+          observer.next(status); // Gebe den Status (online/offline) zurück
         } else {
-          observer.next('offline'); // Fallback auf "offline"
+          observer.next('offline'); // Standardmäßig offline, falls kein Status gefunden wird
         }
       });
     });
   }
+  
 
   private checkAuthState() {
-    const auth = getAuth();
+    const auth = getAuth(); // Firebase Auth-Instanz holen
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        // console.log("User is authenticated:", user.email);  // Debug-Log
         this.isAuthenticatedSubject.next(true);
 
         // Hole die erweiterten Benutzerdaten von Firestore
@@ -126,11 +131,9 @@ export class UserService {
           // Speichere die erweiterten Benutzerdaten
           localStorage.setItem('currentUser', JSON.stringify(fullUserData));
           this.currentUserSubject.next(fullUserData);
-
-          // Setze den Benutzerstatus auf "online", wenn er authentifiziert ist
-          this.setUserStatus(user.uid, 'online');
         }
       } else {
+        // console.log("User is not authenticated.");  // Debug-Log
         this.isAuthenticatedSubject.next(false);
         this.currentUserSubject.next(null);
       }
@@ -143,6 +146,7 @@ export class UserService {
     return this.newUser$.asObservable();
   }
 
+
   getUsers(): Observable<any[]> {
     const userCollection = collection(this.firestore, 'users');
     return from(
@@ -150,7 +154,8 @@ export class UserService {
         return snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
-            id: data['uid'] || doc.id,
+            // Hole die Benutzer-UID statt der Firestore-Dokument-ID, falls vorhanden
+            id: data['uid'] || doc.id, // Annahme: du hast das 'uid' Feld in Firestore gespeichert
             ...data,
           };
         });
@@ -162,6 +167,7 @@ export class UserService {
     this.newUser$.next(user);
   }
 
+
   async register(
     email: string,
     password: string,
@@ -169,25 +175,32 @@ export class UserService {
     avatarURL: string
   ) {
     try {
+      // Erstelle den Benutzer und erhalte die User-Credentials
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
-      // console.log("userCredential UID", user.uid);
-
+  
+      console.log("userCredential UID", user.uid);
+  
+      // Referenziere die 'users'-Sammlung in Firestore
       const userCollection = collection(this.firestore, 'users');
-
+  
+      // Speichere die Benutzerdaten inkl. UID in Firestore
       const result = await addDoc(userCollection, {
-        uid: user.uid,
+        uid: user.uid,  // Hier wird die UID des Benutzers gespeichert
         fullname: fullname,
         email: email,
+        // password: password,
         avatar: avatarURL,
       });
-
+  
       return result;
     } catch (error) {
+      // Fange den Fehler ab und gebe eine Fehlermeldung aus
       console.error('Error adding user: ', error);
-      return error;
+      return error
     }
   }
+  
 
   async login(email: string, password: string): Promise<any> {
     const auth = getAuth();
@@ -198,9 +211,10 @@ export class UserService {
         password
       );
       this.isAuthenticatedSubject.next(true);
+      // this.isAuthenticatedSubject  = true;
       this.setUserStatus(userCredential.user.uid, 'online');
-      // console.log(`Benutzer ${userCredential.user.uid} ist online`);
-
+      console.log(`Benutzer ${userCredential.user.uid} ist online`);
+      // Hole die erweiterten Benutzerdaten von Firestore nach dem Login
       const userData = await this.personService.getUserDataByEmail(email);
       if (userData) {
         const fullUserData = {
@@ -209,6 +223,7 @@ export class UserService {
           avatar: userData.avatar,
         };
 
+        // Speichere die erweiterten Benutzerdaten
         localStorage.setItem('currentUser', JSON.stringify(fullUserData));
         this.currentUserSubject.next(fullUserData);
       }
@@ -216,6 +231,7 @@ export class UserService {
       return userCredential;
     } catch (error) {
       console.error('Error during login:', error);
+
       return null;
     }
   }
@@ -226,14 +242,17 @@ export class UserService {
 
     try {
       if (currentUser) {
+        // Setze den Status auf 'offline'
         this.setUserStatus(currentUser.uid, 'offline');
       }
       await signOut(auth);
       this.isAuthenticatedSubject.next(false);
       localStorage.removeItem('currentUser');
       this.currentUserSubject.next(null);
+
+
     } catch (error) {
-      console.error('Error during sign out', error);
+      console.error('Error during sing out', error);
     }
   }
 
@@ -251,10 +270,12 @@ export class UserService {
       const usersRef = collection(this.firestore, 'users');
       const q = query(usersRef, where('email', '==', email));
       const querySnapshot = await getDocs(q);
+      console.log(querySnapshot);
       if (!querySnapshot.empty) {
         await sendPasswordResetEmail(auth, email, actionCodeSettings);
         return true;
       } else {
+        console.log('error');
         return false;
       }
     } catch (error) {
@@ -281,13 +302,15 @@ export class UserService {
   selectImage($event: any) {
     const file = $event.target.files[0];
     return file;
+    // console.log(file);
   }
 
   async uploadImage(file: any, fullName: string) {
     try {
       const imgRef = ref(this.storage, `avatars/${file.name}-${fullName}`);
-      await uploadBytes(imgRef, file);
-      const downloadURL = await getDownloadURL(imgRef);
+      await uploadBytes(imgRef, file); //Upload image
+
+      const downloadURL = await getDownloadURL(imgRef); //reference in firebase to save in the user avatarURL
       return downloadURL;
     } catch (error) {
       console.error('Error al subir la imagen:', error);

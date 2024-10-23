@@ -1,79 +1,77 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-workspace',
   standalone: true,
   imports: [CommonModule, SearchComponent],
   templateUrl: './workspace.component.html',
-  styleUrl: './workspace.component.scss',
+  styleUrls: ['./workspace.component.scss'], // Hier den korrekten Schlüssel 'styleUrls' verwenden
 })
 export class WorkspaceComponent implements OnInit, OnDestroy {
   persons: any[] = [];
-  onlineStatusMap: { [key: string]: string } = {}; // Map zur Speicherung des Status für jeden Benutzer
   private subscriptions: Subscription[] = [];
-
+  
   isCreateChannelOpen = false;
   isChannelOpen = true;
   isPrivateMessageOpen = true;
   isWorkspaceOpen = true;
   isAddChannelOpen = false;
-
   isBackdropVisible: boolean = false;
 
-  constructor(private personService: PersonService,private userService: UserService) {}
-
-
+  constructor(
+    private personService: PersonService,
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    // Hole die Liste der Benutzer
+    // Benutzerliste abrufen
     this.getUsers();
-
-    // Setze einen Realtime-Listener für den Online-Status jedes Benutzers
-    this.persons.forEach((person) => {
-      const subscription = this.userService.getUserStatus(person.id).subscribe((status) => {
-        this.onlineStatusMap[person.id] = status; // Status speichern (online/offline)
-      });
-      this.subscriptions.push(subscription); // Subscription speichern
-    });
-
-
-    // Benutzerdaten beim Initialisieren der Komponente abrufen
-    this.personService.getAllUsers().subscribe(
-      (data) => {
-        this.persons = data;  // Benutzer in das Array laden
-        // this.isLoading = false;  // Ladeindikator beenden
-      },
-      (error) => {
-        console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-        // this.isLoading = false;
-      }
-    );
   }
-
-  // getUsers() {
-  //   // Hier verwendest du den PersonService oder UserService, um die Liste der Benutzer zu holen
-  //   // Zum Beispiel:
-    
-  //   this.userService.getUsers().subscribe((users) => {
-  //     this.persons = users;
-  //   });
-  // }
-
 
   getUsers() {
     this.userService.getUsers().subscribe((users) => {
-      this.persons = users;
-      // Für jeden Benutzer den Status abonnieren
-      this.persons.forEach(person => {
-        this.userService.getUserStatus(person.id).subscribe(status => {
-          person.isOnline = status === 'online';
+      this.persons = users; // Benutzerdaten speichern
+      // console.log('Personen:', this.persons);
+
+      // Online-Status für jeden Benutzer abrufen
+      this.persons.forEach((person) => {
+        // console.log(
+        //   `Prüfe Online-Status für Person: ${person.fullname} mit ID: ${person.uid}`
+        // );
+
+        // Überprüfen ob person.uid korrekt übergeben wird
+        if (!person.uid) {
+          // console.error('UID für Person fehlt:', person);
+          return; // Vorzeitiges Beenden, wenn UID fehlt
+        }
+
+        this.userService.getUserStatus(person.uid).subscribe((status) => {
+          person.isOnline = status === 'online'; // Setze den Online-Status
+          
+          // Debug-Ausgabe für den gesetzten Status
+          // console.log(
+          //   `Online-Status für ${person.fullname}: ${person.isOnline}`
+          // );
+
+          this.cdr.detectChanges(); // Versuche die Change Detection zu erzwingen
         });
       });
+    }, (error) => {
+      console.error('Fehler beim Abrufen der Benutzerdaten:', error);
     });
   }
 
@@ -81,7 +79,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     // Unsubscribe von allen Realtime-Listenern
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
-
 
   @Output() showChannel = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
 
@@ -123,6 +120,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   toggleWorkspace() {
     this.isWorkspaceOpen = !this.isWorkspaceOpen;
   }
+  
   toggleAddChannel() {
     if (!this.isAddChannelOpen) {
       // Backdrop wird angezeigt
