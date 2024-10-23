@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { hideThreadComponent } from '../../state/actions/triggerComponents.actions';
 
 @Component({
   selector: 'app-thread',
@@ -11,13 +13,14 @@ import { CommonModule } from '@angular/common';
 })
 export class ThreadComponent {
 
+  constructor(private store: Store){}
+
   @Input()
   isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-  @Output() hideThread = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
 
   // Methode zum Ausblenden der Thread-Komponente
   hide() {
-    this.hideThread.emit(); // Sendet das Ereignis an die Eltern-Komponente
+    this.store.dispatch(hideThreadComponent()) // Sendet das Ereignis an die Eltern-Komponente
   }
 
 
