@@ -1,0 +1,232 @@
+@import '../../../assets/css/helper.scss';
+
+section{
+  @extend .d-center;
+	flex-direction: column;
+	gap: 12px;
+	max-width: 398px;
+	padding: 14px;
+	margin: 16px 16px auto auto;
+	background-color: $white-color;
+	@extend .border-radius;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.2)); 
+}
+
+@media (max-width: 465px){
+  section{
+    margin-left: 16px !important;
+  }
+  .card-header{
+    margin-top: 24px !important;
+    span{
+      font-size: 20px !important;
+    }
+  }
+
+  .avatar-selected{
+    width: 180px !important;
+    height: 180px !important;
+  }
+
+  .btn, .btn-no-color{
+    font-size: 12px !important;
+  }
+}
+
+@media (min-width: 465px){
+  .card{
+    padding: 16px !important;
+  }
+}
+
+.card{
+  width: 100%;
+  @extend .d-center;
+  gap: 16px;
+  padding: 0 16px;
+  // gap: 38px;
+	flex-direction: column;
+}
+
+.card-header{
+  margin-top: 0;
+  width: 100%;
+  @extend .d-center;
+  justify-content: space-between;
+  span{
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+.container-close{
+  position: absolute;
+  top:10px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+  @extend .d-center;
+  cursor: pointer;
+  svg{
+    width: 100% !important;
+    height: 100% !important;
+    fill:$black-color;
+  }
+  &:hover{
+    background-color: rgba($color: $main-secondary, $alpha: 0.2);
+    border-radius: 50%;
+  }
+  &:hover svg{
+    fill:$main-secondary;
+  }
+}
+
+.container-name-active{
+  @extend .d-center;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+
+.btn{
+  @extend .button-app;
+  font-size: 18px;
+}
+
+.btn-no-color{
+  @extend .button-app;
+  background-color: $white-color;
+  border-color: $main-color;
+  color: $main-color;
+  font-size: 18px;
+  &:hover{
+    background-color: $main-color;
+    color: $white-color;
+  }
+}
+
+.container-buttons{
+  @extend .d-center;
+  gap: 32px;
+}
+
+.container-edit-text{
+  width: 100%;
+  @extend .d-center;
+  justify-content: start;
+  gap: 20px;
+  margin-bottom: 8px;
+  .text-user-edit{
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.container-input-edit{
+  width: 100%;
+  // @extend .d-center;
+  // flex-direction: column;
+  // gap: 8px;
+  .container-input{
+    border: 1px solid rgba($color: $black-color, $alpha: 0.2);
+    border-radius: 24px;
+    padding: 8px;
+    // width: 100%;
+    input{
+      border: none;
+      background-color: transparent;
+      &:focus{
+        outline: none;
+      } 
+      &::placeholder {
+        font-size: 16px !important;
+      } 
+    }
+  }
+}
+
+// .name-user{
+//   font-size: 32px;
+//   font-weight: 700;
+//   margin: 0;
+// }
+
+// .container-edit{
+//   background-color: rgba($color: $main-gray, $alpha: 0.2);
+//   border-radius: 50%;
+//   height: 30px;
+//   width: 30px;
+//   padding: 2px;
+//   @extend .d-center;
+//   cursor: pointer;
+// }
+
+.container-text-email{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas: 
+      "logo text"
+      "empty email";
+  gap: 10px;
+  align-items: center; 
+  .logo { 
+    grid-area: logo; 
+    svg{
+      width: 30px;
+      height: 30px;
+    }
+    }
+  .text { grid-area: text; }
+  .empty { grid-area: empty; }
+  .email { grid-area: email; }
+}
+
+
+// .active-container{
+//   @extend .d-center;
+//   justify-content: flex-start !important;
+//   width: 100%;
+//   gap: 15px;
+//   span{
+//     color: $online-color;
+//     font-size: 20px;
+//   }
+// }
+
+.status {
+  border: 2px solid #ffffff;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+// .online {
+//   @extend .status;
+//   background: $online-color;
+// }
+
+.offline {
+  @extend .status;
+  background: $offline-color;
+}
+
+.container-avatar-selected{
+  width: 100%;
+  @extend .d-center;
+}
+
+.avatar-selected{
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  border: 8px solid transparent;
+  border-radius: 50%;
+  &:hover{
+    border: 8px solid rgba($color: $main-gray, $alpha: 0.2);
+  }
+}

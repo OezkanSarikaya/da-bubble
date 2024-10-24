@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { hideThreadComponent, triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
 import { Observable } from 'rxjs';
 import { showHideThreadSelector, triggerChanelSelector, triggerNewMessage, triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
+import { UserEditComponent } from '../shared/user-edit/user-edit.component';
 
 @Component({
   selector: 'app-main',
@@ -19,7 +20,8 @@ import { showHideThreadSelector, triggerChanelSelector, triggerNewMessage, trigg
     ChannelComponent,
     ThreadComponent,
     CommonModule,
-    PopupUserProfileComponent
+    PopupUserProfileComponent,
+    UserEditComponent
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
