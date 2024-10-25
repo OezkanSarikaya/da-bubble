@@ -31,6 +31,10 @@ section{
   .btn, .btn-no-color{
     font-size: 12px !important;
   }
+
+  .gap-errors{
+    gap: 0px !important;
+  }
 }
 
 @media (min-width: 465px){
@@ -49,7 +53,7 @@ section{
 }
 
 .gap-errors{
-  gap: 0;
+  gap: 16px;
 }
 
 .card-header{
