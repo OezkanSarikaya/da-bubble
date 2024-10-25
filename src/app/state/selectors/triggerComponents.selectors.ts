@@ -12,6 +12,11 @@ export const showHideThreadSelector = createSelector(
   (state) => state.threadComponent
 )
 
+export const showHideUserEditProfileHeaderSelector = createSelector(
+  selectTriggerComponents,
+  (state) => state.userProfileEditComponent
+)
+
 export const triggerChanelSelector = createSelector(
   selectTriggerComponents,
   (state) => state.chanelComponent

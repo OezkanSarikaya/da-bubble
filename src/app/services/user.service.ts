@@ -166,7 +166,7 @@ export class UserService {
   async register(
     email: string,
     password: string,
-    fullname: string,
+    fullName: string,
     avatarURL: string
   ) {
     try {
@@ -178,7 +178,7 @@ export class UserService {
 
       const result = await addDoc(userCollection, {
         uid: user.uid,
-        fullName: fullname,
+        fullName: fullName,
         email: email,
         avatar: avatarURL,
       });
@@ -206,7 +206,7 @@ export class UserService {
       if (userData) {
         const fullUserData = {
           ...userCredential.user,
-          fullName: userData.fullname,
+          fullName: userData.fullName,
           avatar: userData.avatar,
         };
 

@@ -22,9 +22,12 @@
   }
   <!-- Fixen -->
    @if(userProfilePopUp$ | async ){
-     <article class="container-user-profile">
-       <!-- <app-popup-user-profile></app-popup-user-profile> -->
-       <app-user-edit></app-user-edit>
+     <article class="container-user-profile" >
+      @if(userEditProfile$ | async ){
+        <app-popup-user-profile></app-popup-user-profile>
+      }@else {
+        <app-user-edit ></app-user-edit>
+      }
      </article>
    }
 </main>

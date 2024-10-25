@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
+import { hideUserProfile, triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
 
@@ -31,5 +31,9 @@ export class PopupUserProfileComponent {
 
   triggerUserProfilePopUp(){
     this.store.dispatch(triggerPopUserProfile());
+  }
+
+  triggerUserEditProfile(){
+    this.store.dispatch(hideUserProfile());
   }
 }

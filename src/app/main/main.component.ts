@@ -8,7 +8,7 @@ import { PopupUserProfileComponent } from '../shared/popup-user-profile/popup-us
 import { Store } from '@ngrx/store';
 import { hideThreadComponent, triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
 import { Observable } from 'rxjs';
-import { showHideThreadSelector, triggerChanelSelector, triggerNewMessage, triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
+import { showHideThreadSelector, showHideUserEditProfileHeaderSelector, triggerChanelSelector, triggerNewMessage, triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
 import { UserEditComponent } from '../shared/user-edit/user-edit.component';
 
 @Component({
@@ -35,7 +35,8 @@ export class MainComponent {
   userProfilePopUp$: Observable<boolean> = new Observable();
   isThreadVisible$: Observable<boolean> = new Observable();
   isChannelSelected$: Observable<boolean> = new Observable();
-  //I have to implement that but I have to talk with ozkan
+  userEditProfile$: Observable<boolean> = new Observable();
+  //I have to implement that but I have to talk with oezkan
   isNewMessageOpen$: Observable<boolean> = new Observable();
 
   constructor(private store:Store<any>){}
@@ -43,8 +44,9 @@ export class MainComponent {
   ngOnInit(): void {
     this.userProfilePopUp$ = this.store.select(triggerUserProfilePopUpSelector);
     this.isThreadVisible$ = this.store.select(showHideThreadSelector);
-    this.isNewMessageOpen$ = this.store.select(triggerNewMessage)
-    this.isChannelSelected$ = this.store.select(triggerChanelSelector)
+    this.userEditProfile$ = this.store.select(showHideUserEditProfileHeaderSelector);
+    this.isNewMessageOpen$ = this.store.select(triggerNewMessage);
+    this.isChannelSelected$ = this.store.select(triggerChanelSelector);
   }
 
 
