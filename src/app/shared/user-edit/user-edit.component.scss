@@ -24,8 +24,8 @@ section{
   }
 
   .avatar-selected{
-    width: 180px !important;
-    height: 180px !important;
+    width: 100px !important;
+    height: 100px !important;
   }
 
   .btn, .btn-no-color{
@@ -33,7 +33,12 @@ section{
   }
 
   .gap-errors{
-    gap: 0px !important;
+    gap: 8px !important;
+  }
+
+  .container-all-avatars{
+    flex-wrap: wrap;
+    justify-content: flex-start !important;
   }
 }
 
@@ -54,6 +59,22 @@ section{
 
 .gap-errors{
   gap: 16px;
+}
+
+.container-all-avatars{
+  @extend .d-center;
+  justify-content: space-between;
+}
+
+.avatar-pathern{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  &:hover{
+    cursor: pointer;
+    border: 4px solid rgba($color: $main-gray, $alpha: 0.2);
+  }
 }
 
 .card-header{
@@ -132,6 +153,10 @@ section{
   }
 }
 
+.mt-24{
+  margin-top: 24px;
+}
+
 .container-input-edit{
   width: 100%;
   // @extend .d-center;
@@ -145,6 +170,7 @@ section{
     input{
       border: none;
       background-color: transparent;
+      width: 100%;
       &:focus{
         outline: none;
       } 

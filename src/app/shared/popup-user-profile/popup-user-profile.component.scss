@@ -28,7 +28,7 @@ section{
 .card{
   width: 100%;
   @extend .d-center;
-  gap: 16px;
+  gap: 10px;
   padding: 0 16px;
   // gap: 38px;
 	flex-direction: column;
@@ -114,7 +114,7 @@ section{
   grid-template-areas: 
       "logo text"
       "empty email";
-  gap: 10px;
+  gap: 6px;
   align-items: center; 
   .logo { 
     grid-area: logo; 
@@ -125,7 +125,8 @@ section{
     }
   .text { grid-area: text; }
   .empty { grid-area: empty; }
-  .email { grid-area: email; }
+  .email { grid-area: email; 
+    word-break: break-all;}
 }
 
 

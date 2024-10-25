@@ -14,9 +14,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-edit.component.scss'
 })
 export class UserEditComponent {
-  avatar: string = './assets/img/img_profile/profile1.png';
   currentUser!: any
   subscription: Subscription = new Subscription();
+  avatars = [
+		"./assets/img/img_profile/profile1.png",
+		"./assets/img/img_profile/profile2.png",
+		"./assets/img/img_profile/profile3.png",
+		"./assets/img/img_profile/profile4.png",
+		"./assets/img/img_profile/profile5.png",
+		"./assets/img/img_profile/profile6.png",
+	];
+  showSelectAvatars: boolean = true;
 
   constructor(private store:Store<any>, private userService: UserService){}
 
@@ -31,6 +39,10 @@ export class UserEditComponent {
     this.subscription.unsubscribe();    
   }
 
+  triggerShowHideSelectAvatars(){
+    this.showSelectAvatars = !this.showSelectAvatars;
+  }
+
   async onSubmitEdit(editForm: NgForm){
     if (editForm.submitted && editForm.form.valid) {
       await this.userService.updateUser('uid', this.currentUser.uid, editForm.value);
@@ -43,5 +55,9 @@ export class UserEditComponent {
     event.stopPropagation();
     this.store.dispatch(triggerPopUserProfile());
     this.store.dispatch(hideUserProfile());
+  }
+
+  selectAvatar(profile: any){
+    console.log(profile);
   }
 }
