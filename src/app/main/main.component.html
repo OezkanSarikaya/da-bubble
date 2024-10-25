@@ -20,14 +20,13 @@
   @if(isThreadVisible$ | async){
     <app-thread></app-thread>
   }
-  <!-- Fixen -->
-   @if(userProfilePopUp$ | async ){
-     <article class="container-user-profile" >
-      @if(userEditProfile$ | async ){
-        <app-popup-user-profile></app-popup-user-profile>
-      }@else {
-        <app-user-edit ></app-user-edit>
-      }
-     </article>
-   }
+  @if(userProfilePopUp$ | async ){
+    <article class="container-user-profile" (click)="closeUserProfile()">
+    @if(userEditProfile$ | async ){
+      <app-popup-user-profile (click)="$event.stopPropagation()"></app-popup-user-profile>
+    }@else {
+      <app-user-edit (click)="$event.stopPropagation()"></app-user-edit>
+    }
+    </article>
+  }
 </main>

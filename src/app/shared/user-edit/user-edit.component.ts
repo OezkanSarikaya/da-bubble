@@ -36,7 +36,8 @@ export class UserEditComponent {
     }
   }
 
-  triggerUserProfilePopUp(){
+  triggerUserProfilePopUp(event: Event){
+    event.stopPropagation();
     this.store.dispatch(triggerPopUserProfile());
     this.store.dispatch(hideUserProfile());
   }

@@ -29,11 +29,13 @@ export class PopupUserProfileComponent {
     this.subscription.unsubscribe();    
   }
 
-  triggerUserProfilePopUp(){
+  triggerUserProfilePopUp(event: Event){
+    event.stopPropagation();
     this.store.dispatch(triggerPopUserProfile());
   }
 
-  triggerUserEditProfile(){
+  triggerUserEditProfile(event: Event){
+    event.stopPropagation();
     this.store.dispatch(hideUserProfile());
   }
 }

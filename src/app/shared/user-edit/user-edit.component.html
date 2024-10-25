@@ -2,7 +2,7 @@
   <form class="card" #formEditUser="ngForm" (ngSubmit)="onSubmitEdit(formEditUser)">
     <div class="card-header">
       <span>Dein Profil bearbeiten</span>
-      <div class="container-close" (click)="triggerUserProfilePopUp()">
+      <div class="container-close" (click)="triggerUserProfilePopUp($event)">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <mask id="mask0_79092_694" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
           <rect width="24" height="24" fill="#D9D9D9"/>
@@ -51,7 +51,7 @@
       </div>
     </div>
     <div class="container-buttons">
-      <button class="btn-no-color" type="button" (click)="triggerUserProfilePopUp()">Abbrechen</button>
+      <button class="btn-no-color" type="button" (click)="triggerUserProfilePopUp($event)">Abbrechen</button>
       <button class="btn" type="submit">Speichern</button>
     </div>
   </form>

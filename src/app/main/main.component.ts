@@ -6,8 +6,8 @@ import { ThreadComponent } from './thread/thread.component';
 import { CommonModule } from '@angular/common';
 import { PopupUserProfileComponent } from '../shared/popup-user-profile/popup-user-profile.component';
 import { Store } from '@ngrx/store';
-import { hideThreadComponent, triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
-import { Observable } from 'rxjs';
+import { hideThreadComponent, hideUserProfile, triggerPopUserProfile } from '../state/actions/triggerComponents.actions';
+import { Observable, take } from 'rxjs';
 import { showHideThreadSelector, showHideUserEditProfileHeaderSelector, triggerChanelSelector, triggerNewMessage, triggerUserProfilePopUpSelector } from '../state/selectors/triggerComponents.selectors';
 import { UserEditComponent } from '../shared/user-edit/user-edit.component';
 
@@ -92,6 +92,16 @@ export class MainComponent {
     else {
       document.body.classList.remove('no-scroll'); // Scrollen auf der Seite deaktivieren
     }
+  }
+
+  closeUserProfile(){
+    // let valueComp;
+    this.userEditProfile$.pipe(take(1)).subscribe(value=>{
+      if(!value){
+        this.store.dispatch(hideUserProfile())
+      }
+    })    
+    this.store.dispatch(triggerPopUserProfile());
   }
 
 }
