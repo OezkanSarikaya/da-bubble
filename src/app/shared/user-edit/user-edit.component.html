@@ -77,12 +77,20 @@
       </svg>
     </div>
     <div class="container-avatar-selected mt-24">
-      <img class="avatar-selected" [src]="currentUser.avatar" alt="default avatar">
+      <img class="avatar-selected" [src]="personAvatar" alt="default avatar">
     </div>
     <div class="container-all-avatars">
       @for (profile of avatars; track $index) {
         <img class="avatar-pathern" [src]="profile" alt="profile1" (click)="selectAvatar(profile)">
       }
+    </div>
+    <div class="container-file-photo">
+      <p class="text-choose-avatar-small">eigenes Bild verwenden</p>
+      <input type="file" class="file-input" #fileInput (change)="selectImage($event)">
+      <button type="button" class="btn" (click)="openFile()">Datei hochladen</button>
+    </div>
+    <div>
+      <button class="btn" (click)="savingImgAvatar()">Hochladen</button>
     </div>
 
   }

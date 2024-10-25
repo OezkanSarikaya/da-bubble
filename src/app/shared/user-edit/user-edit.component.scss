@@ -157,6 +157,23 @@ section{
   margin-top: 24px;
 }
 
+.container-file-photo{
+  @extend .d-center;
+  width: 100%;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.text-choose-avatar-small{
+  justify-content: flex-start;
+  margin: 0;
+  font-size: 14px;
+}
+
+.file-input{
+  display: none;
+}
+
 .container-input-edit{
   width: 100%;
   // @extend .d-center;
