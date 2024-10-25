@@ -1,5 +1,5 @@
 <section>
-  <form class="card" #formEditUser="ngForm" (ngSubmit)="onSubmitEdit(formEditUser)">
+  <form class="card" #formEditUser="ngForm" (ngSubmit)="onSubmitEdit(formEditUser)" [ngClass]="{'gap-errors': !email.valid && email.touched && !email.disabled && !fullName.valid && !fullName.disabled && fullName.touched}">
     <div class="card-header">
       <span>Dein Profil bearbeiten</span>
       <div class="container-close" (click)="triggerUserProfilePopUp($event)">
@@ -30,8 +30,11 @@
           <p class="text-user-edit">Vollständiger Name</p>
         </div>
         <div class="container-input">
-          <input class="email-edit" type="email" name="fullName" placeholder="Max Mustermann" [ngModel]="currentUser.fullName" required>
+          <input class="email-edit" type="email" #fullName="ngModel" name="fullName" placeholder="Max Mustermann" [ngModel]="currentUser.fullName" required minlength="2">
         </div>
+        @if(!fullName.valid && !fullName.disabled && fullName.touched){
+          <div class="error">*Der Name muss mindestens aus 2 Buchstaben bestehen.</div>
+        }
       </div>
       <div class="container-input-edit">
         <div class="container-edit-text">
@@ -46,8 +49,11 @@
           <p class="text-user-edit">E-Mail-Adresse</p>
         </div>
         <div class="container-input">
-          <input class="email-edit" type="email" name="email" placeholder="example@email.com" [ngModel]="currentUser.email" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}">
+          <input class="email-edit" type="email" name="email" placeholder="example@email.com" [ngModel]="currentUser.email" #email="ngModel" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}">
         </div>
+        @if(!email.valid && !email.disabled && email.touched){
+          <div class="error">*Diese E-Mail E-Mail-Adresse ist leider ungültig.</div>
+        }
       </div>
     </div>
     <div class="container-buttons">

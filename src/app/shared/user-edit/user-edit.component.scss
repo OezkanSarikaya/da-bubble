@@ -48,6 +48,10 @@ section{
 	flex-direction: column;
 }
 
+.gap-errors{
+  gap: 0;
+}
+
 .card-header{
   margin-top: 0;
   width: 100%;
@@ -86,7 +90,7 @@ section{
   @extend .d-center;
   flex-direction: column;
   width: 100%;
-  gap: 16px;
+  gap: 8px;
 }
 
 .btn{

@@ -4,11 +4,12 @@ import { UserService } from '../../services/user.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { hideUserProfile, triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.scss'
 })
