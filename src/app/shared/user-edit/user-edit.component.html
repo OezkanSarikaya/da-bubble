@@ -1,5 +1,5 @@
 <section>
-  <div class="card">
+  <form class="card" #formEditUser="ngForm" (ngSubmit)="onSubmitEdit(formEditUser)">
     <div class="card-header">
       <span>Dein Profil bearbeiten</span>
       <div class="container-close">
@@ -30,7 +30,7 @@
           <p class="text-user-edit">Vollständiger Name</p>
         </div>
         <div class="container-input">
-          <input class="email-edit" type="email" name="email" placeholder="example@email.com">
+          <input class="email-edit" type="email" name="fullName" placeholder="Max Mustermann" [ngModel]="currentUser.fullName" required>
         </div>
       </div>
       <div class="container-input-edit">
@@ -46,7 +46,7 @@
           <p class="text-user-edit">E-Mail-Adresse</p>
         </div>
         <div class="container-input">
-          <input class="email-edit" type="email" name="email" placeholder="example@email.com">
+          <input class="email-edit" type="email" name="email" placeholder="example@email.com" [ngModel]="currentUser.email" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}">
         </div>
       </div>
     </div>
@@ -54,5 +54,5 @@
       <button class="btn-no-color" type="button">Abbrechen</button>
       <button class="btn" type="submit">Speichern</button>
     </div>
-  </div>
+  </form>
 </section>

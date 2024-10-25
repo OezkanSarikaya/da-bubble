@@ -20,6 +20,7 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from '@angular/fire/firestore';
 import {
   Database,
@@ -119,7 +120,7 @@ export class UserService {
         if (userData) {
           const fullUserData = {
             ...user,
-            fullName: userData.fullname,
+            fullName: userData.fullName,
             avatar: userData.avatar,
           };
 
@@ -177,7 +178,7 @@ export class UserService {
 
       const result = await addDoc(userCollection, {
         uid: user.uid,
-        fullname: fullname,
+        fullName: fullname,
         email: email,
         avatar: avatarURL,
       });
@@ -321,5 +322,30 @@ export class UserService {
 
   cleanDataRegisterLocalStorage() {
     localStorage.removeItem('user-register');
+  }
+
+  async updateUser(field:string, value: string, updatedData: any) {
+    try {
+      const userDocRef = await this.findUserByField(field, value);
+      if(userDocRef){
+        await updateDoc(userDocRef.ref, updatedData);
+        console.log("Usuario actualizado en Firestore.");
+      }
+    } catch (error) {
+      console.error("Error al actualizar el usuario:", error);
+    }
+  }
+
+  async findUserByField(field: string, value: string) {
+    const usersRef = collection(this.firestore, "users");
+    const q = query(usersRef, where(field, "==", value));
+
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0];
+    } else {
+      console.log("Usuario no encontrado.");
+      return null;
+    }
   }
 }
