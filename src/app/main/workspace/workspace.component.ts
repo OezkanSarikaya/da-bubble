@@ -22,7 +22,7 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class WorkspaceComponent implements OnInit, OnDestroy {
   persons: any[] = [];
-  private subscriptions: Subscription[] = [];
+  private subscriptions: Subscription = new Subscription();
   
   isCreateChannelOpen = false;
   isChannelOpen = true;
@@ -39,7 +39,23 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Benutzerliste abrufen
-    this.getUsers();
+    this.subscriptions.add(
+      this.userService.getUsers().subscribe((users) => {
+        this.persons = users;
+
+        // Actualizamos el estado de cada usuario en tiempo real
+        this.persons.forEach((person) => {
+          if (person.uid) {
+            this.subscriptions.add(
+              this.userService.getUserStatus(person.uid).subscribe((status) => {
+                person.isOnline = status === 'online';
+                this.cdr.detectChanges(); // Actualizamos la vista
+              })
+            );
+          }
+        });
+      })
+    );
   }
 
   getUsers() {
@@ -77,7 +93,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // Unsubscribe von allen Realtime-Listenern
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 
   @Output() showChannel = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente

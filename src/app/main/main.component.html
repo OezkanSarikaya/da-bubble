@@ -23,9 +23,9 @@
   @if(userProfilePopUp$ | async ){
     <article class="container-user-profile" (click)="closeUserProfile()">
     @if(userEditProfile$ | async ){
-      <app-popup-user-profile (click)="$event.stopPropagation()"></app-popup-user-profile>
+      <app-popup-user-profile (click)="$event.stopPropagation()" class="d-inline-block"></app-popup-user-profile>
     }@else {
-      <app-user-edit (click)="$event.stopPropagation()"></app-user-edit>
+      <app-user-edit (click)="$event.stopPropagation()" class="d-inline-block"></app-user-edit>
     }
     </article>
   }

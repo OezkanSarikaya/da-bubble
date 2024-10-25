@@ -33,6 +33,8 @@ export class UserEditComponent {
   async onSubmitEdit(editForm: NgForm){
     if (editForm.submitted && editForm.form.valid) {
       await this.userService.updateUser('uid', this.currentUser.uid, editForm.value);
+      this.store.dispatch(triggerPopUserProfile());
+      this.store.dispatch(hideUserProfile());
     }
   }
 

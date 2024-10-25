@@ -95,7 +95,6 @@ export class MainComponent {
   }
 
   closeUserProfile(){
-    // let valueComp;
     this.userEditProfile$.pipe(take(1)).subscribe(value=>{
       if(!value){
         this.store.dispatch(hideUserProfile())

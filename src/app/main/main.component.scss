@@ -22,4 +22,13 @@ app-channel {
   right: 0;
   left:0;
   bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.d-inline-block{
+  display: inline-block !important;
+  width: 100%;
+  max-width: 398px;
 }

@@ -21,6 +21,7 @@ import {
   where,
   getDocs,
   updateDoc,
+  onSnapshot,
 } from '@angular/fire/firestore';
 import {
   Database,
@@ -146,17 +147,18 @@ export class UserService {
 
   getUsers(): Observable<any[]> {
     const userCollection = collection(this.firestore, 'users');
-    return from(
-      getDocs(userCollection).then((snapshot) => {
-        return snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: data['uid'] || doc.id,
-            ...data,
-          };
-        });
-      })
-    );
+    const usersSubject = new BehaviorSubject<any[]>([]);
+
+    // Escuchar cambios en la colección en tiempo real
+    onSnapshot(userCollection, (snapshot) => {
+      const users = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      usersSubject.next(users); // Emitimos los usuarios actualizados
+    });
+
+    return usersSubject.asObservable(); // Convertimos el BehaviorSubject a un Observable
   }
 
   setUser(user: Register): void {
@@ -330,6 +332,18 @@ export class UserService {
       if(userDocRef){
         await updateDoc(userDocRef.ref, updatedData);
         console.log("Usuario actualizado en Firestore.");
+        // Update currentUserSubject with new Data
+        const updatedUserSnapshot = await getDoc(userDocRef.ref);
+        const updatedUserData = updatedUserSnapshot.data();
+        if (updatedUserData) {
+          const currentUser = this.getCurrentUser();
+          const fullUpdatedUserData = {
+            ...currentUser,
+            ...updatedUserData
+          };
+          localStorage.setItem('currentUser', JSON.stringify(fullUpdatedUserData));
+          this.currentUserSubject.next(fullUpdatedUserData);
+        }
       }
     } catch (error) {
       console.error("Error al actualizar el usuario:", error);
