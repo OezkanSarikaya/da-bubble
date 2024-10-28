@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 // import { AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
 import { AuthGuard  } from '@angular/fire/auth-guard';
 import { authGuard } from './auth.guard'; // Deine Auth Guard Datei
+import { VerifyEmailComponent } from './shared/verify-email/verify-email.component';
 
 export const routes: Routes = [
   {path: "", component: LoginComponent},
@@ -21,5 +22,6 @@ export const routes: Routes = [
   {path: "imprint", component: ImprintComponent},
   {path: "privacy", component: PrivacyComponent},
   {path: "avatar", component: AvatarComponent},
-  {path: "reset-password", component: ResetPasswordComponent}
+  {path: "reset-password", component: ResetPasswordComponent},
+  { path: 'verify-email', component: VerifyEmailComponent },
 ];

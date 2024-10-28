@@ -11,6 +11,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   sendEmailVerification,
+  updateEmail,
+  applyActionCode,
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -368,15 +370,44 @@ export class UserService {
     }
   }
 
-  // async sendEmailVerification() {
+  // async sendVerificationEmail(newEmail: string): Promise<void> {
+  //   const user = this.auth.currentUser;
+  //   if (user) {
+  //     try {
+  //       // Temporarily update the email to send the verification email
+  //       await updateEmail(user, newEmail);
+  //       // Send verification email
+  //       await sendEmailVerification(user);
+        
+  //       this.updateCurrentUser({ ...this.getCurrentUser(), email: newEmail });
+  //     } catch (error) {
+  //       console.error('Error sending verification email:', error);
+  //       throw error;
+  //     }
+  //   } else {
+  //     throw new Error('No user is signed in');
+  //   }
+  // }
+
+  // async verifyEmail(oobCode: string): Promise<void> {
+  //   try {
+  //     const auth = getAuth();
+  //     await applyActionCode(auth, oobCode);
+  //     console.log('Email verified successfully');
+  //   } catch (error) {
+  //     console.error('Error verifying email:', error);
+  //   }
+  // }
+
+  // async userSendEmailVerification() {
   //   const auth = getAuth();
   //   const user = auth.currentUser;
   //   console.log(user);
   //   if (user) {
   //     try {
-  //       await sendEmailVerification(user);
-  //       this.logout();
-  //       this.router.navigate(['/']);
+  //       // await sendEmailVerification(user);
+  //       // this.logout();
+  //       // this.router.navigate(['/']);
   //     } catch (error) {
   //       console.error('Error sending verification email:', error);
   //     }
