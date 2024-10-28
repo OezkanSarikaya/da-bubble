@@ -10,6 +10,7 @@ import {
   confirmPasswordReset,
   GoogleAuthProvider,
   signInWithPopup,
+  sendEmailVerification,
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -366,5 +367,22 @@ export class UserService {
       return null;
     }
   }
+
+  // async sendEmailVerification() {
+  //   const auth = getAuth();
+  //   const user = auth.currentUser;
+  //   console.log(user);
+  //   if (user) {
+  //     try {
+  //       await sendEmailVerification(user);
+  //       this.logout();
+  //       this.router.navigate(['/']);
+  //     } catch (error) {
+  //       console.error('Error sending verification email:', error);
+  //     }
+  //   } else {
+  //     console.error('No user is signed in.');
+  //   }
+  // }
 
 }

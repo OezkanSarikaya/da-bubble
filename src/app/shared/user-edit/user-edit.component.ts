@@ -108,6 +108,7 @@ export class UserEditComponent {
       await this.userService.updateUser('uid', this.currentUser.uid, editForm.value);
       this.store.dispatch(triggerPopUserProfile());
       this.store.dispatch(hideUserProfile());
+      // this.userService.sendEmailVerification();
     }
   }
 
