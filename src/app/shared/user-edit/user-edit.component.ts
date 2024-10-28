@@ -75,35 +75,33 @@ export class UserEditComponent {
 	}
 
   async savingImgAvatar(){
-     // Verificar si `avatarSelected` es una URL de una de las imágenes en `avatars`
       const isPredefinedAvatar = this.avatars.includes(this.avatarSelected);
       if(isPredefinedAvatar){
-        console.log('predefinid avatar');
-        let idRef = await this.userService.findUserByField('uid',this.currentUser.uid);
-        await updateDoc(idRef!.ref, {avatar: this.personAvatar});
-        const updatedUserSnapshot = await getDoc(idRef!.ref);
-        const updatedUserData = updatedUserSnapshot.data();
-        if (updatedUserData) {
-          const fullUpdatedUserData = {
-            ... this.currentUser,
-            ...updatedUserData
-          };
-          localStorage.setItem('currentUser', JSON.stringify(fullUpdatedUserData));
-          this.userService.updateCurrentUser(fullUpdatedUserData);
-        }
+        await this.loadPicEditUser();
       }else{
-        console.log('is not');
+        const uploadResult   = await this.userService.uploadImage(this.avatarSelected, this.currentUser.fullName);
+        console.log(uploadResult);
+        if(uploadResult){
+          this.avatarSelected = uploadResult;
+          await this.loadPicEditUser();
+        }
       }
-		// let avatarUrl: string = this.personAvatar;
-    
-		// if(this.avatarSelected){
-		// 	const uploadResult   = await this.userService.uploadImage(this.avatarSelected, this.currentUser.fullName);
-		// 	if(uploadResult  ){
-		// 		avatarUrl = uploadResult
-		// 	}
-		// }
-		// this.personAvatar = avatarUrl ;
+      this.triggerShowHideSelectAvatars();
 	}
+
+  async loadPicEditUser(){
+    let idRef = await this.userService.findUserByField('uid',this.currentUser.uid);
+    await updateDoc(idRef!.ref, {avatar: this.personAvatar});
+    const updatedUserSnapshot = await getDoc(idRef!.ref);
+    const updatedUserData = updatedUserSnapshot.data();
+    if (updatedUserData) {
+      const fullUpdatedUserData = {
+        ... this.currentUser,
+        ...updatedUserData
+      };
+      this.userService.updateCurrentUser(fullUpdatedUserData);
+    }
+  }
 
   async onSubmitEdit(editForm: NgForm){
     if (editForm.submitted && editForm.form.valid) {
