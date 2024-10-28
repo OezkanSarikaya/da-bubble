@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ import { Store } from '@ngrx/store';
 })
 export class HeaderComponent implements OnInit {
   currentUser: any = null;
+  currentUser$: Observable<any> = new Observable();
   popupLoggedInUser = false;
   isBackdropVisible = false;
   closePopup = false;
@@ -32,6 +34,7 @@ export class HeaderComponent implements OnInit {
     // Abonniere den aktuellen Benutzer
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;      
+      this.currentUser$ = user;      
     });
   }
 

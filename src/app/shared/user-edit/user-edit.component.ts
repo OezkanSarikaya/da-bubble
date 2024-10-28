@@ -5,6 +5,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { hideUserProfile, triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
 import { CommonModule } from '@angular/common';
+import { getDoc, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-user-edit',
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-edit.component.scss'
 })
 export class UserEditComponent {
-  currentUser!: any
+  currentUser!: any;
   subscription: Subscription = new Subscription();
   personAvatar!: string;
   avatars = [
@@ -34,7 +35,7 @@ export class UserEditComponent {
   ngOnInit(): void {
     const sub = this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;  
-      this.personAvatar = this.currentUser.avatar;    
+      this.personAvatar = this.currentUser.avatar; 
     });
     this.subscription.add(sub);
     this.avatarSelected = this.currentUser.avatar;
@@ -77,11 +78,19 @@ export class UserEditComponent {
      // Verificar si `avatarSelected` es una URL de una de las imágenes en `avatars`
       const isPredefinedAvatar = this.avatars.includes(this.avatarSelected);
       if(isPredefinedAvatar){
+        console.log('predefinid avatar');
         let idRef = await this.userService.findUserByField('uid',this.currentUser.uid);
-        if(idRef){
-          console.log(idRef.ref);
+        await updateDoc(idRef!.ref, {avatar: this.personAvatar});
+        const updatedUserSnapshot = await getDoc(idRef!.ref);
+        const updatedUserData = updatedUserSnapshot.data();
+        if (updatedUserData) {
+          const fullUpdatedUserData = {
+            ... this.currentUser,
+            ...updatedUserData
+          };
+          localStorage.setItem('currentUser', JSON.stringify(fullUpdatedUserData));
+          this.currentUser = fullUpdatedUserData;
         }
-        
       }else{
         console.log('is not');
       }
