@@ -89,7 +89,7 @@ export class UserEditComponent {
             ...updatedUserData
           };
           localStorage.setItem('currentUser', JSON.stringify(fullUpdatedUserData));
-          this.currentUser = fullUpdatedUserData;
+          this.userService.updateCurrentUser(fullUpdatedUserData);
         }
       }else{
         console.log('is not');

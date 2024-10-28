@@ -341,8 +341,7 @@ export class UserService {
             ...currentUser,
             ...updatedUserData
           };
-          localStorage.setItem('currentUser', JSON.stringify(fullUpdatedUserData));
-          this.currentUserSubject.next(fullUpdatedUserData);
+          this.updateCurrentUser(fullUpdatedUserData);
         }
       }
     } catch (error) {
@@ -350,6 +349,11 @@ export class UserService {
     }
   }
 
+  updateCurrentUser(updatedUser: any) {
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    this.currentUserSubject.next(updatedUser);
+  }
+  
   async findUserByField(field: string, value: string) {
     const usersRef = collection(this.firestore, "users");
     const q = query(usersRef, where(field, "==", value));
@@ -362,4 +366,5 @@ export class UserService {
       return null;
     }
   }
+
 }
