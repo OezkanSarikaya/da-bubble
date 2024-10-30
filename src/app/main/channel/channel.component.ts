@@ -3,6 +3,8 @@ import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { showThreadComponent } from '../../state/actions/triggerComponents.actions';
+import { triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-channel',
@@ -26,7 +28,17 @@ export class ChannelComponent {
   // @Input()
   // isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
+  isChannelSelected$: Observable<boolean> = new Observable();
+  isNewMessageVisible$: Observable<boolean> = new Observable();
+
   constructor(private store: Store){}
+
+  
+
+  ngOnInit(): void {
+    this.isChannelSelected$ = this.store.select(triggerChannelSelector);
+    this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
+  }
 
   // Methode, die das Einblenden auslöst
   onShowThread() {

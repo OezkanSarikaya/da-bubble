@@ -1,12 +1,12 @@
 <header class="header">
 
-  <div class="logo" [ngClass]="{hidden: isChannelVisible || isNewMessageVisible }">
+  <div class="logo" [ngClass]="{hidden: (isChannelSelected$ | async) || (isNewMessageVisible$ | async)}">
     <img src="../../../assets/img/Logo-dabubble.png" alt="" />
     <h1>DABubble</h1>
   </div>
 
 
-  <div class="workspaceName" [ngClass]="{hidden: !isChannelVisible && !isNewMessageVisible }" (click)="hide()">
+  <div class="workspaceName" [ngClass]="{hidden: !(isChannelSelected$ | async) && !(isNewMessageVisible$ | async) }" (click)="hide()">
     <img class="backArrow" src="../../../assets/img/keyboard_arrow_down.svg" alt="">
     <img class="devspaceLogo" src="../../../assets/img/Workspace logo.png" alt="" />
     <span>Devspace</span>

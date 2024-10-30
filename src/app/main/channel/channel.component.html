@@ -1,15 +1,21 @@
-<section class="desktopEmptyChannel" *ngIf="!isChannelVisible || isNewMessageVisible"
+<!-- <section class="desktopEmptyChannel" *ngIf="!isChannelVisible || isNewMessageVisible"
 [ngClass]="{
   hidden: !isNewMessageVisible,
   
 }"
->
+> -->
+<!-- <section
+  class="desktopEmptyChannel"
+  *ngIf="!(isChannelSelected$ | async) || isNewMessageVisible"
+  [ngClass]="{hidden: !isNewMessageVisible}"> -->
+
+  <section class="desktopEmptyChannel" *ngIf="!(isChannelSelected$ | async) || (isNewMessageVisible$ | async)"
+[ngClass]="{hidden: !(isNewMessageVisible$ | async)}">
+
+
   <div class="newMessage">
     <div class="channelHeader">
- 
       <span>Neue Nachricht</span>
-
-   
 
       <input
         type="text"
@@ -21,7 +27,8 @@
   <app-chatmsgbox></app-chatmsgbox>
 </section>
 
-<section class="channel" *ngIf="isChannelVisible">
+<!-- <section class="channel" *ngIf="isChannelVisible"> -->
+<section class="channel" *ngIf="isChannelSelected$ | async">
   <div class="channelHeader">
     <div class="channelMembersPopup" *ngIf="isChannelMembersOpen">
       <header>

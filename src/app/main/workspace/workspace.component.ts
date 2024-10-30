@@ -12,6 +12,13 @@ import { PersonService } from '../../services/person.service';
 import { UserService } from '../../services/user.service';
 import { Subscription } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
+import { Store } from '@ngrx/store';
+import {
+  hideChannelComponent,
+  showChannelComponent,
+  showNewMessage,
+  hideNewMessage,
+} from '../../state/actions/triggerComponents.actions';
 
 @Component({
   selector: 'app-workspace',
@@ -23,7 +30,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class WorkspaceComponent implements OnInit, OnDestroy {
   persons: any[] = [];
   private subscriptions: Subscription = new Subscription();
-  
+
   isCreateChannelOpen = false;
   isChannelOpen = true;
   isPrivateMessageOpen = true;
@@ -34,7 +41,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   constructor(
     private personService: PersonService,
     private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private store: Store<any>
   ) {}
 
   ngOnInit(): void {
@@ -59,36 +67,39 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   }
 
   getUsers() {
-    this.userService.getUsers().subscribe((users) => {
-      this.persons = users; // Benutzerdaten speichern
-      // console.log('Personen:', this.persons);
+    this.userService.getUsers().subscribe(
+      (users) => {
+        this.persons = users; // Benutzerdaten speichern
+        // console.log('Personen:', this.persons);
 
-      // Online-Status für jeden Benutzer abrufen
-      this.persons.forEach((person) => {
-        // console.log(
-        //   `Prüfe Online-Status für Person: ${person.fullname} mit ID: ${person.uid}`
-        // );
-
-        // Überprüfen ob person.uid korrekt übergeben wird
-        if (!person.uid) {
-          // console.error('UID für Person fehlt:', person);
-          return; // Vorzeitiges Beenden, wenn UID fehlt
-        }
-
-        this.userService.getUserStatus(person.uid).subscribe((status) => {
-          person.isOnline = status === 'online'; // Setze den Online-Status
-          
-          // Debug-Ausgabe für den gesetzten Status
+        // Online-Status für jeden Benutzer abrufen
+        this.persons.forEach((person) => {
           // console.log(
-          //   `Online-Status für ${person.fullname}: ${person.isOnline}`
+          //   `Prüfe Online-Status für Person: ${person.fullname} mit ID: ${person.uid}`
           // );
 
-          this.cdr.detectChanges(); // Versuche die Change Detection zu erzwingen
+          // Überprüfen ob person.uid korrekt übergeben wird
+          if (!person.uid) {
+            // console.error('UID für Person fehlt:', person);
+            return; // Vorzeitiges Beenden, wenn UID fehlt
+          }
+
+          this.userService.getUserStatus(person.uid).subscribe((status) => {
+            person.isOnline = status === 'online'; // Setze den Online-Status
+
+            // Debug-Ausgabe für den gesetzten Status
+            // console.log(
+            //   `Online-Status für ${person.fullname}: ${person.isOnline}`
+            // );
+
+            this.cdr.detectChanges(); // Versuche die Change Detection zu erzwingen
+          });
         });
-      });
-    }, (error) => {
-      console.error('Fehler beim Abrufen der Benutzerdaten:', error);
-    });
+      },
+      (error) => {
+        console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -96,33 +107,21 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  @Output() showChannel = new EventEmitter<void>(); // Ereignis zum Einblenden der Thread-Komponente
-
-  @Input()
-  isChannelVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-
-  @Input()
-  isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-
-  // @Input()
-  // isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-
-  @Output() hideChannel = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
-  @Output() toggleNewMessage = new EventEmitter<void>(); // Gibt das Ausblenden nach außen
-
   // Methode zum Ausblenden der Thread-Komponente
   hide() {
-    this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
+    this.store.dispatch(hideChannelComponent());
+    this.store.dispatch(showNewMessage());
   }
 
   // Methode, die das Einblenden auslöst
   onShowChannel() {
-    this.showChannel.emit();
+    this.store.dispatch(showChannelComponent());
+    this.store.dispatch(hideNewMessage());
   }
 
   // Methode, die das Einblenden auslöst
   ontoggleNewMessage() {
-    this.toggleNewMessage.emit();
+    this.store.dispatch(showNewMessage());
   }
 
   togglePrivateMessage() {
@@ -136,7 +135,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   toggleWorkspace() {
     this.isWorkspaceOpen = !this.isWorkspaceOpen;
   }
-  
+
   toggleAddChannel() {
     if (!this.isAddChannelOpen) {
       // Backdrop wird angezeigt

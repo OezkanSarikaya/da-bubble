@@ -3,9 +3,11 @@ import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
+import { hideChannelComponent, triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
+
 
 @Component({
   selector: 'app-header',
@@ -26,6 +28,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router, private store:Store<any>){}
 
+  isChannelSelected$: Observable<boolean> = new Observable();
+  isNewMessageVisible$: Observable<boolean> = new Observable();
+
   triggerUserProfilePopUp(){
     this.store.dispatch(triggerPopUserProfile());
   }
@@ -35,12 +40,14 @@ export class HeaderComponent implements OnInit {
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;          
     });
+    this.isChannelSelected$ = this.store.select(triggerChannelSelector);
+    this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
   }
 
   // Methode zum Ausblenden der Thread-Komponente
   hide() {
-    this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
-    
+    // this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
+    this.store.dispatch(hideChannelComponent())
   }
 
   async logOut(){

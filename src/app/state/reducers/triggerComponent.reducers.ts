@@ -1,17 +1,17 @@
 import { createReducer, on } from "@ngrx/store";
-import { hideThreadComponent, hideUserProfile, isNewMessage, showThreadComponent, triggerChanelComponent, triggerPopUserProfile,  } from "../actions/triggerComponents.actions";
+import { hideThreadComponent, hideUserProfile, showNewMessage, hideNewMessage, showThreadComponent, showChannelComponent, triggerPopUserProfile, hideChannelComponent } from "../actions/triggerComponents.actions";
 
 export const initalState:  {
   userProfilePopUp: boolean,
   threadComponent: boolean,
   userProfileEditComponent: boolean,
-  chanelComponent: boolean
+  channelComponent: boolean
   newMessage: boolean
 } = {userProfilePopUp: false,
     threadComponent: false,
     userProfileEditComponent: true,
-    chanelComponent: false,
-    newMessage: false
+    channelComponent: false,
+    newMessage: true
 };
 
 
@@ -29,10 +29,16 @@ export const triggerComponentsReducer = createReducer(
   on(hideUserProfile, (state)=>{
     return {...state, userProfileEditComponent: !state.userProfileEditComponent}
   }),
-  on(triggerChanelComponent, (state)=>{
-    return {...state, newMessage: !state.chanelComponent}
+  on(showChannelComponent, (state)=>{
+    return {...state, channelComponent: true}
   }),
-  on(isNewMessage, (state)=>{
-    return {...state, newMessage: !state.newMessage}
+  on(hideChannelComponent, (state)=>{
+    return {...state, channelComponent: false}
+  }),
+  on(showNewMessage, (state)=>{
+    return {...state, newMessage: true}
+  }),
+  on(hideNewMessage, (state)=>{
+    return {...state, newMessage: false}
   })
 );

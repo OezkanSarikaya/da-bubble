@@ -1,32 +1,26 @@
-<app-header
-  [isNewMessageVisible]="isNewMessageOpen"
-  [isChannelVisible]="isChannelSelected"
-  (hideChannel)="hideChannel()"
-  (toggleNewMessage)="toggleNewMessage()"
-></app-header>
+<app-header></app-header>
 <main class="mainContainer">
   <app-workspace
     [ngClass]="{ hideOnMobile: isThreadVisible$ | async }"
-    [isChannelVisible]="isChannelSelected"
-    [isNewMessageVisible]="isNewMessageOpen"
-    (hideChannel)="hideChannel()"
-    (showChannel)="showChannel()"
-    (toggleNewMessage)="toggleNewMessage()"
   ></app-workspace>
   <app-channel
-    [ngClass]="{ hideOnMobile: isThreadVisible$ | async  }"
-    [isNewMessageVisible]="isNewMessageOpen"
+    [ngClass]="{ hideOnMobile: isThreadVisible$ | async }"
   ></app-channel>
   @if(isThreadVisible$ | async){
-    <app-thread></app-thread>
-  }
-  @if(userProfilePopUp$ | async ){
-    <article class="container-user-profile" (click)="closeUserProfile()">
+  <app-thread></app-thread>
+  } @if(userProfilePopUp$ | async ){
+  <article class="container-user-profile" (click)="closeUserProfile()">
     @if(userEditProfile$ | async ){
-      <app-popup-user-profile (click)="$event.stopPropagation()" class="d-inline-block"></app-popup-user-profile>
+    <app-popup-user-profile
+      (click)="$event.stopPropagation()"
+      class="d-inline-block"
+    ></app-popup-user-profile>
     }@else {
-      <app-user-edit (click)="$event.stopPropagation()" class="d-inline-block"></app-user-edit>
+    <app-user-edit
+      (click)="$event.stopPropagation()"
+      class="d-inline-block"
+    ></app-user-edit>
     }
-    </article>
+  </article>
   }
 </main>

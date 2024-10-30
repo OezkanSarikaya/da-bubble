@@ -17,12 +17,12 @@ export const showHideUserEditProfileHeaderSelector = createSelector(
   (state) => state.userProfileEditComponent
 )
 
-export const triggerChanelSelector = createSelector(
+export const triggerChannelSelector = createSelector(
   selectTriggerComponents,
-  (state) => state.chanelComponent
+  (state) => state.channelComponent
 )
 
-export const triggerNewMessage = createSelector(
+export const triggerNewMessageSelector = createSelector(
   selectTriggerComponents,
   (state) => state.newMessage
 )
