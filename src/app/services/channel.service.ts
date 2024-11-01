@@ -28,4 +28,8 @@ export class ChannelService {
       this.allChannels.set(channels); // Emitimos los usuarios actualizados
     });
   }
+
+  private getChannelSelectedData(){
+    
+  }
 }

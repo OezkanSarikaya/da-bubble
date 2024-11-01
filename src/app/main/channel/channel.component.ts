@@ -30,7 +30,9 @@ export class ChannelComponent {
 
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
-  selectedChannelId = signal<string | null>(null);
+  selectedChannelId = signal<{} | null>(null);
+  channelSelectdObject = signal<{} | null>(null);
+  objectTest: {} = {}
     
   constructor(private store: Store){
       effect(() => {
@@ -38,12 +40,11 @@ export class ChannelComponent {
       });
   }
 
-
   ngOnInit(): void {
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
-    this.store.select(selectSelectedChannelIdSelector).subscribe((channelId) => {
-      this.selectedChannelId.set(channelId); // Actualizamos el signal con el valor actual
+    this.store.select(selectSelectedChannelIdSelector).subscribe((channel) => {
+      this.selectedChannelId.set(channel); 
     });
   }
 
