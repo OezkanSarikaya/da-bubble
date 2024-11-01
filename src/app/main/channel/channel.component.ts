@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, EventEmitter, Input, Output } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { showThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
 import { Observable } from 'rxjs';
+import { ChannelService } from '../../services/channel.service';
 
 @Component({
   selector: 'app-channel',
@@ -30,10 +31,15 @@ export class ChannelComponent {
 
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
+  channels$ = this.channelService.allChannels;
 
-  constructor(private store: Store){}
+  constructor(private store: Store, private readonly channelService: ChannelService){
+    // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
+    effect(() => {
+      console.log("Updated channels:", this.channels$());
+    });
+  }
 
-  
 
   ngOnInit(): void {
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
