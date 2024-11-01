@@ -6,6 +6,7 @@ import {
   Output,
   OnInit,
   OnDestroy,
+  effect,
 } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
@@ -19,6 +20,8 @@ import {
   showNewMessage,
   hideNewMessage,
 } from '../../state/actions/triggerComponents.actions';
+import { ChannelService } from '../../services/channel.service';
+import { Channel } from '../../interfaces/channel';
 
 @Component({
   selector: 'app-workspace',
@@ -37,13 +40,20 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   isWorkspaceOpen = true;
   isAddChannelOpen = false;
   isBackdropVisible: boolean = false;
+  channels$ = this.channelService.allChannels;
 
   constructor(
     private personService: PersonService,
     private userService: UserService,
     private cdr: ChangeDetectorRef,
-    private store: Store<any>
-  ) {}
+    private store: Store<any>,
+    private readonly channelService: ChannelService
+  ) {
+    // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
+    effect(() => {
+      console.log("Updated channels:", this.channels$());
+    });
+  }
 
   ngOnInit(): void {
     // Benutzerliste abrufen
@@ -114,8 +124,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   }
 
   // Methode, die das Einblenden auslöst
-  onShowChannel() {
-    this.store.dispatch(showChannelComponent());
+  onShowChannel(channelId: string) {
+    this.store.dispatch(showChannelComponent({channelId}));
     this.store.dispatch(hideNewMessage());
   }
 

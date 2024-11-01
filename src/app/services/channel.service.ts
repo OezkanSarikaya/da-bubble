@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { collection, Firestore, onSnapshot } from '@angular/fire/firestore';
+import { collection, Firestore, onSnapshot, Timestamp } from '@angular/fire/firestore';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class ChannelService {
       const channels = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
+        createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
       }));
       this.allChannels.set(channels); // Emitimos los usuarios actualizados
     });

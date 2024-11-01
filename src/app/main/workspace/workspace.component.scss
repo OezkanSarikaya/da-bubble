@@ -187,8 +187,11 @@ body {
   gap: 8px;
   margin-left: 16px;
   margin-top: 16px;
-  margin-bottom: 16px;
+  // margin-bottom: 16px;
   cursor: pointer;
+  &:last-child{
+    margin-bottom: 16px; 
+  }
 }
 
 .status {

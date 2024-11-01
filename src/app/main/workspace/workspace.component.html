@@ -116,10 +116,12 @@
     </div>
 
     <div class="dropdown-content" *ngIf="isChannelOpen">
-      <div class="channelListItem" (click)="onShowChannel()">
+      @for(channel of channels$(); track $index){
+      <div class="channelListItem" (click)="onShowChannel(channel.id)">
         <img src="../../../assets/img/tag.svg" alt="" class="iconSize24" />
-        <span>Entwicklerteam</span>
-      </div>
+          <span>{{channel.name}}</span>
+        </div>
+      }
       <div class="channelListItem" (click)="toggleAddChannel()">
         <img
           src="../../../assets/img/add_circle.svg"

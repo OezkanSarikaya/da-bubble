@@ -26,3 +26,8 @@ export const triggerNewMessageSelector = createSelector(
   selectTriggerComponents,
   (state) => state.newMessage
 )
+
+export const selectSelectedChannelIdSelector = createSelector(
+  selectTriggerComponents,
+  (state) => state.selectedChannelId
+);

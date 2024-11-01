@@ -6,12 +6,14 @@ export const initalState:  {
   threadComponent: boolean,
   userProfileEditComponent: boolean,
   channelComponent: boolean
-  newMessage: boolean
+  newMessage: boolean,
+  selectedChannelId: string | null;
 } = {userProfilePopUp: false,
     threadComponent: false,
     userProfileEditComponent: true,
     channelComponent: false,
-    newMessage: true
+    newMessage: true,
+    selectedChannelId: null, 
 };
 
 
@@ -29,11 +31,11 @@ export const triggerComponentsReducer = createReducer(
   on(hideUserProfile, (state)=>{
     return {...state, userProfileEditComponent: !state.userProfileEditComponent}
   }),
-  on(showChannelComponent, (state)=>{
-    return {...state, channelComponent: true}
+  on(showChannelComponent, (state, {channelId})=>{
+    return {...state, channelComponent: true, selectedChannelId: channelId,}
   }),
   on(hideChannelComponent, (state)=>{
-    return {...state, channelComponent: false}
+    return {...state, channelComponent: false, selectedChannelId: null,}
   }),
   on(showNewMessage, (state)=>{
     return {...state, newMessage: true}
