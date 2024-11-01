@@ -3,8 +3,10 @@ import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { showThreadComponent } from '../../state/actions/triggerComponents.actions';
-import { selectSelectedChannelIdSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
+import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
 import { Observable } from 'rxjs';
+import { ChannelService } from '../../services/channel.service';
+import { Channel } from '../../interfaces/channel';
 
 @Component({
   selector: 'app-channel',
@@ -30,23 +32,38 @@ export class ChannelComponent {
 
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
-  selectedChannelId = signal<{} | null>(null);
-  channelSelectdObject = signal<{} | null>(null);
-  objectTest: {} = {}
+  selectedChannel = signal<Channel | null>(null);
+  channelAllData = signal<{ creatorName?: string }>({});
     
-  constructor(private store: Store){
+  constructor(private store: Store, private channelService: ChannelService){
       effect(() => {
-       console.log(this.selectedChannelId());
+       console.log(this.selectedChannel());
       });
   }
 
   ngOnInit(): void {
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
-    this.store.select(selectSelectedChannelIdSelector).subscribe((channel) => {
-      this.selectedChannelId.set(channel); 
+    this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
+      this.selectedChannel.set(channel); 
+      if (channel) {
+        await this.getChannelAllData(channel); // Asegúrate de que el canal no sea nulo
+      }
     });
+    // this.getChannelAllData()
   }
+
+  private async getChannelAllData(channel: Channel) {
+    const creatorName = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
+    this.channelAllData.set({ creatorName }); // Actualiza el signal con el nombre del creador
+    console.log(creatorName);
+  }
+
+  // async getChannelAllData(channel: Channel){
+  //   const channelData = await this.channelService.getChannelSelectedData(channel);
+  //   // Almacena el resultado en el signal
+  //   this.channelAllData.set(channelData);
+  // }
 
   // Methode, die das Einblenden auslöst
   onShowThread() {
