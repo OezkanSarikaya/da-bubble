@@ -118,15 +118,18 @@ export class UserService {
         this.isAuthenticatedSubject.next(true);
 
         // Hole die erweiterten Benutzerdaten von Firestore
-        const userData = await this.personService.getUserDataByEmail(
+        const resp = await this.personService.getUserDataByEmail(
           user.email!
         );
+        const userData = await resp.data();
         if (userData) {
           const fullUserData = {
             ...user,
             fullName: userData.fullName,
             avatar: userData.avatar,
+            idFirebase: resp.id
           };
+          console.log(fullUserData);
 
           // Speichere die erweiterten Benutzerdaten
           localStorage.setItem('currentUser', JSON.stringify(fullUserData));
@@ -207,12 +210,16 @@ export class UserService {
       this.setUserStatus(userCredential.user.uid, 'online');
       // console.log(`Benutzer ${userCredential.user.uid} ist online`);
 
-      const userData = await this.personService.getUserDataByEmail(email);
+      const resp = await this.personService.getUserDataByEmail(email);
+      const userData = await resp.data()
+      console.log(userData);
+      console.log(resp.id);
       if (userData) {
         const fullUserData = {
           ...userCredential.user,
           fullName: userData.fullName,
           avatar: userData.avatar,
+          idFirebase: resp.id
         };
 
         localStorage.setItem('currentUser', JSON.stringify(fullUserData));

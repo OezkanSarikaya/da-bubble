@@ -26,7 +26,9 @@ export class PersonService {
       const querySnapshot = await getDocs(q);
   
       if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
+        // const userData = querySnapshot.docs[0].data();
+        // console.log(querySnapshot.docs[0].id);
+        const userData = querySnapshot.docs[0];
         return userData;
       }
       return null;
