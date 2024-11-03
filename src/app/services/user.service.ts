@@ -130,7 +130,6 @@ export class UserService {
             idFirebase: resp.id
           };
           console.log(fullUserData);
-
           // Speichere die erweiterten Benutzerdaten
           localStorage.setItem('currentUser', JSON.stringify(fullUserData));
           this.currentUserSubject.next(fullUserData);

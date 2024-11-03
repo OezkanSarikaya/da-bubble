@@ -359,7 +359,49 @@
     </div>
   </div>
   <div class="channelBody">
-    <div class="timeLine"><span>Dienstag, 14. Januar</span></div>
+    @for (message of channelDataOrganized(); track $index) {
+      @if(currentUser.idFirebase !== message.msg.senderID){
+        <div class="timeLine"><span>{{message.msg.createdAtString}}</span></div>
+        <div class="chatMessage leftMessage">
+          <img
+            class="userProfile70"
+            src="{{message.avatarUrl}}"
+            alt=""
+          />
+          <div class="chatMessageDetails">
+            <header>
+              <span class="userName">{{message.msg.fullName}}</span>
+              <time class="time" datetime="">14:25 Uhr</time>
+            </header>
+            <div class="messageText">{{message.msg.content}}</div>
+            <footer>
+              <span class="answers" (click)="onShowThread()"> 2 Antworten </span>
+            </footer>
+          </div>
+        </div>
+      }@else {
+        <div class="timeLine"><span>{{message.msg.createdAtString}}</span></div>
+        <div class="chatMessage rightMessage">
+          <img
+            class="userProfile70"
+            src="{{message.avatarUrl}}"
+            alt=""
+          />
+          <div class="chatMessageDetails">
+            <header>
+              <span class="userName">{{message.msg.fullName}}</span>
+              <time class="time" datetime="">{{message.msg.time}}Uhr</time>
+            </header>
+            <div class="messageText">{{message.msg.content}}</div>
+            <footer>
+              <span class="answers" (click)="onShowThread()"> 2 Antworten </span>
+            </footer>
+          </div>
+        </div>
+      }
+      
+    }
+    <!-- <div class="timeLine"><span>Dienstag, 14. Januar</span></div>
 
     <div class="chatMessage leftMessage">
       <img
@@ -457,7 +499,7 @@
           <span class="answers" (click)="onShowThread()"> 2 Antworten </span>
         </footer>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <app-chatmsgbox></app-chatmsgbox>

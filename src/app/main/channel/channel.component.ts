@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, Input, Output, signal, Signal } from '@angular/core';
+import { Component, computed, effect, EventEmitter, Input, Output, signal, Signal } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -8,10 +8,12 @@ import { Observable } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
+import { UserService } from '../../services/user.service';
+
 
 interface ChannelAllData {
   userName?: string;
-  messages?: {}[]; // Si tienes un tipo específico para los mensajes, reemplaza {} con ese tipo.
+  messages?: any[]; // Si tienes un tipo específico para los mensajes, reemplaza {} con ese tipo.
 }
 
 @Component({
@@ -35,15 +37,23 @@ export class ChannelComponent {
 
   // @Input()
   // isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-
+  currentUser: any = null;
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
   channelAllData = signal<ChannelAllData>({}); 
+  channelDataOrganized = computed(() => {
+    const messages = this.channelAllData().messages || [];
+    return messages.sort((a, b) => {
+      // Asumiendo que createdAt es un objeto de tipo Timestamp de Firestore
+      return b.msg.createdAt.seconds - a.msg.createdAt.seconds; // Ordenar en orden descendente
+    });
+  });
     
-  constructor(private store: Store, private channelService: ChannelService){
+  constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
       effect(() => {
        console.log(this.selectedChannel());
+       console.log(this.channelDataOrganized());
       });
   }
 
@@ -56,20 +66,17 @@ export class ChannelComponent {
         await this.getChannelAllData(channel); // Asegúrate de que el canal no sea nulo
       }
     });
+    this.userService.currentUser$.subscribe(user => {
+      this.currentUser = user;          
+    });
     // this.getChannelAllData()
   }
 
   private async getChannelAllData(channel: Channel) {
     const {userName, messages} = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
     this.channelAllData.set({ userName, messages }); // Actualiza el signal con el nombre del creador
-    console.log(userName, messages);
+    console.log(this.channelAllData());
   }
-
-  // async getChannelAllData(channel: Channel){
-  //   const channelData = await this.channelService.getChannelSelectedData(channel);
-  //   // Almacena el resultado en el signal
-  //   this.channelAllData.set(channelData);
-  // }
 
   // Methode, die das Einblenden auslöst
   onShowThread() {
@@ -168,4 +175,5 @@ export class ChannelComponent {
       }, 300); // Dauer der CSS-Transition (300ms)
     }
   }
+
 }
