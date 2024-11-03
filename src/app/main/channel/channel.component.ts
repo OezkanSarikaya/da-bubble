@@ -7,6 +7,12 @@ import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessag
 import { Observable } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
+import { user } from '@angular/fire/auth';
+
+interface ChannelAllData {
+  userName?: string;
+  messages?: {}[]; // Si tienes un tipo específico para los mensajes, reemplaza {} con ese tipo.
+}
 
 @Component({
   selector: 'app-channel',
@@ -33,7 +39,7 @@ export class ChannelComponent {
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
-  channelAllData = signal<{ creatorName?: string }>({});
+  channelAllData = signal<ChannelAllData>({}); 
     
   constructor(private store: Store, private channelService: ChannelService){
       effect(() => {
@@ -54,9 +60,9 @@ export class ChannelComponent {
   }
 
   private async getChannelAllData(channel: Channel) {
-    const creatorName = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
-    this.channelAllData.set({ creatorName }); // Actualiza el signal con el nombre del creador
-    console.log(creatorName);
+    const {userName, messages} = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
+    this.channelAllData.set({ userName, messages }); // Actualiza el signal con el nombre del creador
+    console.log(userName, messages);
   }
 
   // async getChannelAllData(channel: Channel){

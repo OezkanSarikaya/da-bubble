@@ -160,7 +160,7 @@
         </svg>
       </header>
       <div class="popupBody">
-        <span># Entwicklerteam</span>
+        <span># {{selectedChannel()?.name}}</span>
 
         <input type="text" placeholder="Name eingeben" />
         <footer>
@@ -173,7 +173,7 @@
 
     <div class="channelInfo" *ngIf="isChannelInfoOpen">
       <header>
-        <h3># Entwicklerteam</h3>
+        <h3># {{selectedChannel()?.name}}</h3>
         <svg
           (click)="toggleChannelInfo()"
           width="24"
@@ -207,7 +207,7 @@
             <h4>Channel-Name</h4>
             <span>Bearbeiten</span>
           </div>
-          <span># Entwicklerteam</span>
+          <span># {{selectedChannel()?.name}}</span>
         </div>
         <div class="roundBox">
           <div class="roundBoxHeader">
@@ -263,7 +263,7 @@
           />
         </g>
       </svg>
-      <span>Entwicklerteam</span>
+      <span>{{selectedChannel()?.name}}</span>
       <svg
         width="30"
         height="30"
