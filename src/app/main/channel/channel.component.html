@@ -374,9 +374,11 @@
               <time class="time" datetime="">14:25 Uhr</time>
             </header>
             <div class="messageText">{{message.msg.content}}</div>
-            <footer>
-              <span class="answers" (click)="onShowThread()"> 2 Antworten </span>
-            </footer>
+            @if(message.msg.threadIds > 0){
+              <footer>
+                <span class="answers" (click)="onShowThread()"> {{message.msg.threadIds.length}} Antworten </span>
+              </footer>
+            }
           </div>
         </div>
       }@else {
@@ -393,9 +395,11 @@
               <time class="time" datetime="">{{message.msg.time}}Uhr</time>
             </header>
             <div class="messageText">{{message.msg.content}}</div>
-            <footer>
-              <span class="answers" (click)="onShowThread()"> 2 Antworten </span>
-            </footer>
+            @if(message.msg.threadIds){
+              <footer>
+                <span class="answers" (click)="onShowThread()"> {{message.msg.threadIds.length}} Antworten </span>
+              </footer>
+            }
           </div>
         </div>
       }
