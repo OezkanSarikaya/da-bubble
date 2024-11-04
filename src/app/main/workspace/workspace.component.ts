@@ -34,13 +34,16 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   persons: any[] = [];
   private subscriptions: Subscription = new Subscription();
 
+  isAddMembersInputVisible = false;
   isCreateChannelOpen = false;
+  isPeopleChoiceOpen = false;
   isChannelOpen = true;
   isPrivateMessageOpen = true;
   isWorkspaceOpen = true;
   isAddChannelOpen = false;
   isBackdropVisible: boolean = false;
   channels$ = this.channelService.allChannels;
+  closePopup = false;
 
   constructor(
     private personService: PersonService,
@@ -51,7 +54,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   ) {
     // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
     effect(() => {
-      console.log("Updated channels:", this.channels$());
+      console.log('Updated channels:', this.channels$());
     });
   }
 
@@ -74,6 +77,33 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         });
       })
     );
+  }
+
+  addPeopleChoicePopup() {
+    if (!this.isPeopleChoiceOpen) {
+      // Backdrop wird angezeigt
+      this.isBackdropVisible = true;
+      // Kleines Timeout, um das Display: none aufzuheben, bevor die Opacity-Animation startet
+      setTimeout(() => {
+        this.isPeopleChoiceOpen = true;
+        document.body.classList.add('no-scroll'); // Scrollen auf der Seite deaktivieren
+      }, 10);
+    } else {
+      // Blende den Backdrop aus
+      this.isPeopleChoiceOpen = false;
+      // Nach der Animation (300ms) wird der Backdrop komplett entfernt
+      setTimeout(() => {
+        this.isBackdropVisible = false;
+        document.body.classList.remove('no-scroll');
+        this.closePopup = true;
+      }, 125); // Dauer der CSS-Transition (300ms)
+    }
+  }
+
+  toggleAddMembersInput() {
+    this.isAddMembersInputVisible = !this.isAddMembersInputVisible;
+    // console.log(this.isAddMembersInputVisible);
+    
   }
 
   getUsers() {
@@ -126,13 +156,15 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   // Methode, die das Einblenden auslöst
   onShowChannel(channel: Channel) {
     this.findChannelClicked(channel.id);
-    this.store.dispatch(showChannelComponent({channel}));
+    this.store.dispatch(showChannelComponent({ channel }));
     this.store.dispatch(hideNewMessage());
   }
 
-  findChannelClicked(channelId: string){
+  findChannelClicked(channelId: string) {
     const channelClicked = this.channels$();
-    const channelObject = channelClicked.filter(channel=> channel.id === channelId);
+    const channelObject = channelClicked.filter(
+      (channel) => channel.id === channelId
+    );
   }
 
   // Methode, die das Einblenden auslöst

@@ -4,9 +4,7 @@ body {
   background-color: white !important;
 }
 
-
 .addChannelContainer {
-  
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -15,11 +13,7 @@ body {
   left: 0;
   right: 0;
   padding: 40px 20px;
-  // width: 100%;
   height: calc(100% - 80px);
-  // height: 100%;
-
-
   background-color: white;
   z-index: 10;
 
@@ -29,8 +23,8 @@ body {
     line-height: 24.55px;
     width: fit-content;
     position: absolute;
-    right:20px;
-    bottom:40px;
+    right: 20px;
+    bottom: 40px;
   }
 
   .formField {
@@ -59,16 +53,15 @@ body {
   }
 
   input {
-    // width: Fill (390px) px;
-    // height: Fixed (60px) px;
-    padding: 18px 20px ;
+    font-size: 18px;
+    padding: 18px 20px;
     gap: 20px;
     border-radius: 40px;
     border: 1px 0px 0px 0px;
     opacity: 0px;
     border: 1px solid #adb0d9;
     &::placeholder {
-      font-size:18px;
+      font-size: 18px;
     }
   }
 
@@ -89,14 +82,11 @@ body {
 }
 
 .dnone {
-  // display: none;
   opacity: 0;
 }
 
 .workspace {
-  // position: relative;
   background-color: white;
-  // height: 100%;
   height: calc(100vh - 120px);
   padding: 20px;
   transition: all 125ms ease-in-out;
@@ -120,16 +110,18 @@ body {
     @extend .d-center;
     gap: 8px;
   }
-
 }
 
 .dropdown-container img {
   transition: transform 125ms ease-in-out;
 }
 
-    .openIcon {transform:rotate(0deg)}
-    .closedIcon{transform:rotate(-90deg)}
-
+.openIcon {
+  transform: rotate(0deg);
+}
+.closedIcon {
+  transform: rotate(-90deg);
+}
 
 .channelSelector {
   display: flex;
@@ -139,8 +131,8 @@ body {
   svg {
     width: 24px;
     cursor: pointer;
-    padding:4px;
-   
+    padding: 4px;
+
     &:hover {
       color: $main-secondary;
       background-color: $bg-field-color;
@@ -156,12 +148,11 @@ body {
 .dropDownHeader,
 .addChannel {
   cursor: pointer;
-  margin-right:16px;
+  margin-right: 16px;
 }
 
 .dropdown-content {
   @extend .d-center;
-  // justify-content: flex-start;
   align-items: start;
   gap: 8px;
   flex-direction: column;
@@ -178,7 +169,6 @@ body {
   transition: background-color 125ms ease-in-out;
   &:hover {
     background-color: $bg-field-color;
-
   }
 }
 
@@ -187,10 +177,9 @@ body {
   gap: 8px;
   margin-left: 16px;
   margin-top: 16px;
-  // margin-bottom: 16px;
   cursor: pointer;
-  &:last-child{
-    margin-bottom: 16px; 
+  &:last-child {
+    margin-bottom: 16px;
   }
 }
 
@@ -241,59 +230,224 @@ body {
   }
 }
 
+.popupChannelAddPeople {
+  padding: 30px 26px;
+  gap: 25px;
+  border-radius: 30px 30px 0px 0px;
+  background-color: white;
+  box-shadow: 0px -3px 10px 0px #00000033;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  transition: all 125ms ease-in-out;
+  transform: translateY(200px);
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32.74px;
+      text-align: left;
+      margin: 0;
+    }
+  }
+
+  .radioField {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  
+  }
+
+  footer {
+    display: flex;
+    justify-content: end;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  input[type="text"] {
+    font-size: 18px;
+    border-radius: 40px;
+    padding: 18px 20px;
+    border: 1px solid #adb0d9;
+    display: inline-block;
+    width: max-content;
+  }
+
+  input::placeholder {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24.55px;
+    text-align: left;
+  }
+
+  .shortLine {
+    width: 62px;
+    height: 6px;
+    gap: 0px;
+    border-radius: 23px;
+    background: #d9d9d9;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+  svg {
+    cursor: pointer;
+    padding: 6px;
+    &:hover {
+      color: #535af1;
+      background-color: #eceefe;
+      border-radius: 50%;
+    }
+    &:hover rect,
+    &:hover path {
+      fill: $main-secondary;
+    }
+ 
+  }
+
+}
+
+.showPopupChannelAddPeople {
+  transform: translateY(0px);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  input[type="text"] {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  input[type="radio"] {
+    cursor: pointer;
+  }
+  button {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24.55px;
+    text-align: left;
+  }
+  label {
+    cursor: pointer;
+    display: flex;
+    gap:20px;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
 // Media Queries Mobile First
 
 @media screen and (min-width: 800px) {
+  .popupChannelAddPeople {
+    display: none;
+  }
+
+  .showPopupChannelAddPeople {
+    max-width: 710px;
+    max-height: 279px;
+    padding: 40px;
+    gap: 20px;
+    border-radius: 30px;
+    height: fit-content;
+    border-radius: 30px;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    margin: 0 auto;
+    margin-top: 25vh;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+   
+
+    input[type="text"] {
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    label {
+      cursor: pointer;
+      display: flex;
+      gap:20px;
+    }
+
+    button {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 24.55px;
+      text-align: left;
+    }
+
+    .shortLine {
+      display: none;
+    }
+  }
 
   .workspaceContent {
-    // background-color: red;
     overflow-x: hidden;
-    height:78vh;
+    height: 78vh;
     margin-right: -20px;
   }
 
-  .backdrop {    
+  .backdrop {
     position: fixed;
     top: 0;
     left: 0;
-    width:100%;
-    height:100%;
-    background-color:rgba(0,0,0,0.5);
-    opacity:0;
-    transition: opacity 125ms ease; 
-    z-index:2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 125ms ease;
+    z-index: 2;
   }
 
   .hidden {
     display: none;
-
   }
 
   .visible {
-  opacity: 1;
-
+    opacity: 1;
   }
-
 
   .addChannelContainer {
     max-width: 832px;
     max-height: 539px;
-    height:auto;
+    height: auto;
     border-radius: 30px;
     box-shadow: 0px 6px 10px 0px #00000033;
     margin: 0 auto;
-    margin-top:25vh;
-    padding-bottom:120px;
+    margin-top: 25vh;
+    padding-bottom: 120px;
     button {
       position: absolute;
-      right:20px;
-      bottom:40px;
+      right: 20px;
+      bottom: 40px;
     }
     svg {
       width: 24px;
       cursor: pointer;
-      padding:6px;
-     
+      padding: 6px;
+
       &:hover {
         color: $main-secondary;
         background-color: $bg-field-color;
@@ -383,8 +537,8 @@ body {
     svg {
       width: 24px;
       cursor: pointer;
-      padding:4px;
-     
+      padding: 4px;
+
       &:hover {
         color: $main-secondary;
         background-color: $bg-field-color;

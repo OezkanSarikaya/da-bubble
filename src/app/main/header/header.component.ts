@@ -3,7 +3,7 @@ import { SearchComponent } from '../search/search.component';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { hideChannelComponent, triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
+import { hideChannelComponent, hideNewMessage, triggerPopUserProfile } from '../../state/actions/triggerComponents.actions';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
@@ -48,6 +48,8 @@ export class HeaderComponent implements OnInit {
   hide() {
     // this.hideChannel.emit(); // Sendet das Ereignis an die Eltern-Komponente
     this.store.dispatch(hideChannelComponent())
+    this.store.dispatch(hideNewMessage())
+    
   }
 
   async logOut(){
