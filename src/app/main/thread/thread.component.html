@@ -21,9 +21,9 @@
   <div class="threadBody">
       @for (message of threadsArray$ | async; track $index) {
         @if(true){
-          <div class="timeLine"><span>{{message.createdAtString}}</span></div>
+          <!-- <div class="timeLine"><span>{{message.createdAtString}}</span></div> -->
           <div class="chatMessage leftMessage">
-            <img
+            <!-- <img
               class="userProfile70"
               src="../../../assets/img/img_profile/profile1.png"
               alt=""
@@ -34,12 +34,12 @@
                 <time class="time" datetime="">{{message.time}}</time>
               </header>
               <div class="messageText">{{message.content}}</div>
-            </div>
-          </div>
+            </div>-->
+          </div> 
         }@else {
-          <div class="timeLine"><span>{{message.createdAtString}}</span></div>
+          <!-- <div class="timeLine"><span>{{message.createdAtString}}</span></div> -->
           <div class="chatMessage rightMessage">
-            <img
+            <!-- <img
               class="userProfile70"
               src="../../../assets/img/img_profile/profile1.png"
             />
@@ -49,8 +49,8 @@
                 <time class="time" datetime="">{{message.time}}</time>
               </header>
               <div class="messageText">{{message.content}}</div>
-            </div>
-          </div>
+            </div>-->
+          </div> 
         }
         
       }

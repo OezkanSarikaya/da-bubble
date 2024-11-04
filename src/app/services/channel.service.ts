@@ -1,6 +1,7 @@
 import { effect, EventEmitter, inject, Injectable, signal } from '@angular/core';
 import { collection, doc, Firestore, getDoc, onSnapshot, Timestamp } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
+import { BehaviorSubject } from 'rxjs';
 
 interface ChannelSelectedData {
   userName: string;
@@ -19,9 +20,10 @@ export class ChannelService {
 
   allChannels = signal<any[]>([]);
   // Dentro de la clase ChannelService
-  public messagesUpdated = new EventEmitter<MessageWithAvatar[]>();
+  public messagesUpdated = new BehaviorSubject<MessageWithAvatar[]>([]);
   private messagesMap = new Map<string, MessageWithAvatar>();
   private avatarCache = new Map<string, string>(); // Cache de avatares para reducir lecturas
+  private threadMessagesMap = new Map<string, any>();
 
   private firestore: Firestore = inject(Firestore);
 
@@ -83,7 +85,7 @@ export class ChannelService {
     onSnapshot(threadRef, (threadSnapshot) => {
       if (threadSnapshot.exists()) {
         const threadData = threadSnapshot.data();
-        console.log(threadData);
+        // console.log(threadData);
         // Suponiendo que los threads tienen un campo `messages` que es un array
         const messages = threadData['messages'] || [];
         const threadCount = messages.length;  // Contar los mensajes en el thread
@@ -107,7 +109,7 @@ export class ChannelService {
       avatarUrl,
     };
     this.messagesMap.set(messageId, msgWithAvatar);
-    this.messagesUpdated.emit(Array.from(this.messagesMap.values()));
+    this.messagesUpdated.next(Array.from(this.messagesMap.values()));
   }
 
   private observeUserAvatar(userId: string) {
@@ -126,7 +128,7 @@ export class ChannelService {
         });
 
         // Emitimos los mensajes actualizados
-        this.messagesUpdated.emit(Array.from(this.messagesMap.values()));
+        this.messagesUpdated.next(Array.from(this.messagesMap.values())); 
       }
     });
   }
@@ -199,41 +201,84 @@ export class ChannelService {
     }
   }
 
-  public async loadThreadMessages(threadID: string): Promise<any[]> {
-    const threadDocRef = doc(this.firestore, 'threads', threadID); // Asumiendo que tus usuarios están en la colección 'users'
-    const threadDoc = await getDoc(threadDocRef); // Obtener el documento del usuario
-    if (threadDoc.exists()) {
-      const threadData = threadDoc.data();
-      let infoThread = [];
-      for (const idMessage of threadData['messages']) {
-        infoThread.push(await this.showMessageThread(idMessage));
+  public async loadThreadMessages(threadID: string) {
+    console.log("Cargando mensajes del hilo:", threadID);
+    const threadDocRef = doc(this.firestore, 'threads', threadID);
+    onSnapshot(threadDocRef, async (threadDoc) => {
+      if (threadDoc.exists()) {
+        const threadData = threadDoc.data();
+        const messages = threadData['messages'] || [];
+        this.observeThreadMessages(messages); // Observamos cada mensaje del hilo
+      } else {
+        console.error('No se encontró el thread con ID:', threadID);
       }
-      return infoThread ; // Devuelve el nombre del usuario o una cadena vacía si no existe
-    } else {
-      console.error('No se encontró el usuario con ID:', threadID);
-      return []; // Devuelve una cadena vacía si no se encuentra el usuario
-    }
+    });
   }
 
-  async showMessageThread(idMessage: string): Promise<{}>{
-    const userDocRef = doc(this.firestore, 'messages', idMessage); // Asumiendo que tus usuarios están en la colección 'users'
-    const userDoc = await getDoc(userDocRef); // Obtener el documento del usuario
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      let threadInfo = {
-        ...userData,
-        userName: await this.getNameSenderMessage(userData['senderID']),
-        createdAtString: this.getFormattedDate(userData['createdAt'].seconds),
-        time: this.formatTimestampTo24HourFormat(userData['createdAt'].seconds),
-      }
-      console.log(threadInfo);
-      return threadInfo // Devuelve el nombre del usuario o una cadena vacía si no existe
-    } else {
-      console.error('No se encontró el usuario con ID:', idMessage);
-      return {}; // Devuelve una cadena vacía si no se encuentra el usuario
-    }
+  private observeThreadMessages(messageIds: string[]): void {
+    console.log("Observando mensajes:", messageIds); // Verificar los IDs de mensajes
+    messageIds.forEach((idMessage) => {
+      const messageRef = doc(this.firestore, 'messages', idMessage);
+      onSnapshot(messageRef, async (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const messageData = docSnapshot.data();
+          const senderID = messageData['senderID'];
+          let avatarUrl = this.avatarCache.get(senderID) || '';
+  
+          if (!avatarUrl) {
+            avatarUrl = await this.getAvatarByUserId(senderID);
+            this.observeUserAvatarThread(senderID); // Observamos cambios en el avatar del usuario en tiempo real
+          }
+  
+          const threadInfo = {
+            ...messageData,
+            userName: await this.getNameSenderMessage(senderID),
+            createdAt: messageData['createdAt'].seconds,
+            createdAtString: this.getFormattedDate(messageData['createdAt'].seconds),
+            time: this.formatTimestampTo24HourFormat(messageData['createdAt'].seconds),
+            avatarUrl,
+          };
+          console.log(threadInfo);
+          // Actualizamos el mensaje en el mapa y emitimos los mensajes actualizados
+          this.threadMessagesMap.set(idMessage, threadInfo);
+          // console.log(this.threadMessagesMap);
+          // this.emitThreadMessages();
+        }
+      });
+    });
   }
 
+//   public getMessagesUpdated() {
+//     return this.messagesUpdated.asObservable(); // Retorna el observable
+// }
+
+  // private emitThreadMessages(): void {
+  //   const threadMessages = Array.from(this.threadMessagesMap.values())
+  //       .filter(message => message && message.createdAt); // Filtra mensajes válidos
+
+  //   console.log("Emitiendo mensajes:", threadMessages); // Verificar el contenido
+  //   this.messagesUpdated.next(threadMessages); // Emitir los mensajes actualizados
+  // }
+
+  private observeUserAvatarThread(userId: string) {
+    const userRef = doc(this.firestore, 'users', userId);
+  
+    onSnapshot(userRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const updatedAvatarUrl = docSnapshot.data()['avatar'];
+        this.avatarCache.set(userId, updatedAvatarUrl);
+  
+        // Actualizamos el avatar en `threadMessagesMap` para todos los mensajes de este usuario
+        this.threadMessagesMap.forEach((message: any, messageId: string) => {
+          if (message['senderID'] === userId) {
+            message.avatarUrl = updatedAvatarUrl;
+          }
+        });
+  
+        // Emitimos los mensajes del hilo actualizados con el nuevo avatar
+        // this.emitThreadMessages();
+      }
+    });
+  }
 
 }

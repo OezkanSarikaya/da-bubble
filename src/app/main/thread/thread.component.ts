@@ -4,13 +4,13 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { hideThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { ChannelService } from '../../services/channel.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { selectThreadSelector } from '../../state/selectors/triggerComponents.selectors';
 
 export interface ThreadMessage {
   userName: string;
   content: string;
-  createdAt: Date; // O el tipo de fecha que uses
+  createdAt?: Date; // O el tipo de fecha que uses
   createdAtString: string,
   time: string
   // Agrega aquí otras propiedades según tu estructura de mensajes
@@ -25,9 +25,13 @@ export interface ThreadMessage {
 export class ThreadComponent {
 
   threadsArray = [1, 2]
+
+  messages: any[] = [];
+  private subscription: Subscription = new Subscription();
   
   private threadIDSubject = new BehaviorSubject<string | null>(null);  // Crear BehaviorSubject
   threadID$: Observable<string | null> = this.threadIDSubject.asObservable();
+  
   private threadsArraySubject = new BehaviorSubject<ThreadMessage[]>([]);  // Crear BehaviorSubject
   threadsArray$: Observable<ThreadMessage[]> = this.threadsArraySubject.asObservable();
   
@@ -37,8 +41,17 @@ export class ThreadComponent {
     this.store.select(selectThreadSelector).subscribe(async (threadID) => {
       this.threadIDSubject.next(threadID);
       if (threadID) {
-        let infoThread = await this.channelService.loadThreadMessages(threadID);
-        this.threadsArraySubject.next(infoThread)
+        // let infoThread = await this.channelService.loadThreadMessages(threadID);
+        // console.log(infoThread);
+        // // this.threadsArraySubject.next(infoThread)
+     
+        this.channelService.loadThreadMessages(threadID);
+
+
+        // this.channelService.messagesUpdated.subscribe((messages) => {
+        //   this.messages = messages;
+        //   console.log("Mensajes actualizados:", this.messages);
+        // });
       }
       this.threadsArray$.subscribe(val => {
         console.log(val);
