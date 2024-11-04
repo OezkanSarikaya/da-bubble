@@ -83,8 +83,10 @@ export class ChannelComponent {
   }
 
   // Methode, die das Einblenden auslöst
-  onShowThread(threadID: string) {
-    this.store.dispatch(showThreadComponent({threadID}))
+  onShowThread(thread: any) {
+    // console.log(thread);
+    let threadID = thread.threadID
+    this.store.dispatch(showThreadComponent({thread}))
   }
 
   toggleChannelMembers() {

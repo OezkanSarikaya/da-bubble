@@ -19,6 +19,40 @@
   </div>
 
   <div class="threadBody">
+      @if((threadInitial.senderID) !== currentUser.idFirebase){
+        <div class="timeLine"><span>{{threadInitial.createdAtString}}</span></div>
+        <div class="chatMessage leftMessage">
+          <img
+            class="userProfile70"
+            src=""
+            alt=""
+          />
+          <div class="chatMessageDetails">
+            <header>
+              <span class="userName">{{threadInitial.fullName}}</span>
+              <time class="time" datetime="">{{threadInitial.time}}</time>
+            </header>
+            <div class="messageText">{{threadInitial.content}}</div>
+          </div>
+        </div> 
+      }@else {
+        <div class="timeLine"><span>{{threadInitial.createdAtString}}</span></div>
+        <div class="chatMessage rightMessage">
+          <img
+            class="userProfile70"
+            src=""
+          />
+          <div class="chatMessageDetails">
+            <header>
+              <span class="userName">{{threadInitial.fullName}}</span>
+              <time class="time" datetime="">{{threadInitial.time}}</time>
+            </header>
+            <div class="messageText">{{threadInitial.content}}</div>
+          </div>
+        </div> 
+      }
+
+
       @for (message of message$ | async; track $index) {
         @if(message.senderID !== currentUser.idFirebase){
           <div class="timeLine"><span>{{message.createdAtString}}</span></div>

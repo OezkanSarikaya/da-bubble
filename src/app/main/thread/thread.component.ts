@@ -12,9 +12,19 @@ export interface ThreadMessage {
   userName: string;
   content: string;
   createdAt?: Date; // O el tipo de fecha que uses
-  createdAtString: string,
+  createdAtString: string;
   time: string
-  // Agrega aquí otras propiedades según tu estructura de mensajes
+}
+export interface ThreadMessageHead {
+  content: string;
+  createdAt?: Date; // O el tipo de fecha que uses
+  createdAtString: string;
+  fullName: string,
+  id: string;
+  senderID: string,
+  threadCount: number;
+  ThreadID: string;
+  time: string
 }
 @Component({
   selector: 'app-thread',
@@ -30,6 +40,20 @@ export class ThreadComponent {
   messagesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   message$: Observable<any[]> = this.messagesSubject.asObservable();
 
+  threadInitial: ThreadMessageHead = {
+    content: '',
+    createdAt: new Date(),// O el tipo de fecha que uses
+    createdAtString: '',
+    fullName: '',
+    id: '',
+    senderID: '',
+    threadCount: 0,
+    ThreadID: '',
+    time: ''
+  }
+  threadHeadSubject: BehaviorSubject<ThreadMessageHead> = new BehaviorSubject<ThreadMessageHead>(this.threadInitial);
+  threadHead$: Observable<ThreadMessageHead> = this.threadHeadSubject.asObservable();
+
   
   private threadIDSubject = new BehaviorSubject<string | null>(null);  // Crear BehaviorSubject
   threadID$: Observable<string | null> = this.threadIDSubject.asObservable();
@@ -40,7 +64,13 @@ export class ThreadComponent {
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){}
 
   ngOnInit(): void {
-    const sub3 = this.store.select(selectThreadSelector).subscribe(async (threadID) => {
+    const sub3 = this.store.select(selectThreadSelector).subscribe(async (thread) => {
+      console.log(thread);
+      this.threadHeadSubject.next(thread);
+      this.threadHead$.subscribe(val=>{
+        this.threadInitial = val;
+      })
+      let threadID = thread.threadID;
       this.threadIDSubject.next(threadID);
       if (threadID) {     
         this.channelService.loadThreadMessages(threadID);
@@ -48,9 +78,7 @@ export class ThreadComponent {
           console.log(val);
           this.messagesSubject.next(val)
         })
-
         this.subscription.add(sub1);
-        
       }
       const sub2 = this.userService.currentUser$.subscribe(user => {
         this.currentUser = user;          
