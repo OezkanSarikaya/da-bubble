@@ -13,6 +13,8 @@ import { hideThreadComponent } from '../../state/actions/triggerComponents.actio
 })
 export class ThreadComponent {
 
+  threadsArray = [1, 2]
+
   constructor(private store: Store){}
 
   @Input()

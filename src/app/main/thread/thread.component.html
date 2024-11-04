@@ -19,7 +19,42 @@
   </div>
 
   <div class="threadBody">
-    </div>
+      @for (message of threadsArray; track $index) {
+        @if(true){
+          <div class="timeLine"><span>Dienstag, 14. Januar</span></div>
+          <div class="chatMessage leftMessage">
+            <img
+              class="userProfile70"
+              src="../../../assets/img/img_profile/profile1.png"
+              alt=""
+            />
+            <div class="chatMessageDetails">
+              <header>
+                <span class="userName">Noah Braun</span>
+                <time class="time" datetime="">14:25 Uhr</time>
+              </header>
+              <div class="messageText">Welche Version ist aktuell von Angular?</div>
+            </div>
+          </div>
+        }@else {
+          <div class="timeLine"><span>Dienstag, 14. Januar</span></div>
+          <div class="chatMessage rightMessage">
+            <img
+              class="userProfile70"
+              src="../../../assets/img/img_profile/profile1.png"
+            />
+            <div class="chatMessageDetails">
+              <header>
+                <span class="userName">Noah Braun</span>
+                <time class="time" datetime="">14:25 Uhr</time>
+              </header>
+              <div class="messageText">Welche Version ist aktuell von Angular?</div>
+            </div>
+          </div>
+        }
+        
+      }
+  </div>
 
   <app-chatmsgbox></app-chatmsgbox>
 </section>

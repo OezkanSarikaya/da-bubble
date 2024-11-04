@@ -58,7 +58,7 @@ export class ChannelService {
     onSnapshot(messageRef, async (docSnapshot) => {
       if (docSnapshot.exists()) {
         const message = docSnapshot.data();
-        const messageId = docSnapshot.id;
+        // const messageId = docSnapshot.id;
         const senderID = message['senderID'];
         const threadID = message['threadID'];
         if (senderID) {
@@ -183,18 +183,6 @@ export class ChannelService {
     }
   }
 
-  // private async getObjMsgInChannel(idMessage: string): Promise<{} | ''>{
-  //   const messagesDocRef = doc(this.firestore, 'messages', idMessage);
-  //   const messageDoc = await getDoc(messagesDocRef);
-  //   if (messageDoc.exists()) {
-  //     const msgData = messageDoc.data();
-  //     return msgData;
-  //   } else {
-  //     console.error('No se encontró el mensaje con ID:');
-  //     return ''; // Devuelve una cadena vacía si no se encuentra el usuario
-  //   }
-  // }
-
   private async getCreatedByChannel(idUser: string): Promise<string>{
     const userDocRef = doc(this.firestore, 'users', idUser); // Asumiendo que tus usuarios están en la colección 'users'
     const userDoc = await getDoc(userDocRef); // Obtener el documento del usuario
@@ -208,17 +196,5 @@ export class ChannelService {
     }
   }
 
-  // public async countThreads(idThread: string): Promise<number>{
-  //   const threadDocRef = doc(this.firestore, 'threads', idThread); // Asumiendo que tus usuarios están en la colección 'users'
-  //   const threadDoc = await getDoc(threadDocRef); // Obtener el documento del usuario
-
-  //   if (threadDoc.exists()) {
-  //     const threadData = threadDoc.data();
-  //     return threadData['messages']?.length; // Devuelve el nombre del usuario o una cadena vacía si no existe
-  //   } else {
-  //     console.error('No se encontró el usuario con ID:', idThread);
-  //     return 0; // Devuelve una cadena vacía si no se encuentra el usuario
-  //   }
-  // }
 
 }
