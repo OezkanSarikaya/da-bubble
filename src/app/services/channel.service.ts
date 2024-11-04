@@ -55,28 +55,22 @@ export class ChannelService {
    // Escucha cambios en cada mensaje y su avatar en tiempo real
   private observeMessage(messageId: string) {
     const messageRef = doc(this.firestore, 'messages', messageId);
-    
     onSnapshot(messageRef, async (docSnapshot) => {
       if (docSnapshot.exists()) {
         const message = docSnapshot.data();
         const messageId = docSnapshot.id;
         const senderID = message['senderID'];
         const threadID = message['threadID'];
-
         if (senderID) {
           let avatarUrl = this.avatarCache.get(senderID);
           if (!avatarUrl) {
             avatarUrl = await this.getAvatarByUserId(senderID);  // Obtenemos el avatar inicial
             this.observeUserAvatar(senderID); // Empezamos a observar cambios en el avatar del usuario
           }
-
           const nameSender = await this.getNameSenderMessage(senderID);
-          // Aquí obtenemos la cantidad de mensajes en el hilo
-          // Si `threadID` existe, observamos el conteo de threads en tiempo real
           if (threadID) {
             this.observeThreadCount(threadID, messageId, avatarUrl, nameSender, message);
           } else {
-            // Si no hay `threadID`, establecemos el conteo en 0
             this.updateMessageWithThreadCount(messageId, 0, avatarUrl, nameSender, message);
           }
         }
@@ -87,18 +81,12 @@ export class ChannelService {
   // Nueva función para observar el conteo de mensajes en un `thread` en tiempo real
   private observeThreadCount(threadID: string, messageId: string, avatarUrl: string, nameSender: string, message: any) {
     const threadDocRef = doc(this.firestore, 'threads', threadID);
-
     onSnapshot(threadDocRef, (threadSnapshot) => {
-      if (threadSnapshot.exists()) {
-        const threadData = threadSnapshot.data();
-        const threadCount = threadData['messages'] ? threadData['messages'].length : 0;
-        
-        // Actualizamos el mensaje con el conteo de threads en tiempo real
-        this.updateMessageWithThreadCount(messageId, threadCount, avatarUrl, nameSender, message);
-      } else {
-        // Si no existe el thread, consideramos el conteo como 0
-        this.updateMessageWithThreadCount(messageId, 0, avatarUrl, nameSender, message);
-      }
+      const threadCount = threadSnapshot.exists() && threadSnapshot.data()['messages']
+      ? threadSnapshot.data()['messages'].length
+      : 0;    
+      // Actualizamos el mensaje con el conteo de threads en tiempo real, ya sea un valor o 0
+      this.updateMessageWithThreadCount(messageId, threadCount, avatarUrl, nameSender, message);
     });
   }
 
