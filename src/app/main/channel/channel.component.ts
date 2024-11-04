@@ -45,14 +45,14 @@ export class ChannelComponent {
   channelDataOrganized = computed(() => {
     const messages = this.channelAllData().messages || [];
     return messages.sort((a, b) => {
-      // Asumiendo que createdAt es un objeto de tipo Timestamp de Firestore
-      return b.msg.createdAt.seconds - a.msg.createdAt.seconds; // Ordenar en orden descendente
+      return a.msg.createdAt.seconds - b.msg.createdAt.seconds; 
     });
   });
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
       effect(() => {
        console.log(this.selectedChannel());
+       console.log(this.channelAllData());
        console.log(this.channelDataOrganized());
       });
   }

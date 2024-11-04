@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { collection, doc, Firestore, getDoc, onSnapshot, Timestamp } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
 
@@ -24,6 +24,7 @@ export class ChannelService {
   constructor() {
     this.getAllChannels();
   }
+
 
 
   private getAllChannels(){
