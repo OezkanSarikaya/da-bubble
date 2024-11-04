@@ -6,6 +6,7 @@ import { hideThreadComponent } from '../../state/actions/triggerComponents.actio
 import { ChannelService } from '../../services/channel.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { selectThreadSelector } from '../../state/selectors/triggerComponents.selectors';
+import { UserService } from '../../services/user.service';
 
 export interface ThreadMessage {
   userName: string;
@@ -24,8 +25,7 @@ export interface ThreadMessage {
 })
 export class ThreadComponent {
 
-  threadsArray = [1, 2]
-
+  currentUser: any = null
   messagesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   message$: Observable<any[]> = this.messagesSubject.asObservable();
 
@@ -36,30 +36,22 @@ export class ThreadComponent {
   private threadsArraySubject = new BehaviorSubject<ThreadMessage[]>([]);  // Crear BehaviorSubject
   threadsArray$: Observable<ThreadMessage[]> = this.threadsArraySubject.asObservable();
   
-  constructor(private store: Store, private channelService: ChannelService){}
+  constructor(private store: Store, private channelService: ChannelService, private userService: UserService){}
 
   ngOnInit(): void {
     this.store.select(selectThreadSelector).subscribe(async (threadID) => {
       this.threadIDSubject.next(threadID);
-      if (threadID) {
-        // let infoThread = await this.channelService.loadThreadMessages(threadID);
-        // console.log(infoThread);
-        // // this.threadsArraySubject.next(infoThread)
-     
+      if (threadID) {     
         this.channelService.loadThreadMessages(threadID);
         this.channelService.getthreadMessagesUpdated().subscribe(val =>{
           console.log(val);
           this.messagesSubject.next(val)
         })
         
-        // this.channelService.messagesUpdated.subscribe((messages) => {
-        //   this.messages = messages;
-        //   console.log("Mensajes actualizados:", this.messages);
-        // });
       }
-      this.threadsArray$.subscribe(val => {
-        console.log(val);
-      })
+      this.userService.currentUser$.subscribe(user => {
+        this.currentUser = user;          
+      });
     });
   }
 

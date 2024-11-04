@@ -20,7 +20,7 @@
 
   <div class="threadBody">
       @for (message of message$ | async; track $index) {
-        @if(true){
+        @if(message.senderID !== currentUser.idFirebase){
           <div class="timeLine"><span>{{message.createdAtString}}</span></div>
           <div class="chatMessage leftMessage">
             <img

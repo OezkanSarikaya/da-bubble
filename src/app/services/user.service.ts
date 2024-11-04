@@ -45,6 +45,8 @@ import {
 } from '@angular/fire/storage';
 import { Router } from '@angular/router';
 import { PersonService } from './person.service'; // Importiere den PersonService
+import { Store } from '@ngrx/store';
+import { hideChannelComponent, hideThreadComponent, showNewMessage } from '../state/actions/triggerComponents.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -75,7 +77,8 @@ export class UserService {
     private location: Location,
     private storage: Storage,
     private personService: PersonService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
     this.db = inject(Database);
     this.checkAuthState();
@@ -235,6 +238,9 @@ export class UserService {
   async logout(): Promise<any> {
     const auth = getAuth();
     const currentUser = this.getCurrentUser();
+    this.store.dispatch(hideThreadComponent())
+    this.store.dispatch(hideChannelComponent())
+    this.store.dispatch(showNewMessage())
 
     try {
       if (currentUser) {
