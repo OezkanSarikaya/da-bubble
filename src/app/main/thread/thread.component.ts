@@ -25,7 +25,8 @@ export interface ThreadMessage {
 })
 export class ThreadComponent {
 
-  currentUser: any = null
+  currentUser: any = null;
+  private subscription: Subscription = new Subscription();
   messagesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   message$: Observable<any[]> = this.messagesSubject.asObservable();
 
@@ -39,20 +40,28 @@ export class ThreadComponent {
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){}
 
   ngOnInit(): void {
-    this.store.select(selectThreadSelector).subscribe(async (threadID) => {
+    const sub3 = this.store.select(selectThreadSelector).subscribe(async (threadID) => {
       this.threadIDSubject.next(threadID);
       if (threadID) {     
         this.channelService.loadThreadMessages(threadID);
-        this.channelService.getthreadMessagesUpdated().subscribe(val =>{
+        const sub1 = this.channelService.getthreadMessagesUpdated().subscribe(val =>{
           console.log(val);
           this.messagesSubject.next(val)
         })
+
+        this.subscription.add(sub1);
         
       }
-      this.userService.currentUser$.subscribe(user => {
+      const sub2 = this.userService.currentUser$.subscribe(user => {
         this.currentUser = user;          
       });
+      this.subscription.add(sub2);
     });
+    this.subscription.add(sub3);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   @Input()

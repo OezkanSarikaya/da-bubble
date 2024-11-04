@@ -182,23 +182,22 @@ export class ChannelService {
   
     if (userDoc.exists()) {
       const userData = userDoc.data();
-      return userData['avatar'] || ''; // Ajusta `avatarUrl` al campo correcto en tu estructura de datos de Firebase
+      return userData['avatar'] || ''; 
     } else {
       console.error('No se encontró el usuario con ID:', userId);
-      return ''; // Devuelve una cadena vacía o una URL de avatar por defecto si no se encuentra el usuario
+      return ''; 
     }
   }
 
   private async getCreatedByChannel(idUser: string): Promise<string>{
-    const userDocRef = doc(this.firestore, 'users', idUser); // Asumiendo que tus usuarios están en la colección 'users'
-    const userDoc = await getDoc(userDocRef); // Obtener el documento del usuario
-
+    const userDocRef = doc(this.firestore, 'users', idUser);
+    const userDoc = await getDoc(userDocRef); 
     if (userDoc.exists()) {
       const userData = userDoc.data();
-      return userData['fullName'] || ''; // Devuelve el nombre del usuario o una cadena vacía si no existe
+      return userData['fullName'] || ''; 
     } else {
       console.error('No se encontró el usuario con ID:', idUser);
-      return ''; // Devuelve una cadena vacía si no se encuentra el usuario
+      return ''; 
     }
   }
 
@@ -209,7 +208,7 @@ export class ChannelService {
       if (threadDoc.exists()) {
         const threadData = threadDoc.data();
         const messages = threadData['messages'] || [];
-        this.observeThreadMessages(messages); // Observamos cada mensaje del hilo
+        this.observeThreadMessages(messages); 
       } else {
         console.error('No se encontró el thread con ID:', threadID);
       }
@@ -217,7 +216,6 @@ export class ChannelService {
   }
 
   private observeThreadMessages(messageIds: string[]): void {
-    console.log("Observando mensajes:", messageIds); // Verificar los IDs de mensajes
     messageIds.forEach((idMessage) => {
       const messageRef = doc(this.firestore, 'messages', idMessage);
       onSnapshot(messageRef, async (docSnapshot) => {
@@ -228,7 +226,7 @@ export class ChannelService {
   
           if (!avatarUrl) {
             avatarUrl = await this.getAvatarByUserId(senderID);
-            this.observeUserAvatarThread(senderID); // Observamos cambios en el avatar del usuario en tiempo real
+            this.observeUserAvatarThread(senderID); 
           }
   
           const threadInfo = {
@@ -239,32 +237,17 @@ export class ChannelService {
             time: this.formatTimestampTo24HourFormat(messageData['createdAt'].seconds),
             avatarUrl,
           };
-          // console.log(threadInfo);
-          // Actualizamos el mensaje en el mapa y emitimos los mensajes actualizados
           this.threadMessagesMap.set(idMessage, threadInfo);
-          // console.log(this.threadMessagesMap);
           this.threadUpdatedMap.next(Array.from(this.threadMessagesMap.values()));
-          
-          // console.log(this.threadMessagesMap);
-          // this.emitThreadMessages();
         }
-
       });
     });
 
   }
 
   public getthreadMessagesUpdated() {
-    return this.threadUpdatedMap.asObservable(); // Retorna el observable
-}
-
-  // private emitThreadMessages(): void {
-  //   const threadMessages = Array.from(this.threadMessagesMap.values())
-  //       .filter(message => message && message.createdAt); // Filtra mensajes válidos
-
-  //   console.log("Emitiendo mensajes:", threadMessages); // Verificar el contenido
-  //   this.messagesUpdated.next(threadMessages); // Emitir los mensajes actualizados
-  // }
+    return this.threadUpdatedMap.asObservable(); 
+  }
 
   private observeUserAvatarThread(userId: string) {
     const userRef = doc(this.firestore, 'users', userId);
@@ -273,16 +256,11 @@ export class ChannelService {
       if (docSnapshot.exists()) {
         const updatedAvatarUrl = docSnapshot.data()['avatar'];
         this.avatarCache.set(userId, updatedAvatarUrl);
-  
-        // Actualizamos el avatar en `threadMessagesMap` para todos los mensajes de este usuario
         this.threadMessagesMap.forEach((message: any, messageId: string) => {
           if (message['senderID'] === userId) {
             message.avatarUrl = updatedAvatarUrl;
           }
         });
-  
-        // Emitimos los mensajes del hilo actualizados con el nuevo avatar
-        // this.emitThreadMessages();
       }
     });
   }
