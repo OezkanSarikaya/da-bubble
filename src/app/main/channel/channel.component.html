@@ -374,9 +374,9 @@
               <time class="time" datetime="">14:25 Uhr</time>
             </header>
             <div class="messageText">{{message.msg.content}}</div>
-            @if(message.msg.threadIds > 0){
+            @if(message.msg.threadID){
               <footer>
-                <span class="answers" (click)="onShowThread()"> {{message.msg.threadIds.length}} Antworten </span>
+                <span class="answers" (click)="onShowThread()"> {{message.msg.countThreads}} Antworten </span>
               </footer>
             }
           </div>
@@ -395,9 +395,9 @@
               <time class="time" datetime="">{{message.msg.time}}Uhr</time>
             </header>
             <div class="messageText">{{message.msg.content}}</div>
-            @if(message.msg.threadIds){
+            @if(message.msg.threadID){
               <footer>
-                <span class="answers" (click)="onShowThread()"> {{message.msg.threadIds.length}} Antworten </span>
+                <span class="answers" (click)="onShowThread()"> {{message.msg.countThreads}} Antworten </span>
               </footer>
             }
           </div>

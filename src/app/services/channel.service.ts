@@ -61,6 +61,7 @@ export class ChannelService {
         const message = docSnapshot.data();
         const messageId = docSnapshot.id;
         const senderID = message['senderID'];
+        const threadID = message['threadID'];
 
         if (senderID) {
           let avatarUrl = this.avatarCache.get(senderID);
@@ -70,22 +71,52 @@ export class ChannelService {
           }
 
           const nameSender = await this.getNameSenderMessage(senderID);
-          const msgWithAvatar: MessageWithAvatar = {
-            msg: {
-              ...message,
-              id: messageId,
-              fullName: nameSender,
-              createdAtString: this.getFormattedDate(message['createdAt'].seconds),
-              time: this.formatTimestampTo24HourFormat(message['createdAt'].seconds)
-            },
-            avatarUrl,
-          };
-
-          this.messagesMap.set(messageId, msgWithAvatar);
-          this.messagesUpdated.emit(Array.from(this.messagesMap.values()));
+          // Aquí obtenemos la cantidad de mensajes en el hilo
+          // Si `threadID` existe, observamos el conteo de threads en tiempo real
+          if (threadID) {
+            this.observeThreadCount(threadID, messageId, avatarUrl, nameSender, message);
+          } else {
+            // Si no hay `threadID`, establecemos el conteo en 0
+            this.updateMessageWithThreadCount(messageId, 0, avatarUrl, nameSender, message);
+          }
         }
       }
     });
+  }
+
+  // Nueva función para observar el conteo de mensajes en un `thread` en tiempo real
+  private observeThreadCount(threadID: string, messageId: string, avatarUrl: string, nameSender: string, message: any) {
+    const threadDocRef = doc(this.firestore, 'threads', threadID);
+
+    onSnapshot(threadDocRef, (threadSnapshot) => {
+      if (threadSnapshot.exists()) {
+        const threadData = threadSnapshot.data();
+        const threadCount = threadData['messages'] ? threadData['messages'].length : 0;
+        
+        // Actualizamos el mensaje con el conteo de threads en tiempo real
+        this.updateMessageWithThreadCount(messageId, threadCount, avatarUrl, nameSender, message);
+      } else {
+        // Si no existe el thread, consideramos el conteo como 0
+        this.updateMessageWithThreadCount(messageId, 0, avatarUrl, nameSender, message);
+      }
+    });
+  }
+
+  // Función para actualizar el mensaje con el conteo de threads y emitir los cambios
+  private updateMessageWithThreadCount(messageId: string, threadCount: number, avatarUrl: string, nameSender: string, message: any) {
+    const msgWithAvatar: MessageWithAvatar = {
+      msg: {
+        ...message,
+        id: messageId,
+        fullName: nameSender,
+        createdAtString: this.getFormattedDate(message['createdAt'].seconds),
+        time: this.formatTimestampTo24HourFormat(message['createdAt'].seconds),
+        countThreads: threadCount, // Asignamos el conteo de threads en tiempo real
+      },
+      avatarUrl,
+    };
+    this.messagesMap.set(messageId, msgWithAvatar);
+    this.messagesUpdated.emit(Array.from(this.messagesMap.values()));
   }
 
   private observeUserAvatar(userId: string) {
@@ -164,17 +195,17 @@ export class ChannelService {
     }
   }
 
-  private async getObjMsgInChannel(idMessage: string): Promise<{} | ''>{
-    const messagesDocRef = doc(this.firestore, 'messages', idMessage);
-    const messageDoc = await getDoc(messagesDocRef);
-    if (messageDoc.exists()) {
-      const msgData = messageDoc.data();
-      return msgData;
-    } else {
-      console.error('No se encontró el mensaje con ID:');
-      return ''; // Devuelve una cadena vacía si no se encuentra el usuario
-    }
-  }
+  // private async getObjMsgInChannel(idMessage: string): Promise<{} | ''>{
+  //   const messagesDocRef = doc(this.firestore, 'messages', idMessage);
+  //   const messageDoc = await getDoc(messagesDocRef);
+  //   if (messageDoc.exists()) {
+  //     const msgData = messageDoc.data();
+  //     return msgData;
+  //   } else {
+  //     console.error('No se encontró el mensaje con ID:');
+  //     return ''; // Devuelve una cadena vacía si no se encuentra el usuario
+  //   }
+  // }
 
   private async getCreatedByChannel(idUser: string): Promise<string>{
     const userDocRef = doc(this.firestore, 'users', idUser); // Asumiendo que tus usuarios están en la colección 'users'
@@ -188,5 +219,18 @@ export class ChannelService {
       return ''; // Devuelve una cadena vacía si no se encuentra el usuario
     }
   }
+
+  // public async countThreads(idThread: string): Promise<number>{
+  //   const threadDocRef = doc(this.firestore, 'threads', idThread); // Asumiendo que tus usuarios están en la colección 'users'
+  //   const threadDoc = await getDoc(threadDocRef); // Obtener el documento del usuario
+
+  //   if (threadDoc.exists()) {
+  //     const threadData = threadDoc.data();
+  //     return threadData['messages']?.length; // Devuelve el nombre del usuario o una cadena vacía si no existe
+  //   } else {
+  //     console.error('No se encontró el usuario con ID:', idThread);
+  //     return 0; // Devuelve una cadena vacía si no se encuentra el usuario
+  //   }
+  // }
 
 }

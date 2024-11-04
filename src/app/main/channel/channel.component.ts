@@ -48,7 +48,7 @@ export class ChannelComponent {
       return a.msg.createdAt.seconds - b.msg.createdAt.seconds; 
     });
   });
-    
+      
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     this.channelService.messagesUpdated.subscribe((updatedMessages) => {
       this.channelAllData.set({ ...this.channelAllData(), messages: updatedMessages });
@@ -72,6 +72,7 @@ export class ChannelComponent {
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;          
     });
+  
     // this.getChannelAllData()
   }
 
@@ -87,8 +88,6 @@ export class ChannelComponent {
   }
 
   toggleChannelMembers() {
-    // this.isChannelInfoOpen = !this.isChannelInfoOpen;
-
     if (!this.isChannelMembersOpen) {
       // Backdrop wird angezeigt
       this.isBackdropVisible = true;
@@ -110,10 +109,7 @@ export class ChannelComponent {
 
 
   openAddChannelMembers() {
-    // this.closePopup();
     this.isChannelMembersOpen = false;
-    // this.isChannelInfoOpen = !this.isChannelInfoOpen;
-
     if (!this.isAddChannelMembersOpen) {
       // Backdrop wird angezeigt
       this.isBackdropVisible = true;
@@ -152,14 +148,9 @@ export class ChannelComponent {
         this.isBackdropVisible = false;
         document.body.classList.remove('no-scroll');
       }, 300); // Dauer der CSS-Transition (300ms)
-
-    
-    // this.isChannelMembersOpen
   }
 
   toggleChannelInfo() {
-    // this.isChannelInfoOpen = !this.isChannelInfoOpen;
-
     if (!this.isChannelInfoOpen) {
       // Backdrop wird angezeigt
       this.isBackdropVisible = true;
