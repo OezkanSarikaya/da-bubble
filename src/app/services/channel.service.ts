@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { effect, EventEmitter, inject, Injectable, signal } from '@angular/core';
 import { collection, doc, Firestore, getDoc, onSnapshot, Timestamp } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
 
@@ -18,14 +18,16 @@ interface MessageWithAvatar {
 export class ChannelService {
 
   allChannels = signal<any[]>([]);
+  // Dentro de la clase ChannelService
+  public messagesUpdated = new EventEmitter<MessageWithAvatar[]>();
+  private messagesMap = new Map<string, MessageWithAvatar>();
+  private avatarCache = new Map<string, string>(); // Cache de avatares para reducir lecturas
 
   private firestore: Firestore = inject(Firestore);
 
   constructor() {
     this.getAllChannels();
   }
-
-
 
   private getAllChannels(){
     const channelCollection = collection(this.firestore, 'channels');
@@ -43,19 +45,68 @@ export class ChannelService {
   async getChannelSelectedData(channel: Channel): Promise<ChannelSelectedData>{
     const userName = await this.getCreatedByChannel(channel.createdBy);   
     let messages: MessageWithAvatar[] = [];
+    this.messagesMap.clear();
     for (const id of channel.messageIds) {
-      const message: any = await this.getObjMsgInChannel(id); // Espera cada mensaje
-      let avatarUrl: string = ''
-      let nameSender: string = ''
-      if(message.senderID){
-        const senderID = message.senderID
-        avatarUrl = await this.getAvatarByUserId(senderID);
-        nameSender = await this.getNameSenderMessage(senderID);
-      }
-      let msg = {...message, fullName: nameSender, createdAtString: this.getFormattedDate(message.createdAt.seconds), time: this.formatTimestampTo24HourFormat(message.createdAt.seconds)}
-      messages.push({msg, avatarUrl});
+      this.observeMessage(id);
     }
     return {userName, messages};
+  }
+
+   // Escucha cambios en cada mensaje y su avatar en tiempo real
+  private observeMessage(messageId: string) {
+    const messageRef = doc(this.firestore, 'messages', messageId);
+    
+    onSnapshot(messageRef, async (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const message = docSnapshot.data();
+        const messageId = docSnapshot.id;
+        const senderID = message['senderID'];
+
+        if (senderID) {
+          let avatarUrl = this.avatarCache.get(senderID);
+          if (!avatarUrl) {
+            avatarUrl = await this.getAvatarByUserId(senderID);  // Obtenemos el avatar inicial
+            this.observeUserAvatar(senderID); // Empezamos a observar cambios en el avatar del usuario
+          }
+
+          const nameSender = await this.getNameSenderMessage(senderID);
+          const msgWithAvatar: MessageWithAvatar = {
+            msg: {
+              ...message,
+              id: messageId,
+              fullName: nameSender,
+              createdAtString: this.getFormattedDate(message['createdAt'].seconds),
+              time: this.formatTimestampTo24HourFormat(message['createdAt'].seconds)
+            },
+            avatarUrl,
+          };
+
+          this.messagesMap.set(messageId, msgWithAvatar);
+          this.messagesUpdated.emit(Array.from(this.messagesMap.values()));
+        }
+      }
+    });
+  }
+
+  private observeUserAvatar(userId: string) {
+    const userRef = doc(this.firestore, 'users', userId);
+
+    onSnapshot(userRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const updatedAvatarUrl = docSnapshot.data()['avatar'];
+        this.avatarCache.set(userId, updatedAvatarUrl);  // Cacheamos el avatar actualizado
+
+        // Actualizamos los mensajes en `messagesMap` que corresponden a este usuario
+        this.messagesMap.forEach((msgWithAvatar: any) => {
+          if (msgWithAvatar['msg']['senderID'] === userId) {
+            msgWithAvatar.avatarUrl = updatedAvatarUrl;
+          }
+        });
+
+        // Emitimos los mensajes actualizados
+        this.messagesUpdated.emit(Array.from(this.messagesMap.values()));
+      }
+    });
   }
 
   formatTimestampTo24HourFormat(timestampInSeconds: number): string {

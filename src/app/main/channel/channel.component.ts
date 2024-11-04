@@ -50,7 +50,10 @@ export class ChannelComponent {
   });
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
-      effect(() => {
+    this.channelService.messagesUpdated.subscribe((updatedMessages) => {
+      this.channelAllData.set({ ...this.channelAllData(), messages: updatedMessages });
+    });  
+    effect(() => {
        console.log(this.selectedChannel());
        console.log(this.channelAllData());
        console.log(this.channelDataOrganized());
