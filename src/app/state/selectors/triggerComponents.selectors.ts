@@ -31,3 +31,8 @@ export const selectSelectedChannelSelector = createSelector(
   selectTriggerComponents,
   (state) => state.selectedChannel
 );
+
+export const selectThreadSelector = createSelector(
+  selectTriggerComponents,
+  (state) => state.selectedThread
+);

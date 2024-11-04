@@ -69,7 +69,7 @@ export class ChannelService {
           }
           const nameSender = await this.getNameSenderMessage(senderID);
           if (threadID) {
-            this.observeThreadCount(threadID, messageId, avatarUrl, nameSender, message);
+            this.observeThread(threadID, messageId, avatarUrl, nameSender, message);
           } else {
             this.updateMessageWithThreadCount(messageId, 0, avatarUrl, nameSender, message);
           }
@@ -78,18 +78,21 @@ export class ChannelService {
     });
   }
 
-  // Nueva función para observar el conteo de mensajes en un `thread` en tiempo real
-  private observeThreadCount(threadID: string, messageId: string, avatarUrl: string, nameSender: string, message: any) {
-    const threadDocRef = doc(this.firestore, 'threads', threadID);
-    onSnapshot(threadDocRef, (threadSnapshot) => {
-      const threadCount = threadSnapshot.exists() && threadSnapshot.data()['messages']
-      ? threadSnapshot.data()['messages'].length
-      : 0;    
-      // Actualizamos el mensaje con el conteo de threads en tiempo real, ya sea un valor o 0
-      this.updateMessageWithThreadCount(messageId, threadCount, avatarUrl, nameSender, message);
+  private observeThread(threadID: string, messageId: string, avatarUrl: string, nameSender: string, message: any) {
+    const threadRef = doc(this.firestore, 'threads', threadID);
+    onSnapshot(threadRef, (threadSnapshot) => {
+      if (threadSnapshot.exists()) {
+        const threadData = threadSnapshot.data();
+        console.log(threadData);
+        // Suponiendo que los threads tienen un campo `messages` que es un array
+        const messages = threadData['messages'] || [];
+        const threadCount = messages.length;  // Contar los mensajes en el thread
+          
+        // Actualizar el mensaje con el conteo de threads
+        this.updateMessageWithThreadCount(messageId, threadCount, avatarUrl, nameSender, message);
+      }
     });
-  }
-
+}
   // Función para actualizar el mensaje con el conteo de threads y emitir los cambios
   private updateMessageWithThreadCount(messageId: string, threadCount: number, avatarUrl: string, nameSender: string, message: any) {
     const msgWithAvatar: MessageWithAvatar = {
@@ -99,7 +102,7 @@ export class ChannelService {
         fullName: nameSender,
         createdAtString: this.getFormattedDate(message['createdAt'].seconds),
         time: this.formatTimestampTo24HourFormat(message['createdAt'].seconds),
-        countThreads: threadCount, // Asignamos el conteo de threads en tiempo real
+        threadCount, // Asignamos el conteo de threads en tiempo real
       },
       avatarUrl,
     };
@@ -193,6 +196,42 @@ export class ChannelService {
     } else {
       console.error('No se encontró el usuario con ID:', idUser);
       return ''; // Devuelve una cadena vacía si no se encuentra el usuario
+    }
+  }
+
+  public async loadThreadMessages(threadID: string): Promise<any[]> {
+    const threadDocRef = doc(this.firestore, 'threads', threadID); // Asumiendo que tus usuarios están en la colección 'users'
+    const threadDoc = await getDoc(threadDocRef); // Obtener el documento del usuario
+    if (threadDoc.exists()) {
+      const threadData = threadDoc.data();
+      let infoThread = [];
+      for (const idMessage of threadData['messages']) {
+        infoThread.push(await this.showMessageThread(idMessage));
+      }
+      return infoThread ; // Devuelve el nombre del usuario o una cadena vacía si no existe
+    } else {
+      console.error('No se encontró el usuario con ID:', threadID);
+      return []; // Devuelve una cadena vacía si no se encuentra el usuario
+    }
+  }
+
+  async showMessageThread(idMessage: string): Promise<{}>{
+    const userDocRef = doc(this.firestore, 'messages', idMessage); // Asumiendo que tus usuarios están en la colección 'users'
+    const userDoc = await getDoc(userDocRef); // Obtener el documento del usuario
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      let threadInfo = {
+        ...userData,
+        userName: await this.getNameSenderMessage(userData['senderID']),
+        createdAtString: this.getFormattedDate(userData['createdAt'].seconds),
+        time: this.formatTimestampTo24HourFormat(userData['createdAt'].seconds),
+      }
+      console.log(threadInfo);
+      return threadInfo // Devuelve el nombre del usuario o una cadena vacía si no existe
+    } else {
+      console.error('No se encontró el usuario con ID:', idMessage);
+      return {}; // Devuelve una cadena vacía si no se encuentra el usuario
     }
   }
 

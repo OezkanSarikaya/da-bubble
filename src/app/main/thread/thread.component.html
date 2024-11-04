@@ -19,9 +19,9 @@
   </div>
 
   <div class="threadBody">
-      @for (message of threadsArray; track $index) {
+      @for (message of threadsArray$ | async; track $index) {
         @if(true){
-          <div class="timeLine"><span>Dienstag, 14. Januar</span></div>
+          <div class="timeLine"><span>{{message.createdAtString}}</span></div>
           <div class="chatMessage leftMessage">
             <img
               class="userProfile70"
@@ -30,14 +30,14 @@
             />
             <div class="chatMessageDetails">
               <header>
-                <span class="userName">Noah Braun</span>
-                <time class="time" datetime="">14:25 Uhr</time>
+                <span class="userName">{{message.userName}}</span>
+                <time class="time" datetime="">{{message.time}}</time>
               </header>
-              <div class="messageText">Welche Version ist aktuell von Angular?</div>
+              <div class="messageText">{{message.content}}</div>
             </div>
           </div>
         }@else {
-          <div class="timeLine"><span>Dienstag, 14. Januar</span></div>
+          <div class="timeLine"><span>{{message.createdAtString}}</span></div>
           <div class="chatMessage rightMessage">
             <img
               class="userProfile70"
@@ -45,10 +45,10 @@
             />
             <div class="chatMessageDetails">
               <header>
-                <span class="userName">Noah Braun</span>
-                <time class="time" datetime="">14:25 Uhr</time>
+                <span class="userName">{{message.userName}}</span>
+                <time class="time" datetime="">{{message.time}}</time>
               </header>
-              <div class="messageText">Welche Version ist aktuell von Angular?</div>
+              <div class="messageText">{{message.content}}</div>
             </div>
           </div>
         }
