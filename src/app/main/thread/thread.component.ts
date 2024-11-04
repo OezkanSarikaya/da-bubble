@@ -26,8 +26,9 @@ export class ThreadComponent {
 
   threadsArray = [1, 2]
 
-  messages: any[] = [];
-  private subscription: Subscription = new Subscription();
+  messagesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  message$: Observable<any[]> = this.messagesSubject.asObservable();
+
   
   private threadIDSubject = new BehaviorSubject<string | null>(null);  // Crear BehaviorSubject
   threadID$: Observable<string | null> = this.threadIDSubject.asObservable();
@@ -46,8 +47,11 @@ export class ThreadComponent {
         // // this.threadsArraySubject.next(infoThread)
      
         this.channelService.loadThreadMessages(threadID);
-
-
+        this.channelService.getthreadMessagesUpdated().subscribe(val =>{
+          console.log(val);
+          this.messagesSubject.next(val)
+        })
+        
         // this.channelService.messagesUpdated.subscribe((messages) => {
         //   this.messages = messages;
         //   console.log("Mensajes actualizados:", this.messages);

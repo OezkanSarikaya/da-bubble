@@ -21,6 +21,7 @@ export class ChannelService {
   allChannels = signal<any[]>([]);
   // Dentro de la clase ChannelService
   public messagesUpdated = new BehaviorSubject<MessageWithAvatar[]>([]);
+  public threadUpdatedMap = new BehaviorSubject<any[]>([]);
   private messagesMap = new Map<string, MessageWithAvatar>();
   private avatarCache = new Map<string, string>(); // Cache de avatares para reducir lecturas
   private threadMessagesMap = new Map<string, any>();
@@ -238,19 +239,24 @@ export class ChannelService {
             time: this.formatTimestampTo24HourFormat(messageData['createdAt'].seconds),
             avatarUrl,
           };
-          console.log(threadInfo);
+          // console.log(threadInfo);
           // Actualizamos el mensaje en el mapa y emitimos los mensajes actualizados
           this.threadMessagesMap.set(idMessage, threadInfo);
           // console.log(this.threadMessagesMap);
+          this.threadUpdatedMap.next(Array.from(this.threadMessagesMap.values()));
+          
+          // console.log(this.threadMessagesMap);
           // this.emitThreadMessages();
         }
+
       });
     });
+
   }
 
-//   public getMessagesUpdated() {
-//     return this.messagesUpdated.asObservable(); // Retorna el observable
-// }
+  public getthreadMessagesUpdated() {
+    return this.threadUpdatedMap.asObservable(); // Retorna el observable
+}
 
   // private emitThreadMessages(): void {
   //   const threadMessages = Array.from(this.threadMessagesMap.values())
