@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, EventEmitter, Input, Output, Signal } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -80,9 +80,17 @@ export class ThreadComponent {
   private threadsArraySubject = new BehaviorSubject<ThreadMessage[]>([]);  // Crear BehaviorSubject
   threadsArray$: Observable<ThreadMessage[]> = this.threadsArraySubject.asObservable();
 
-  channelData$: Observable<Channel> = new Observable();
+  // channelData$: Observable<Channel> = new Observable();
+  selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
     
-  constructor(private store: Store, private channelService: ChannelService, private userService: UserService){}
+  constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
+    effect(() => {
+      const channel = this.selectedChannel();
+      if (channel) {
+        console.log("Datos del canal actualizados:", channel);
+      }
+    });
+  }
 
   ngOnInit(): void {
     const sub3 = this.store.select(selectThreadSelector).subscribe(async (thread) => {
@@ -102,10 +110,10 @@ export class ThreadComponent {
       this.subscription.add(sub2);
     });
     this.subscription.add(sub3);
-    this.channelData$ = this.store.select(selectSelectedChannelSelector);
-    this.channelData$.subscribe(val=>{
-      console.log(val);
-    })
+    // this.channelData$ = this.store.select(selectSelectedChannelSelector);
+    // this.channelData$.subscribe(val=>{
+    //   console.log(val);
+    // })
   }
 
   ngOnDestroy(): void {
