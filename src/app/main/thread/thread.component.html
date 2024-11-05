@@ -19,38 +19,41 @@
   </div>
 
   <div class="threadBody">
-      @if((threadInitial.senderID) !== currentUser.idFirebase){
-        <div class="timeLine"><span>{{threadInitial.createdAtString}}</span></div>
+      @if((threadInitial.msg.senderID) !== currentUser.idFirebase){
+        <div class="timeLine"><span>{{threadInitial.msg.createdAtString}}</span></div>
         <div class="chatMessage leftMessage">
           <img
             class="userProfile70"
-            src=""
-            alt=""
+            src="{{threadInitial.avatarUrl}}"
+            alt="{{threadInitial.msg.fullName}}"
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName">{{threadInitial.fullName}}</span>
-              <time class="time" datetime="">{{threadInitial.time}}</time>
+              <span class="userName">{{threadInitial.msg.fullName}}</span>
+              <time class="time" datetime="">{{threadInitial.msg.time}}</time>
             </header>
-            <div class="messageText">{{threadInitial.content}}</div>
+            <div class="messageText">{{threadInitial.msg.content}}</div>
           </div>
         </div> 
       }@else {
-        <div class="timeLine"><span>{{threadInitial.createdAtString}}</span></div>
+        <div class="timeLine"><span>{{threadInitial.msg.createdAtString}}</span></div>
         <div class="chatMessage rightMessage">
           <img
             class="userProfile70"
-            src=""
+            src="{{threadInitial.avatarUrl}}"
+            alt="{{threadInitial.msg.fullName}}"
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName">{{threadInitial.fullName}}</span>
-              <time class="time" datetime="">{{threadInitial.time}}</time>
+              <span class="userName">{{threadInitial.msg.fullName}}</span>
+              <time class="time" datetime="">{{threadInitial.msg.time}}</time>
             </header>
-            <div class="messageText">{{threadInitial.content}}</div>
+            <div class="messageText">{{threadInitial.msg.content}}</div>
           </div>
         </div> 
       }
+
+      <span>{{threadInitial.msg.threadCount}} Antworten</span>
 
 
       @for (message of message$ | async; track $index) {

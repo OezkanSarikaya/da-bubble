@@ -376,7 +376,7 @@
             <div class="messageText">{{message.msg.content}}</div>
             @if(message.msg.threadID){
               <footer>
-                <span class="answers" (click)="onShowThread(message.msg)"> {{message.msg.threadCount}} Antworten </span>
+                <span class="answers" (click)="onShowThread(message)"> {{message.msg.threadCount}} Antworten </span>
               </footer>
             }
           </div>
@@ -397,7 +397,7 @@
             <div class="messageText">{{message.msg.content}}</div>
             @if(message.msg.threadID){
               <footer>
-                <span class="answers" (click)="onShowThread(message.msg)"> {{message.msg.threadCount}} Antworten </span>
+                <span class="answers" (click)="onShowThread(message)"> {{message.msg.threadCount}} Antworten </span>
               </footer>
             }
           </div>

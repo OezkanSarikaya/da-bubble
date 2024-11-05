@@ -84,8 +84,6 @@ export class ChannelComponent {
 
   // Methode, die das Einblenden auslöst
   onShowThread(thread: any) {
-    // console.log(thread);
-    let threadID = thread.threadID
     this.store.dispatch(showThreadComponent({thread}))
   }
 

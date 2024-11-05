@@ -16,6 +16,8 @@ export interface ThreadMessage {
   time: string
 }
 export interface ThreadMessageHead {
+  avatarUrl: string,
+  msg: {
   content: string;
   createdAt?: Date; // O el tipo de fecha que uses
   createdAtString: string;
@@ -25,6 +27,7 @@ export interface ThreadMessageHead {
   threadCount: number;
   ThreadID: string;
   time: string
+  }
 }
 @Component({
   selector: 'app-thread',
@@ -41,6 +44,8 @@ export class ThreadComponent {
   message$: Observable<any[]> = this.messagesSubject.asObservable();
 
   threadInitial: ThreadMessageHead = {
+    avatarUrl: '',
+    msg:{
     content: '',
     createdAt: new Date(),// O el tipo de fecha que uses
     createdAtString: '',
@@ -50,6 +55,7 @@ export class ThreadComponent {
     threadCount: 0,
     ThreadID: '',
     time: ''
+    }
   }
   threadHeadSubject: BehaviorSubject<ThreadMessageHead> = new BehaviorSubject<ThreadMessageHead>(this.threadInitial);
   threadHead$: Observable<ThreadMessageHead> = this.threadHeadSubject.asObservable();
@@ -70,7 +76,7 @@ export class ThreadComponent {
       this.threadHead$.subscribe(val=>{
         this.threadInitial = val;
       })
-      let threadID = thread.threadID;
+      let threadID = thread?.msg.threadID;
       this.threadIDSubject.next(threadID);
       if (threadID) {     
         this.channelService.loadThreadMessages(threadID);
