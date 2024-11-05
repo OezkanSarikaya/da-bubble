@@ -30,6 +30,9 @@ export class ChannelService {
 
   constructor() {
     this.getAllChannels();
+    effect(()=>{
+      console.log(this.allChannels());
+    })
   }
 
   private getAllChannels(){

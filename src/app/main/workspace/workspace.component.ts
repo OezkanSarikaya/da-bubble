@@ -162,7 +162,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   findChannelClicked(channelId: string) {
     const channelClicked = this.channels$();
-    const channelObject = channelClicked.filter(
+    channelClicked.filter(
       (channel) => channel.id === channelId
     );
   }
