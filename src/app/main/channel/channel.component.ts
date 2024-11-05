@@ -40,7 +40,7 @@ export class ChannelComponent {
   currentUser: any = null;
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
-  selectedChannel = signal<Channel | null>(null);
+  // selectedChannel = signal<Channel | null>(null);
   channelAllData = signal<ChannelAllData>({}); 
   channelDataOrganized = computed(() => {
     const messages = this.channelAllData().messages || [];
@@ -48,6 +48,7 @@ export class ChannelComponent {
       return a.msg.createdAt.seconds - b.msg.createdAt.seconds; 
     });
   });
+  selectedChannel = this.channelService.selectedChannel;
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     this.channelService.messagesUpdated.subscribe((updatedMessages) => {
@@ -64,9 +65,11 @@ export class ChannelComponent {
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
     this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
-      this.selectedChannel.set(channel); 
+      // this.selectedChannel.set(channel); 
       if (channel) {
+        console.log(channel);
         await this.getChannelAllData(channel); // Asegúrate de que el canal no sea nulo
+        this.channelService.observeChannel(channel.id);
       }
     });
     this.userService.currentUser$.subscribe(user => {

@@ -13,12 +13,23 @@ interface MessageWithAvatar {
   avatarUrl: string;
 }
 
+export interface Channeldata {
+  createdAt?: Date; 
+  createdBy: string;
+  description: string;
+  id: string;
+  member: [];
+  messageIds: [];
+  name: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelService {
 
   allChannels = signal<any[]>([]);
+  selectedChannel = signal<Channel | null>(null);
   // Dentro de la clase ChannelService
   public messagesUpdated = new BehaviorSubject<MessageWithAvatar[]>([]);
   public threadUpdatedMap = new BehaviorSubject<any[]>([]);
@@ -43,8 +54,25 @@ export class ChannelService {
         id: doc.id,
         ...doc.data(),
         createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
-      }));
+      } as Channel));
       this.allChannels.set(channels); // Emitimos los usuarios actualizados
+    });
+  }
+
+  observeChannel(channelId: string) {
+    const channelDocRef = doc(this.firestore, `channels/${channelId}`);
+
+    onSnapshot(channelDocRef, (doc) => {
+      if (doc.exists()) {
+        const channelData = {
+          id: doc.id,
+          ...doc.data(),
+          createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
+        } as Channel;
+        this.selectedChannel.set(channelData); // Actualizamos la señal del canal seleccionado
+      } else {
+        this.selectedChannel.set(null);
+      }
     });
   }
 
