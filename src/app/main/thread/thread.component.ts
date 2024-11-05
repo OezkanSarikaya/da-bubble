@@ -4,7 +4,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { hideThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { ChannelService } from '../../services/channel.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
 import { selectThreadSelector } from '../../state/selectors/triggerComponents.selectors';
 import { UserService } from '../../services/user.service';
 
@@ -80,7 +80,12 @@ export class ThreadComponent {
       this.threadIDSubject.next(threadID);
       if (threadID) {     
         this.channelService.loadThreadMessages(threadID);
-        const sub1 = this.channelService.getthreadMessagesUpdated().subscribe(val =>{
+        const sub1 = this.channelService.getthreadMessagesUpdated()
+        .pipe(
+          map(threads => threads.sort((a, b) => a.createdAt - b.createdAt) 
+          )
+        )
+        .subscribe(val =>{
           console.log(val);
           this.messagesSubject.next(val)
         })
