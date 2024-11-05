@@ -53,7 +53,10 @@
         </div> 
       }
 
-      <span>{{threadInitial.msg.threadCount}} Antworten</span>
+      <div class="countThread">
+        <span>{{threadInitial.msg.threadCount}} Antworten</span>
+        <div class="horizontal-line"></div>
+      </div>
 
 
       @for (message of message$ | async; track $index) {
