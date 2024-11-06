@@ -30,7 +30,7 @@ export class ChatmsgboxComponent {
 
   async sendMessage(){
     if(this.messageReferenz){
-      const content = this.inputText()?.nativeElement.value;
+      let content = this.inputText()?.nativeElement.value;
       await this.channelService.sendMessageTo(this.messageReferenz.userLoginId, this.messageReferenz.idChannel, content)
     }else{
       console.log('to persons');

@@ -7,6 +7,7 @@ import {
   OnInit,
   OnDestroy,
   effect,
+  Signal,
 } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
@@ -42,7 +43,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   isWorkspaceOpen = true;
   isAddChannelOpen = false;
   isBackdropVisible: boolean = false;
-  channels$ = this.channelService.allChannels;
+  channels$: Signal<Channel[]>;
+  
   closePopup = false;
 
   constructor(
@@ -52,9 +54,11 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private readonly channelService: ChannelService
   ) {
+    this.channels$ = this.channelService.allChannels;
     // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
     effect(() => {
       console.log('Updated channels:', this.channels$());
+      this.cdr.detectChanges();
     });
   }
 

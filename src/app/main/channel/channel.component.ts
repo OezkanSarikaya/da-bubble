@@ -80,8 +80,7 @@ export class ChannelComponent {
       }
     });
     this.userService.currentUser$.subscribe(user => {
-      this.currentUser = user; 
-      console.log(this.currentUser);         
+      this.currentUser = user;        
     });
   }
 
