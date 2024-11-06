@@ -49,15 +49,22 @@ export class ChannelComponent {
     });
   });
   selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
+  messageReferenz = computed(() => {
+    const channel = this.selectedChannel();
+    return channel ? { name: channel.name, id: channel.id } : {name: '', id: ''};
+  })
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     this.channelService.messagesUpdated.subscribe((updatedMessages) => {
       this.channelAllData.set({ ...this.channelAllData(), messages: updatedMessages });
     });  
     effect(() => {
-       console.log(this.selectedChannel());
-       console.log(this.channelAllData());
-       console.log(this.channelDataOrganized());
+      // console.log(this.selectedChannel());
+      //  console.log(this.channelAllData());
+      //  console.log(this.channelDataOrganized());
+       this.selectedChannel();
+       this.channelAllData();
+       this.channelDataOrganized();
       });
   }
 
@@ -67,7 +74,7 @@ export class ChannelComponent {
     this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
       // this.selectedChannel.set(channel); 
       if (channel) {
-        console.log(channel);
+        // console.log(channel);
         await this.getChannelAllData(channel); // Asegúrate de que el canal no sea nulo
         this.channelService.observeChannel(channel.id);
       }
@@ -75,8 +82,6 @@ export class ChannelComponent {
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;          
     });
-  
-    // this.getChannelAllData()
   }
 
   private async getChannelAllData(channel: Channel) {
