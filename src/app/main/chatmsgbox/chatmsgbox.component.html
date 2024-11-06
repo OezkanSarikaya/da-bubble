@@ -1,6 +1,6 @@
 <div class="channelBottom">
 <div class="messageArea">
-    <textarea name="" id="" placeholder="Nachricht an #Entwicklerteam"></textarea>
+    <textarea name="" id="" [placeholder]="selectedChannel()?.name ? 'Nachricht an #'+ selectedChannel()?.name : 'Nachricht'" ></textarea>
     <div class="messageBottomLine">
       <div class="messageIcons">
         

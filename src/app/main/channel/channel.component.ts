@@ -48,7 +48,7 @@ export class ChannelComponent {
       return a.msg.createdAt.seconds - b.msg.createdAt.seconds; 
     });
   });
-  selectedChannel = this.channelService.selectedChannel;
+  selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     this.channelService.messagesUpdated.subscribe((updatedMessages) => {
