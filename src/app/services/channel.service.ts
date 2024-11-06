@@ -1,7 +1,7 @@
 import { effect, EventEmitter, inject, Injectable, signal } from '@angular/core';
-import { collection, doc, Firestore, getDoc, onSnapshot, Timestamp } from '@angular/fire/firestore';
+import { addDoc, arrayUnion, collection, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, timestamp } from 'rxjs';
 
 interface ChannelSelectedData {
   userName: string;
@@ -296,6 +296,36 @@ export class ChannelService {
     });
   }
 
-  
+  public async sendMessageTo(senderID: string, channelID: string, content: string){
+    try {
+      const result = await this.createMessageInTable(content, senderID)
+      await this.updatechannels(channelID, result.id)
+    } catch (error) {
+      console.log('error');
+    }
+  }
 
+  private async createMessageInTable(content: string, senderID: string){
+    const data = collection(this.firestore, 'messages');
+      const result = await addDoc(data, {
+        content: content,
+        createdAt: Timestamp.now(),
+        senderID: senderID,
+        threadID: '',
+      });
+      return result;
+  }
+
+  private async updatechannels(channelID: string, resultID: string){
+    const channelDocRef = doc(this.firestore, "channels", channelID);
+    const channelDocSnapshot = await getDoc(channelDocRef);
+    if (channelDocSnapshot.exists()) {
+      await updateDoc(channelDocRef, {
+        messageIds: arrayUnion(resultID)
+      });
+      console.log("Mensaje ID agregado a la colección de canales");
+    } else {
+      console.log("No se encontró el canal con ID:", channelID);
+    }
+  }
 }

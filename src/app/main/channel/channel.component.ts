@@ -51,7 +51,7 @@ export class ChannelComponent {
   selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
   messageReferenz = computed(() => {
     const channel = this.selectedChannel();
-    return channel ? { name: channel.name, id: channel.id } : {name: '', id: ''};
+    return channel ? { name: channel.name, idChannel: channel.id, userLoginId: this.currentUser.idFirebase } : {name: '', idChannel: '', userLoginId: ''};
   })
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
@@ -80,7 +80,8 @@ export class ChannelComponent {
       }
     });
     this.userService.currentUser$.subscribe(user => {
-      this.currentUser = user;          
+      this.currentUser = user; 
+      console.log(this.currentUser);         
     });
   }
 
