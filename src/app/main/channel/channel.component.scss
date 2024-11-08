@@ -1,5 +1,60 @@
 @import "../../../assets/css/helper.scss";
 
+.leftPopup {
+  right: 80px;
+}
+
+.rightPopup {
+  left: 80px;
+}
+
+.addReaction {
+  position: absolute;
+  box-sizing: border-box;
+  opacity: 0;
+  display: flex;
+  // width: 215px;
+  height: 46px;
+  top: -18px;
+  padding: 3px 15px 3px 20px;
+  gap: 5px;
+  border-radius: 25px 25px 0px 25px;
+  border: 1px solid #adb0d9;
+  background-color: #ffffff;
+  transition: all 125ms ease-in-out;
+  span {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    border-radius: 20px;
+    transition: all 125ms ease-in-out;
+    &:hover {
+      background-color: $bg-field-color;
+      border-radius: 20px;
+    }
+    &:hover rect,
+    &:hover path {
+      fill: $main-secondary;
+    }
+    img,
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.chatMessage:hover .rightPopup.addReaction {
+  opacity: 1;
+  transform: translateX(-50px);
+}
+
+.chatMessage:hover .leftPopup.addReaction {
+  opacity: 1;
+  transform: translateX(50px);
+}
+
 .desktopEmptyChannel {
   display: flex;
   background-color: white;
@@ -9,14 +64,11 @@
   right: 0;
   height: calc(100vh - 80px);
   justify-content: space-between;
-  // align-items: start;
   flex-direction: column;
   .channelHeader {
-    // width: 100%;
     flex-direction: column;
     align-items: start;
     gap: 20px;
-
     span {
       font-size: 24px;
       font-weight: 700;
@@ -24,9 +76,6 @@
       text-align: left;
     }
     input {
-      // display: inline-block;
-      // display: none;
-      // width: 100%;
       margin: 0;
       padding: 15px 20px 15px 20px;
       gap: 10px;
@@ -216,7 +265,7 @@
   border-top: 1px solid #adb0d9;
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin: 34px 20px;
   span {
     position: absolute;
     top: -18px;
@@ -295,6 +344,7 @@
 }
 
 .chatMessage {
+  position: relative;
   transition: all 125ms ease-in-out;
   &:hover {
     background-color: $bg-field-color;
