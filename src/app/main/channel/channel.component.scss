@@ -1,7 +1,7 @@
 @import "../../../assets/css/helper.scss";
 
 .leftPopup {
-  right: -10px;
+  right: -20px;
 }
 
 .rightPopup {
@@ -13,9 +13,9 @@
   box-sizing: border-box;
   opacity: 0;
   display: flex;
-  width: 215px;
+  // width: 215px;
   height: 46px;
-  top: -12px;
+  top: -18px;
   padding: 3px 15px 3px 20px;
   gap: 5px;
   border-radius: 25px 25px 0px 25px;
@@ -260,7 +260,7 @@
   border-top: 1px solid #adb0d9;
   display: flex;
   justify-content: center;
-  margin: 20px;
+  margin: 34px 20px;
   span {
     position: absolute;
     top: -18px;
