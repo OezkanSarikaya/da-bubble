@@ -4,6 +4,6 @@ export interface Channel {
   description: string,
   createdBy: string,
   createdAt: Date,
-  messageIds: string[],
+  messageIDS: string[],
   members: string[]
 }

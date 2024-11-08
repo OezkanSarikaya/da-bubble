@@ -40,44 +40,56 @@ export class ChannelComponent {
   currentUser: any = null;
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
-  // selectedChannel = signal<Channel | null>(null);
-  channelAllData = signal<ChannelAllData>({}); 
-  channelDataOrganized = computed(() => {
-    const messages = this.channelAllData().messages || [];
-    return messages.sort((a, b) => {
-      return a.msg.createdAt.seconds - b.msg.createdAt.seconds; 
-    });
-  });
-  selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
-  messageReferenz = computed(() => {
-    const channel = this.selectedChannel();
-    return channel ? { name: channel.name, idChannel: channel.id, userLoginId: this.currentUser.idFirebase } : {name: '', idChannel: '', userLoginId: ''};
-  })
+  selectedChannel = signal<Channel | null>(null);
+  channelObserved = signal<Channel | null>(null)
+  // channelDataOrganized = computed(() => {
+  //   const messages = this.channelAllData().messages || [];
+  //   return messages.sort((a, b) => {
+  //     return a.msg.createdAt.seconds - b.msg.createdAt.seconds; 
+  //   });
+  // });
+  // selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
+  // messageReferenz = computed(() => {
+  //   const channel = this.selectedChannel();
+  //   return channel ? { name: channel.name, idChannel: channel.id, userLoginId: this.currentUser.idFirebase } : {name: '', idChannel: '', userLoginId: ''};
+  // })
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     // this.channelService.messagesUpdated.subscribe((updatedMessages) => {
     //   this.channelAllData.set({ ...this.channelAllData(), messages: updatedMessages });
     // });  
-    effect(() => {
-      // console.log(this.selectedChannel());
-      //  console.log(this.channelAllData());
-      //  console.log(this.channelDataOrganized());
-       this.selectedChannel();
-       this.channelAllData();
-       this.channelDataOrganized();
-      });
+    // effect(() => {
+    //   // console.log(this.selectedChannel());
+    //   //  console.log(this.channelAllData());
+    //   //  console.log(this.channelDataOrganized());
+    //    this.selectedChannel();
+    //    this.channelAllData();
+    //    this.channelDataOrganized();
+    //   });
+    effect(()=>{
+      if(this.selectedChannel()){
+        // console.log(this.selectedChannel());
+        console.log('Canal observado actualizado:', this.channelObserved());
+      }
+    })
   }
 
   ngOnInit(): void {
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
     this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
-      // this.selectedChannel.set(channel); 
-     
+      if (channel) {
+        this.selectedChannel.set(channel);
+        this.channelService.observeChannel(channel.id).subscribe((updatedChannel) => {
+          this.channelObserved.set(updatedChannel);
+        });
+      }
     });
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;        
     });
+
+    
   }
 
   // private async getChannelAllData(channel: Channel) {

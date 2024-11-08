@@ -1,6 +1,6 @@
 <div class="channelBottom">
 <div class="messageArea">
-    <textarea name="" id="" #inputText placeholder="Nachricht an #Ent" ></textarea>
+    <textarea name="" id="" [(ngModel)]="content" [placeholder]="selectedChannel() ? 'Nachricht an #'+ selectedChannel()?.name : 'Nachricht'" ></textarea>
     <div class="messageBottomLine">
       <div class="messageIcons">
         
@@ -42,7 +42,7 @@
               </svg>
               
       </div>
-      <svg  class="sendIcon" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg (click)="sendMessage()"  class="sendIcon" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <mask id="mask0_79092_4669" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30" height="30">
         <rect width="30" height="30" fill="#D9D9D9"/>
         </mask>

@@ -1,41 +1,47 @@
-import { Component, effect, ElementRef, Input, input, Signal, SimpleChanges, viewChild } from '@angular/core';
+import { Component, effect, ElementRef, Input, input, signal, Signal, SimpleChanges, viewChild } from '@angular/core';
 import { Channel } from '../../interfaces/channel';
 import { ChannelService } from '../../services/channel.service';
+import { selectSelectedChannelSelector } from '../../state/selectors/triggerComponents.selectors';
+import { Store } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-chatmsgbox',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './chatmsgbox.component.html',
   styleUrl: './chatmsgbox.component.scss'
 })
 export class ChatmsgboxComponent {
-  // selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
+  currentUser: any = null;
+  selectedChannel = signal<Channel | null>(null);
+  content: string = ''
 
-  // @Input() messageReferenz!: { name: string, idChannel: string, userLoginId: string };
-  // inputText: Signal<ElementRef | undefined> = viewChild('inputText');
-
-  constructor(private channelService: ChannelService){ 
-    // effect(() => {
-    //    console.log(this.selectedChannel());
-    //   });
+  constructor(private channelService: ChannelService, private store: Store, private userService: UserService){ 
+    effect(() => {
+      //  console.log(this.selectedChannel());
+       this.selectedChannel()
+    });
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['messageReferenz']) {
-  //     // Aquí podemos reaccionar al cambio de messageReferenz
-  //     console.log("Message Referenz actualizado desde el padre:", this.messageReferenz);
-  //   }
-  // }
+  ngOnInit(): void {
+    this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
+      if (channel) {
+        this.selectedChannel.set(channel);
+      }
+    });
+    this.userService.currentUser$.subscribe((user: any) => {
+      this.currentUser = user;      
+    });
+  }
 
-  // async sendMessage(){
-  //   if(this.messageReferenz){
-  //     let content = this.inputText()?.nativeElement.value;
-  //     await this.channelService.sendMessageTo(this.messageReferenz.userLoginId, this.messageReferenz.idChannel, content)
-  //   }else{
-  //     console.log('to persons');
-  //   }
-  // }
-
+  sendMessage(){
+    if(this.selectedChannel()){
+      const channelID = this.selectedChannel()!.id
+      this.channelService.createMessage(this.content, this.currentUser.idFirebase, 'messages', channelID);
+    }
+    this.content = '';
+  }
 
 }

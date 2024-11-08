@@ -1,7 +1,7 @@
 import { effect, EventEmitter, inject, Injectable, signal } from '@angular/core';
 import { addDoc, arrayUnion, collection, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
-import { BehaviorSubject, timestamp } from 'rxjs';
+import { BehaviorSubject, Observable, timestamp } from 'rxjs';
 
 
 
@@ -10,10 +10,9 @@ import { BehaviorSubject, timestamp } from 'rxjs';
 })
 export class ChannelService {
 
-  allChannels = signal<any[]>([]);
+  allChannels = signal<Channel[]>([]);
   selectedChannel = signal<Channel | null>(null);
-  // Dentro de la clase ChannelService
-
+  
   private firestore: Firestore = inject(Firestore);
 
   constructor() {
@@ -21,6 +20,7 @@ export class ChannelService {
     effect(()=>{
       console.log(this.allChannels());
     })
+
   }
 
   private getAllChannels(){
@@ -32,7 +32,41 @@ export class ChannelService {
         ...doc.data(),
         createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
       } as Channel));
-      this.allChannels.set(channels); // Emitimos los usuarios actualizados
+      this.allChannels.set(channels); 
+    });
+  }
+
+  public async createMessage(content: string, senderID: string, table: string, channelID: string){
+    const messageCollection = collection(this.firestore, table);
+    const channelCollection = doc(this.firestore, 'channels', channelID);
+    const result = await addDoc(messageCollection, {
+      content: content,
+      createdAt: Timestamp.now(),
+      senderID: senderID,
+      threadIDS: [],
+    });
+    const messageID = result.id
+    await updateDoc(channelCollection, {
+      messageIDS: arrayUnion(messageID)
+    });
+  }
+
+  observeChannel(channelId: string) {
+    const channelDocRef = doc(this.firestore, 'channels', channelId);
+    return new Observable<Channel | null>((observer) => {
+      // Suscríbete a cambios en el documento
+      onSnapshot(channelDocRef, (doc) => {
+        if (doc.exists()) {
+          const channelData = {
+            id: doc.id,
+            ...doc.data(),
+            createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
+          } as Channel;
+          observer.next(channelData); // Envía el canal actualizado a los suscriptores
+        } else {
+          observer.next(null); // Si el documento no existe, envía null
+        }
+      });
     });
   }
 

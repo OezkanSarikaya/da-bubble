@@ -159,17 +159,17 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   // Methode, die das Einblenden auslöst
   onShowChannel(channel: Channel) {
-    this.findChannelClicked(channel.id);
+    // this.findChannelClicked(channel.id);
     this.store.dispatch(showChannelComponent({ channel }));
     this.store.dispatch(hideNewMessage());
   }
 
-  findChannelClicked(channelId: string) {
-    const channelClicked = this.channels$();
-    channelClicked.filter(
-      (channel) => channel.id === channelId
-    );
-  }
+  // findChannelClicked(channelId: string) {
+  //   const channelClicked = this.channels$();
+  //   channelClicked.filter(
+  //     (channel) => channel.id === channelId
+  //   );
+  // }
 
   // Methode, die das Einblenden auslöst
   ontoggleNewMessage() {
