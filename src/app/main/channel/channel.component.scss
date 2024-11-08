@@ -1,7 +1,7 @@
 @import "../../../assets/css/helper.scss";
 
 .leftPopup {
-  right: -20px;
+  right: 80px;
 }
 
 .rightPopup {
@@ -45,9 +45,14 @@
   }
 }
 
-.chatMessage:hover .addReaction {
+.chatMessage:hover .rightPopup.addReaction {
   opacity: 1;
   transform: translateX(-50px);
+}
+
+.chatMessage:hover .leftPopup.addReaction {
+  opacity: 1;
+  transform: translateX(50px);
 }
 
 .desktopEmptyChannel {
