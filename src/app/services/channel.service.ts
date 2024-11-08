@@ -3,7 +3,13 @@ import { addDoc, arrayUnion, collection, doc, Firestore, getDoc, onSnapshot, Tim
 import { Channel } from '../interfaces/channel';
 import { BehaviorSubject, Observable, timestamp } from 'rxjs';
 
-
+export interface Message {
+  content: string,
+  createdAt: Date,
+  senderID: string,
+  threadIDS: [],
+  id: string
+}
 
 @Injectable({
   providedIn: 'root'
@@ -51,20 +57,63 @@ export class ChannelService {
     });
   }
 
-  observeChannel(channelId: string) {
+  // observeChannel(channelId: string) {
+  //   const channelDocRef = doc(this.firestore, 'channels', channelId);
+  //   return new Observable<Channel | null>((observer) => {
+  //     // Suscríbete a cambios en el documento
+  //     onSnapshot(channelDocRef, (doc) => {
+  //       if (doc.exists()) {
+  //         const channelData = {
+  //           id: doc.id,
+  //           ...doc.data(),
+  //           createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
+  //         } as Channel;
+  //         observer.next(channelData); // Envía el canal actualizado a los suscriptores
+  //       } else {
+  //         observer.next(null); // Si el documento no existe, envía null
+  //       }
+  //     });
+  //   });
+  // }
+
+  observeChannel(channelId: string): Observable<Channel | null> {
     const channelDocRef = doc(this.firestore, 'channels', channelId);
+
     return new Observable<Channel | null>((observer) => {
-      // Suscríbete a cambios en el documento
-      onSnapshot(channelDocRef, (doc) => {
-        if (doc.exists()) {
+      onSnapshot(channelDocRef, async (snapshot) => {
+        if (snapshot.exists()) {
           const channelData = {
-            id: doc.id,
-            ...doc.data(),
-            createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
+            id: snapshot.id,
+            ...snapshot.data(),
+            createdAt: (snapshot.data()['createdAt'] as Timestamp).toDate(),
           } as Channel;
-          observer.next(channelData); // Envía el canal actualizado a los suscriptores
+
+          // Cargar los datos completos de los mensajes usando los IDs en messageIDS
+          if (channelData.messageIDS && channelData.messageIDS.length > 0) {
+            const messagePromises = channelData.messageIDS.map(async (messageId: string) => {
+              const messageDocRef = doc(this.firestore, 'messages', messageId);
+              const messageSnapshot = await getDoc(messageDocRef);
+              if (messageSnapshot.exists()) {
+                return {
+                  id: messageSnapshot.id,
+                  ...messageSnapshot.data(),
+                  createdAt: (messageSnapshot.data()['createdAt'] as Timestamp).toDate(),
+                } as Message;
+              } else {
+                return null;
+              }
+            });
+
+            // Esperar a que todas las promesas se resuelvan y filtrar mensajes nulos
+            const messages = (await Promise.all(messagePromises)).filter(msg => msg !== null) as [];
+            channelData['messageIDS'] = messages; // Agregar los mensajes completos al objeto channelData
+          } else {
+            channelData['messageIDS'] = []; // Si no hay mensajes, asignar un array vacío
+          }
+
+          observer.next(channelData); // Enviar el canal con los datos completos de los mensajes
         } else {
-          observer.next(null); // Si el documento no existe, envía null
+          observer.next(null); // Si el documento no existe, emitir null
         }
       });
     });
