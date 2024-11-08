@@ -69,51 +69,12 @@ export class ThreadComponent {
     }
   }
 
-
-  threadHeadSubject: BehaviorSubject<ThreadMessageHead> = new BehaviorSubject<ThreadMessageHead>(this.threadInitial);
-  threadHead$: Observable<ThreadMessageHead> = this.threadHeadSubject.asObservable();
-
-  
-  private threadIDSubject = new BehaviorSubject<string | null>(null);  // Crear BehaviorSubject
-  threadID$: Observable<string | null> = this.threadIDSubject.asObservable();
-  
-  private threadsArraySubject = new BehaviorSubject<ThreadMessage[]>([]);  // Crear BehaviorSubject
-  threadsArray$: Observable<ThreadMessage[]> = this.threadsArraySubject.asObservable();
-
-  // channelData$: Observable<Channel> = new Observable();
-  selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
-    effect(() => {
-      const channel = this.selectedChannel();
-      if (channel) {
-        console.log("Datos del canal actualizados:", channel);
-      }
-    });
+    
   }
 
   ngOnInit(): void {
-    const sub3 = this.store.select(selectThreadSelector).subscribe(async (thread) => {
-      // console.log(thread);
-      this.threadHeadSubject.next(thread);
-      this.threadHead$.subscribe(val=>{this.threadInitial = val})
-      let threadID = thread?.msg.threadID;
-      this.threadIDSubject.next(threadID);
-      if (threadID) {     
-        this.channelService.loadThreadMessages(threadID);
-        const sub1 = this.channelService.getthreadMessagesUpdated()
-        .pipe(map(threads => threads.sort((a, b) => a.createdAt - b.createdAt)))
-        .subscribe(val =>{this.messagesSubject.next(val)})
-        this.subscription.add(sub1);
-      }
-      const sub2 = this.userService.currentUser$.subscribe(user => {this.currentUser = user});
-      this.subscription.add(sub2);
-    });
-    this.subscription.add(sub3);
-    // this.channelData$ = this.store.select(selectSelectedChannelSelector);
-    // this.channelData$.subscribe(val=>{
-    //   console.log(val);
-    // })
   }
 
   ngOnDestroy(): void {

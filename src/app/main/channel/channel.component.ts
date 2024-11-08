@@ -55,9 +55,9 @@ export class ChannelComponent {
   })
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
-    this.channelService.messagesUpdated.subscribe((updatedMessages) => {
-      this.channelAllData.set({ ...this.channelAllData(), messages: updatedMessages });
-    });  
+    // this.channelService.messagesUpdated.subscribe((updatedMessages) => {
+    //   this.channelAllData.set({ ...this.channelAllData(), messages: updatedMessages });
+    // });  
     effect(() => {
       // console.log(this.selectedChannel());
       //  console.log(this.channelAllData());
@@ -73,22 +73,18 @@ export class ChannelComponent {
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
     this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
       // this.selectedChannel.set(channel); 
-      if (channel) {
-        // console.log(channel);
-        await this.getChannelAllData(channel); // Asegúrate de que el canal no sea nulo
-        this.channelService.observeChannel(channel.id);
-      }
+     
     });
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;        
     });
   }
 
-  private async getChannelAllData(channel: Channel) {
-    const {userName, messages} = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
-    this.channelAllData.set({ userName, messages }); // Actualiza el signal con el nombre del creador
-    console.log(this.channelAllData());
-  }
+  // private async getChannelAllData(channel: Channel) {
+  //   const {userName, messages} = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
+  //   this.channelAllData.set({ userName, messages }); // Actualiza el signal con el nombre del creador
+  //   console.log(this.channelAllData());
+  // }
 
   // Methode, die das Einblenden auslöst
   onShowThread(thread: any) {

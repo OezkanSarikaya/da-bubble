@@ -2,7 +2,7 @@
   <div class="threadName">
     <div>
       <h3>Thread</h3>
-      <span># {{selectedChannel()?.name}}</span>
+      <span># Entwickerteam</span>
     </div>
 
 
@@ -19,81 +19,81 @@
   </div>
 
   <div class="threadBody">
-      @if((threadInitial.msg.senderID) !== currentUser.idFirebase){
+      @if(true){
         <!-- <div class="timeLine"><span>{{threadInitial.msg.createdAtString}}</span></div> -->
         <div class="chatMessage leftMessage">
           <img
             class="userProfile70"
-            src="{{threadInitial.avatarUrl}}"
-            alt="{{threadInitial.msg.fullName}}"
+            src=""
+            alt=""
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName">{{threadInitial.msg.fullName}}</span>
-              <time class="time" datetime="">{{threadInitial.msg.time}}</time>
+              <span class="userName"></span>
+              <time class="time" datetime=""></time>
             </header>
-            <div class="messageText">{{threadInitial.msg.content}}</div>
+            <div class="messageText"></div>
           </div>
         </div> 
       }@else {
-        <div class="timeLine"><span>{{threadInitial.msg.createdAtString}}</span></div>
+        <div class="timeLine"><span></span></div>
         <div class="chatMessage rightMessage">
           <img
             class="userProfile70"
-            src="{{threadInitial.avatarUrl}}"
-            alt="{{threadInitial.msg.fullName}}"
+            src=""
+            alt=""
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName">{{threadInitial.msg.fullName}}</span>
-              <time class="time" datetime="">{{threadInitial.msg.time}}</time>
+              <span class="userName"></span>
+              <time class="time" datetime=""></time>
             </header>
-            <div class="messageText">{{threadInitial.msg.content}}</div>
+            <div class="messageText"></div>
           </div>
         </div> 
       }
 
       <div class="countThread">
-        <span>{{threadInitial.msg.threadCount}} Antworten</span>
+        <span> Antworten</span>
         <div class="horizontal-line"></div>
       </div>
 
 
-      @for (message of message$ | async; track $index) {
-        @if(message.senderID !== currentUser.idFirebase){
-          <div class="timeLine"><span>{{message.createdAtString}}</span></div>
+      <!-- @for (message of message$ | async; track $index) { -->
+        @if(true){
+          <div class="timeLine"><span></span></div>
           <div class="chatMessage leftMessage">
             <img
               class="userProfile70"
-              src="{{message.avatarUrl}}"
+              src=""
               alt=""
             />
             <div class="chatMessageDetails">
               <header>
-                <span class="userName">{{message.userName}}</span>
-                <time class="time" datetime="">{{message.time}}</time>
+                <span class="userName"></span>
+                <time class="time" datetime=""></time>
               </header>
-              <div class="messageText">{{message.content}}</div>
+              <div class="messageText"></div>
             </div>
           </div> 
         }@else {
-          <div class="timeLine"><span>{{message.createdAtString}}</span></div>
+          <div class="timeLine"><span></span></div>
           <div class="chatMessage rightMessage">
             <img
               class="userProfile70"
-              src="{{message.avatarUrl}}"
+              src=""
             />
             <div class="chatMessageDetails">
               <header>
-                <span class="userName">{{message.userName}}</span>
-                <time class="time" datetime="">{{message.time}}</time>
+                <span class="userName"></span>
+                <time class="time" datetime=""></time>
               </header>
-              <div class="messageText">{{message.content}}</div>
+              <div class="messageText"></div>
             </div>
           </div> 
         }
         
-      }
+      <!-- } -->
   </div>
 
   <app-chatmsgbox></app-chatmsgbox>
