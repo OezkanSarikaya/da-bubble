@@ -362,21 +362,21 @@
     </div>
   </div>
   <div class="channelBody">
-    @for (message of channelObserved()?.messageIDS; track $index) {
+    @for (msg of channelObserved()?.messages; track $index) {
       @if(true){
-        <div class="timeLine"><span>{{message.createAtString}}</span></div>
+        <div class="timeLine"><span>{{msg.createAtString}}</span></div>
         <div class="chatMessage leftMessage">
           <img
             class="userProfile70"
-            src="{{message.senderData?.avatar}}"
+            src="{{msg.senderData?.avatar}}"
             alt=""
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName">{{message.senderData?.fullName}}</span>
-              <time class="time" datetime="">{{message.time}} Uhr</time>
+              <span class="userName">{{msg.senderData?.fullName}}</span>
+              <time class="time" datetime="">{{msg.time}} Uhr</time>
             </header>
-            <div class="messageText">{{message.content}}</div>
+            <div class="messageText">{{msg.content}}</div>
             @if(true){
               <footer>
                 <span class="answers"> 2 Antworten </span>

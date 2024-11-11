@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { showThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
-import { Observable } from 'rxjs';
-import { ChannelService } from '../../services/channel.service';
+import { forkJoin, Observable } from 'rxjs';
+import { ChannelService, Message } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
@@ -42,6 +42,12 @@ export class ChannelComponent {
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
   channelObserved = signal<Channel | null>(null)
+  // messagesComputed = computed(() => {
+  //   this.channelObserved()?.messageIDS.map(msg =>{
+  //     console.log(msg);
+  //     this.channelService.fetchMessage(msg)
+  //   })
+  // });
   // channelDataOrganized = computed(() => {
   //   const messages = this.channelAllData().messages || [];
   //   return messages.sort((a, b) => {
@@ -71,6 +77,7 @@ export class ChannelComponent {
         // console.log(this.selectedChannel());
         console.log('Canal observado actualizado:', this.channelObserved());
       }
+      
     })
   }
 
@@ -81,6 +88,7 @@ export class ChannelComponent {
       if (channel) {
         this.selectedChannel.set(channel);
         this.channelService.observeChannel(channel.id).subscribe((updatedChannel) => {
+          console.log('Canal observado emitido:', updatedChannel); 
           this.channelObserved.set(updatedChannel);
         });
       }
@@ -88,10 +96,10 @@ export class ChannelComponent {
     this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;        
     });
-
-    
   }
 
+   
+ 
   // private async getChannelAllData(channel: Channel) {
   //   const {userName, messages} = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
   //   this.channelAllData.set({ userName, messages }); // Actualiza el signal con el nombre del creador
