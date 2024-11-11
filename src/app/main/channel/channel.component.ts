@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { showThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
 import { forkJoin, Observable } from 'rxjs';
-import { ChannelService, Message } from '../../services/channel.service';
+import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';

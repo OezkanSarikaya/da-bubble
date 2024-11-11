@@ -2,24 +2,26 @@ import { effect, EventEmitter, inject, Injectable, signal } from '@angular/core'
 import { addDoc, arrayUnion, collection, doc, docData, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
 import { BehaviorSubject, combineLatest, filter, forkJoin, Observable, switchMap, timestamp } from 'rxjs';
+import { Message } from '../interfaces/message';
+import { User } from '../interfaces/user';
 
-export interface Message {
-  content: string,
-  senderID: string,
-  createdAt: Date,
-  threadIDS: string[],
-  id: string,
-  senderData?: User,
-  createAtString?: string,
-  time?: string
-}
+// export interface Message {
+//   content: string,
+//   senderID: string,
+//   createdAt: Date,
+//   threadIDS: string[],
+//   id: string,
+//   senderData?: User,
+//   createAtString?: string,
+//   time?: string
+// }
 
-export interface User {
-  avatar: string,
-  email: string,
-  fullName: string,
-  id: string,
-}
+// export interface User {
+//   avatar: string,
+//   email: string,
+//   fullName: string,
+//   id: string,
+// }
 
 @Injectable({
   providedIn: 'root'
@@ -114,11 +116,12 @@ export class ChannelService {
               time: this.formatTimestampTo24HourFormat(createdAtTimestamp.seconds)
             } as Message;
 
-            const userData = await this.fetchUser(messageData.senderID);
-            if (userData) {
-              messageData.senderData = userData; // Agregar datos de usuario al mensaje en un campo separado
-            }
-            observer.next(messageData);
+            this.fetchUserAsObservable(messageData.senderID).subscribe((userData) => {
+              if (userData) {
+                messageData.senderData = userData;
+              }
+              observer.next(messageData); // Emitimos el mensaje con datos de usuario
+            });
           } else {
             observer.next(null); // Mensaje no existe
           }
@@ -126,48 +129,42 @@ export class ChannelService {
       });
   }
 
-  // Obtener mensaje y datos de usuario
-  // private async fetchMessageWithUser(messageId: string): Promise<Message | null> {
-  //   const messageDocRef = doc(this.firestore, 'messages', messageId);
-  //   const messageSnapshot = await getDoc(messageDocRef);
+  private fetchUserAsObservable(userId: string): Observable<User | null> {
+    const userDocRef = doc(this.firestore, 'users', userId);
 
-  //   if (messageSnapshot.exists()) {
-  //     const messageDataFromDb = messageSnapshot.data();
-  //     const createdAtTimestamp = messageDataFromDb['createdAt'] as Timestamp;
-  //     const messageData: Message = {
-  //       id: messageSnapshot.id,
-  //       ...messageDataFromDb,
-  //       createdAt: createdAtTimestamp.toDate(), // Conversión a Date para createdAt
-  //       createAtString: this.getFormattedDate(createdAtTimestamp.seconds), // Formato de fecha legible
-  //       time: this.formatTimestampTo24HourFormat(createdAtTimestamp.seconds) 
-  //     } as Message ;
+      return new Observable<User | null>((observer) => {
+        onSnapshot(userDocRef, (userSnapshot) => {
+          if (userSnapshot.exists()) {
+            const userData: User = {
+              id: userSnapshot.id,
+              ...userSnapshot.data(),
+              avatar: userSnapshot.data()['avatar'],
+              fullName: userSnapshot.data()['fullName'],
+            } as User;
+            observer.next(userData); // Emitimos los datos del usuario
+          } else {
+            observer.next(null); // Usuario no existe
+          }
+        });
+      });
+  }
 
-  //     const userData = await this.fetchUser(messageData.senderID);
-  //     if (userData) {
-  //       messageData.senderData = userData; // Agregar datos de usuario al mensaje en un campo separado
-  //     }
-  //     return messageData;
+  // Obtener datos de usuario en tiempo real
+  // private async fetchUser(userId: string): Promise<User | null> {
+  //   const userDocRef = doc(this.firestore, 'users', userId);
+  //   const userSnapshot = await getDoc(userDocRef);
+
+  //   if (userSnapshot.exists()) {
+  //     return {
+  //       id: userSnapshot.id,
+  //       ...userSnapshot.data(),
+  //       avatar: userSnapshot.data()['avatar'],
+  //       fullName: userSnapshot.data()['fullName'],
+  //     } as User;
   //   } else {
   //     return null;
   //   }
   // }
-
-  // Obtener datos de usuario en tiempo real
-  private async fetchUser(userId: string): Promise<User | null> {
-    const userDocRef = doc(this.firestore, 'users', userId);
-    const userSnapshot = await getDoc(userDocRef);
-
-    if (userSnapshot.exists()) {
-      return {
-        id: userSnapshot.id,
-        ...userSnapshot.data(),
-        avatar: userSnapshot.data()['avatar'],
-        fullName: userSnapshot.data()['fullName'],
-      } as User;
-    } else {
-      return null;
-    }
-  }
 
 
   formatTimestampTo24HourFormat(timestampInSeconds: number): string {

@@ -363,7 +363,7 @@
   </div>
   <div class="channelBody">
     @for (msg of channelObserved()?.messages; track $index) {
-      @if(true){
+      @if(msg.senderID !== currentUser.idFirebase){
         <div class="timeLine"><span>{{msg.createAtString}}</span></div>
         <div class="chatMessage leftMessage">
           <img
@@ -384,21 +384,20 @@
             }
           </div>
         </div>
-      }
-      <!-- @else {
-        <div class="timeLine"><span>18 January</span></div>
+      }@else {
+        <div class="timeLine"><span>{{msg.createAtString}}</span></div>
         <div class="chatMessage rightMessage">
           <img
             class="userProfile70"
-            src=""
+            src="{{msg.senderData?.avatar}}"
             alt=""
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName">Test Name</span>
-              <time class="time" datetime="">14:00 Uhr</time>
+              <span class="userName">{{msg.senderData?.fullName}}</span>
+              <time class="time" datetime="">{{msg.time}} Uhr</time>
             </header>
-            <div class="messageText">Test message</div>
+            <div class="messageText">{{msg.content}}</div>
             @if(true){
               <footer>
                 <span class="answers"> 2 Antworten </span>
@@ -406,7 +405,7 @@
             }
           </div>
         </div>
-      } -->
+      } 
     }
 
 
