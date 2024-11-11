@@ -21,7 +21,7 @@
       <input
         type="text"
         placeholder="An: # {{
-          selectedChannel()?.name
+          channelObserved()?.name
         }}, oder @jemand oder E-Mail Adresse"
       />
     </div>
@@ -163,7 +163,7 @@
         </svg>
       </header>
       <div class="popupBody">
-        <span># {{ selectedChannel()?.name }}</span>
+        <span># {{ channelObserved()?.name }}</span>
 
         <input type="text" placeholder="Name eingeben" />
         <footer>
@@ -176,7 +176,7 @@
 
     <div class="channelInfo" *ngIf="isChannelInfoOpen">
       <header>
-        <h3># {{ selectedChannel()?.name }}</h3>
+        <h3># {{ channelObserved()?.name }}</h3>
         <svg
           (click)="toggleChannelInfo()"
           width="24"
@@ -210,7 +210,7 @@
             <h4>Channel-Name</h4>
             <span>Bearbeiten</span>
           </div>
-          <span># {{ selectedChannel()?.name }}</span>
+          <span># {{ channelObserved()?.name }}</span>
         </div>
         <div class="roundBox">
           <div class="roundBoxHeader">
@@ -266,7 +266,7 @@
           />
         </g>
       </svg>
-      <span>{{ selectedChannel()?.name }}</span>
+      <span>{{ channelObserved()?.name }}</span>
       <svg
         width="30"
         height="30"
@@ -377,9 +377,9 @@
               <time class="time" datetime="">{{msg.time}} Uhr</time>
             </header>
             <div class="messageText">{{msg.content}}</div>
-            @if(true){
+            @if(msg.threadIDS.length > 0){
               <footer>
-                <span class="answers"> 2 Antworten </span>
+                <span class="answers"> {{msg.threadIDS.length}} Antworten </span>
               </footer>
             }
           </div>
@@ -398,9 +398,9 @@
               <time class="time" datetime="">{{msg.time}} Uhr</time>
             </header>
             <div class="messageText">{{msg.content}}</div>
-            @if(true){
+            @if(msg.threadIDS.length > 0){
               <footer>
-                <span class="answers"> 2 Antworten </span>
+                <span class="answers"> {{msg.threadIDS.length}} Antworten </span>
               </footer>
             }
           </div>

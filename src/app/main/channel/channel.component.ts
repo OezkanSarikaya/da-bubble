@@ -42,36 +42,8 @@ export class ChannelComponent {
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
   channelObserved = signal<Channel | null>(null)
-  // messagesComputed = computed(() => {
-  //   this.channelObserved()?.messageIDS.map(msg =>{
-  //     console.log(msg);
-  //     this.channelService.fetchMessage(msg)
-  //   })
-  // });
-  // channelDataOrganized = computed(() => {
-  //   const messages = this.channelAllData().messages || [];
-  //   return messages.sort((a, b) => {
-  //     return a.msg.createdAt.seconds - b.msg.createdAt.seconds; 
-  //   });
-  // });
-  // selectedChannel: Signal<Channel | null> = this.channelService.selectedChannel;
-  // messageReferenz = computed(() => {
-  //   const channel = this.selectedChannel();
-  //   return channel ? { name: channel.name, idChannel: channel.id, userLoginId: this.currentUser.idFirebase } : {name: '', idChannel: '', userLoginId: ''};
-  // })
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
-    // this.channelService.messagesUpdated.subscribe((updatedMessages) => {
-    //   this.channelAllData.set({ ...this.channelAllData(), messages: updatedMessages });
-    // });  
-    // effect(() => {
-    //   // console.log(this.selectedChannel());
-    //   //  console.log(this.channelAllData());
-    //   //  console.log(this.channelDataOrganized());
-    //    this.selectedChannel();
-    //    this.channelAllData();
-    //    this.channelDataOrganized();
-    //   });
     effect(()=>{
       if(this.selectedChannel()){
         // console.log(this.selectedChannel());
