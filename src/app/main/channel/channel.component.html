@@ -405,7 +405,7 @@
             <div class="messageText">{{msg.content}}</div>
             @if(msg.threadIDS.length > 0){
               <footer>
-                <span class="answers"> {{msg.threadIDS.length}} Antworten </span>
+                <span class="answers" (click)="onShowThread(msg)"> {{msg.threadIDS.length}} Antworten </span>
               </footer>
             }
           </div>

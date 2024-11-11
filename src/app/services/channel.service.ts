@@ -1,27 +1,9 @@
-import { effect, EventEmitter, inject, Injectable, signal } from '@angular/core';
-import { addDoc, arrayUnion, collection, doc, docData, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { effect, inject, Injectable, signal } from '@angular/core';
+import { addDoc, arrayUnion, collection, doc, Firestore, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
-import { BehaviorSubject, combineLatest, filter, forkJoin, Observable, switchMap, timestamp } from 'rxjs';
+import { combineLatest, filter, forkJoin, Observable } from 'rxjs';
 import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
-
-// export interface Message {
-//   content: string,
-//   senderID: string,
-//   createdAt: Date,
-//   threadIDS: string[],
-//   id: string,
-//   senderData?: User,
-//   createAtString?: string,
-//   time?: string
-// }
-
-// export interface User {
-//   avatar: string,
-//   email: string,
-//   fullName: string,
-//   id: string,
-// }
 
 @Injectable({
   providedIn: 'root'
@@ -69,38 +51,27 @@ export class ChannelService {
       messageIDS: arrayUnion(messageID)
     });
   }
-  //Aqui funcionaba todo
+  
   observeChannel(channelId: string): Observable<Channel> {
     const channelDocRef = doc(this.firestore, 'channels', channelId);
-
       return new Observable<Channel>((observer) => {
-        // Escuchamos cambios en el documento del canal en tiempo real
         onSnapshot(channelDocRef, (channelSnapshot) => {
           const channelData = channelSnapshot.data();
 
           if (!channelData?.['messageIDS']) {
-            // Si no hay mensajes, devolvemos solo el canal
             observer.next(channelData as Channel);
           } else {
             const { messageIDS, members } = channelData;
 
-            // Si hay mensajes, los cargamos como un Observable en tiempo real
-            // const messageObservables = channelData['messageIDS'].map((messageId: string) =>
-            //   this.fetchMessageWithUserAsObservable(messageId).pipe(
-            //     filter((msg): msg is Message => msg !== null) // Filtramos `null`
-            //   )
-            // );
-            // Obtenemos los observables de los mensajes
             const messageObservables = (messageIDS || []).map((messageId: string) =>
                 this.fetchMessageWithUserAsObservable(messageId).pipe(
-                    filter((msg): msg is Message => msg !== null) // Filtramos `null`
+                    filter((msg): msg is Message => msg !== null)
                 )
             );
 
-            // Obtenemos los observables de los miembros
             const memberObservables = (members || []).map((memberId: string) =>
                 this.fetchUserAsObservable(memberId).pipe(
-                    filter((user): user is User => user !== null) // Filtramos `null`
+                    filter((user): user is User => user !== null)
                 )
             );
 
@@ -137,10 +108,10 @@ export class ChannelService {
               if (userData) {
                 messageData.senderData = userData;
               }
-              observer.next(messageData); // Emitimos el mensaje con datos de usuario
+              observer.next(messageData); 
             });
           } else {
-            observer.next(null); // Mensaje no existe
+            observer.next(null); 
           }
         });
       });
@@ -158,41 +129,23 @@ export class ChannelService {
               avatar: userSnapshot.data()['avatar'],
               fullName: userSnapshot.data()['fullName'],
             } as User;
-            observer.next(userData); // Emitimos los datos del usuario
+            observer.next(userData); 
           } else {
-            observer.next(null); // Usuario no existe
+            observer.next(null); 
           }
         });
       });
   }
 
-  // Obtener datos de usuario en tiempo real
-  // private async fetchUser(userId: string): Promise<User | null> {
-  //   const userDocRef = doc(this.firestore, 'users', userId);
-  //   const userSnapshot = await getDoc(userDocRef);
-
-  //   if (userSnapshot.exists()) {
-  //     return {
-  //       id: userSnapshot.id,
-  //       ...userSnapshot.data(),
-  //       avatar: userSnapshot.data()['avatar'],
-  //       fullName: userSnapshot.data()['fullName'],
-  //     } as User;
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
-
   formatTimestampTo24HourFormat(timestampInSeconds: number): string {
-    // Convertir segundos a milisegundos
+    //// Convertir segundos a milisegundos
     const date = new Date(timestampInSeconds * 1000);
   
-    // Obtener la hora y los minutos
+    // Get the hour and minutes
     const hours = date.getHours();
     const minutes = date.getMinutes();
   
-    // Formatear a dos dígitos
+    // Format to two digits
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
   
@@ -214,6 +167,25 @@ export class ChannelService {
     return formatter.format(date);
   }
 
+  public async createThreadedMessage(content: string, senderID: string, table: string, parentMessageID: string) {
+    // 1. Create the new message in the specified collection
+    const messageCollection = collection(this.firestore, table);
+    const result = await addDoc(messageCollection, {
+      content: content,
+      createdAt: Timestamp.now(),
+      senderID: senderID,
+      threadIDS: [],
+    });
+
+    // 2. Get the ID of the newly created message
+    const newMessageID = result.id;
+
+    // 3. Update the original message ('parentMessageID') to add the new message to 'threadIDS'
+    const parentMessageRef = doc(this.firestore, table, parentMessageID);
+    await updateDoc(parentMessageRef, {
+      threadIDS: arrayUnion(newMessageID)  // Añadir el nuevo mensaje a `threadIDS`
+    });
+  }
 
 
 }

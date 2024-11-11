@@ -1,10 +1,11 @@
 import { Component, effect, ElementRef, Input, input, signal, Signal, SimpleChanges, viewChild } from '@angular/core';
 import { Channel } from '../../interfaces/channel';
 import { ChannelService } from '../../services/channel.service';
-import { selectSelectedChannelSelector } from '../../state/selectors/triggerComponents.selectors';
+import { selectSelectedChannelSelector, selectThreadSelector } from '../../state/selectors/triggerComponents.selectors';
 import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { Message } from '../../interfaces/message';
 
 @Component({
   selector: 'app-chatmsgbox',
@@ -16,6 +17,7 @@ import { UserService } from '../../services/user.service';
 export class ChatmsgboxComponent {
   currentUser: any = null;
   selectedChannel = signal<Channel | null>(null);
+  selectedThread = signal<Message | null>(null);
   content: string = ''
   @Input() context: 'channel' | 'thread' = 'channel';
 
@@ -23,6 +25,7 @@ export class ChatmsgboxComponent {
     effect(() => {
       //  console.log(this.selectedChannel());
        this.selectedChannel()
+       console.log(this.selectedThread());
     });
   }
 
@@ -30,6 +33,11 @@ export class ChatmsgboxComponent {
     this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
       if (channel) {
         this.selectedChannel.set(channel);
+      }
+    });
+    this.store.select(selectThreadSelector).subscribe(async (thread) => {
+      if (thread) {
+        this.selectedThread.set(thread);
       }
     });
     this.userService.currentUser$.subscribe((user: any) => {
@@ -45,6 +53,9 @@ export class ChatmsgboxComponent {
       }
     }else{
       console.log('thread');
+      if(this.selectedThread()){
+        this.channelService.createThreadedMessage(this.content, this.currentUser.idFirebase, 'messages', this.selectedThread()!.id)
+      }
     }
     this.content = '';
   }
