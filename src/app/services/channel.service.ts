@@ -69,7 +69,7 @@ export class ChannelService {
       messageIDS: arrayUnion(messageID)
     });
   }
-  
+  //Aqui funcionaba todo
   observeChannel(channelId: string): Observable<Channel> {
     const channelDocRef = doc(this.firestore, 'channels', channelId);
 
@@ -82,18 +82,35 @@ export class ChannelService {
             // Si no hay mensajes, devolvemos solo el canal
             observer.next(channelData as Channel);
           } else {
+            const { messageIDS, members } = channelData;
+
             // Si hay mensajes, los cargamos como un Observable en tiempo real
-            const messageObservables = channelData['messageIDS'].map((messageId: string) =>
-              this.fetchMessageWithUserAsObservable(messageId).pipe(
-                filter((msg): msg is Message => msg !== null) // Filtramos `null`
-              )
+            // const messageObservables = channelData['messageIDS'].map((messageId: string) =>
+            //   this.fetchMessageWithUserAsObservable(messageId).pipe(
+            //     filter((msg): msg is Message => msg !== null) // Filtramos `null`
+            //   )
+            // );
+            // Obtenemos los observables de los mensajes
+            const messageObservables = (messageIDS || []).map((messageId: string) =>
+                this.fetchMessageWithUserAsObservable(messageId).pipe(
+                    filter((msg): msg is Message => msg !== null) // Filtramos `null`
+                )
             );
 
-            combineLatest(messageObservables).subscribe((messages) => {
-              observer.next({
-                ...channelData,
-                messages: messages
-              } as Channel);
+            // Obtenemos los observables de los miembros
+            const memberObservables = (members || []).map((memberId: string) =>
+                this.fetchUserAsObservable(memberId).pipe(
+                    filter((user): user is User => user !== null) // Filtramos `null`
+                )
+            );
+
+           combineLatest([combineLatest(messageObservables), combineLatest(memberObservables)])
+            .subscribe(([messages, membersData]) => {
+                observer.next({
+                    ...channelData,
+                    messages: messages,
+                    membersData: membersData, // Nueva propiedad con datos de los miembros
+                } as Channel);
             });
           }
         });

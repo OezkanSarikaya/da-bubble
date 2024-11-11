@@ -296,10 +296,15 @@
 
     <div class="channelMembers">
       <div class="members" (click)="toggleChannelMembers()">
-        <img src="../../../assets/img/img_profile/profile1.png" alt="" />
-        <img src="../../../assets/img/img_profile/profile2.png" alt="" />
-        <img src="../../../assets/img/img_profile/profile3.png" alt="" />
-        <span class="memberCount">3</span>
+        
+        @for (member of channelObserved()?.membersData!.slice(0, 3); track $index) {
+          <img src="{{member.avatar}}" alt="" />
+        }
+        <span class="memberCount">
+          @if(channelObserved()?.members!.length >3){
+           +{{channelObserved()?.members!.length -3}}
+          }
+        </span>
       </div>
 
       <svg

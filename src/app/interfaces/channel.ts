@@ -1,4 +1,5 @@
 import { Message } from "./message";
+import { User } from "./user";
 
 export interface Channel {
   id: string,
@@ -9,4 +10,5 @@ export interface Channel {
   messageIDS: string[],
   members: string[],
   messages: Message[]
+  membersData?: User[]; 
 }
