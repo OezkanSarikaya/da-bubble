@@ -9,6 +9,7 @@ import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
+import { Message } from '../../interfaces/message';
 
 
 interface ChannelAllData {
@@ -71,16 +72,9 @@ export class ChannelComponent {
   }
 
    
- 
-  // private async getChannelAllData(channel: Channel) {
-  //   const {userName, messages} = await this.channelService.getChannelSelectedData(channel); // Obtiene el nombre del creador
-  //   this.channelAllData.set({ userName, messages }); // Actualiza el signal con el nombre del creador
-  //   console.log(this.channelAllData());
-  // }
-
   // Methode, die das Einblenden auslöst
-  onShowThread(thread: any) {
-    this.store.dispatch(showThreadComponent({thread}))
+  onShowThread(message: Message) {
+    this.store.dispatch(showThreadComponent({message}))
   }
 
   toggleChannelMembers() {

@@ -1,8 +1,9 @@
 import { createAction, props } from "@ngrx/store";
 import { Channel } from "../../interfaces/channel";
+import { Message } from "../../interfaces/message";
 
 export const triggerPopUserProfile = createAction('[Pop User Profile] open/close');
-export const showThreadComponent = createAction('[Thread Component] open', props<{thread: any}>());
+export const showThreadComponent = createAction('[Thread Component] open', props<{message: Message}>());
 export const hideThreadComponent = createAction('[Thread Component] close');
 export const hideUserProfile = createAction('[User Profile/Edit Header Component] open/close');
 export const showNewMessage = createAction('[New Message] open');

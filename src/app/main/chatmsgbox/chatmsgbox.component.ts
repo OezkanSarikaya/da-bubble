@@ -17,6 +17,7 @@ export class ChatmsgboxComponent {
   currentUser: any = null;
   selectedChannel = signal<Channel | null>(null);
   content: string = ''
+  @Input() context: 'channel' | 'thread' = 'channel';
 
   constructor(private channelService: ChannelService, private store: Store, private userService: UserService){ 
     effect(() => {
@@ -37,9 +38,13 @@ export class ChatmsgboxComponent {
   }
 
   sendMessage(){
-    if(this.selectedChannel()){
-      const channelID = this.selectedChannel()!.id
-      this.channelService.createMessage(this.content, this.currentUser.idFirebase, 'messages', channelID);
+    if(this.context === 'channel'){
+      if(this.selectedChannel()){
+        const channelID = this.selectedChannel()!.id
+        this.channelService.createMessage(this.content, this.currentUser.idFirebase, 'messages', channelID);
+      }
+    }else{
+      console.log('thread');
     }
     this.content = '';
   }
