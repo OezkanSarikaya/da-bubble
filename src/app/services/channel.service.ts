@@ -1,14 +1,24 @@
 import { effect, EventEmitter, inject, Injectable, signal } from '@angular/core';
-import { addDoc, arrayUnion, collection, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { addDoc, arrayUnion, collection, doc, docData, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
-import { BehaviorSubject, Observable, timestamp } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, timestamp } from 'rxjs';
 
 export interface Message {
   content: string,
   createdAt: Date,
   senderID: string,
-  threadIDS: [],
-  id: string
+  threadIDS: string[],
+  id: string,
+  senderData?: User,
+  createAtString?: string,
+  time?: string
+}
+
+export interface User {
+  avatar: string,
+  email: string,
+  fullName: string,
+  id: string,
 }
 
 @Injectable({
@@ -57,69 +67,68 @@ export class ChannelService {
     });
   }
 
-  // observeChannel(channelId: string) {
-  //   const channelDocRef = doc(this.firestore, 'channels', channelId);
-  //   return new Observable<Channel | null>((observer) => {
-  //     // Suscríbete a cambios en el documento
-  //     onSnapshot(channelDocRef, (doc) => {
-  //       if (doc.exists()) {
-  //         const channelData = {
-  //           id: doc.id,
-  //           ...doc.data(),
-  //           createdAt: (doc.data()['createdAt'] as Timestamp).toDate(),
-  //         } as Channel;
-  //         observer.next(channelData); // Envía el canal actualizado a los suscriptores
-  //       } else {
-  //         observer.next(null); // Si el documento no existe, envía null
-  //       }
-  //     });
-  //   });
-  // }
-
-  observeChannel(channelId: string): Observable<Channel | null> {
+  observeChannel(channelId: string): Observable<Channel> {
     const channelDocRef = doc(this.firestore, 'channels', channelId);
-
-    return new Observable<Channel | null>((observer) => {
-      onSnapshot(channelDocRef, async (snapshot) => {
-        if (snapshot.exists()) {
-          const channelData = {
-            id: snapshot.id,
-            ...snapshot.data(),
-            createdAt: (snapshot.data()['createdAt'] as Timestamp).toDate(),
-          } as Channel;
-
-          // Cargar los datos completos de los mensajes usando los IDs en messageIDS
-          if (channelData.messageIDS && channelData.messageIDS.length > 0) {
-            const messagePromises = channelData.messageIDS.map(async (messageId: string) => {
-              const messageDocRef = doc(this.firestore, 'messages', messageId);
-              const messageSnapshot = await getDoc(messageDocRef);
-              if (messageSnapshot.exists()) {
-                return {
-                  id: messageSnapshot.id,
-                  ...messageSnapshot.data(),
-                  createdAt: (messageSnapshot.data()['createdAt'] as Timestamp).toDate(),
-                } as Message;
-              } else {
-                return null;
-              }
-            });
-
-            // Esperar a que todas las promesas se resuelvan y filtrar mensajes nulos
-            const messages = (await Promise.all(messagePromises)).filter(msg => msg !== null) as [];
-            channelData['messageIDS'] = messages; // Agregar los mensajes completos al objeto channelData
-          } else {
-            channelData['messageIDS'] = []; // Si no hay mensajes, asignar un array vacío
-          }
-
-          observer.next(channelData); // Enviar el canal con los datos completos de los mensajes
+  
+    return docData(channelDocRef).pipe(
+      switchMap(async (channelData: any) => {
+        if (channelData?.messageIDS) {
+          // Cargar todos los mensajes completos usando los IDs en messageIDS
+          const messagePromises = channelData.messageIDS.map(async (messageId: string) => {
+            return this.fetchMessageWithUser(messageId); // Método que obtiene datos completos del mensaje
+          });
+          const messages = await Promise.all(messagePromises);
+          // Retornar el canal con los mensajes completos
+          return { ...channelData, messageIDS: messages } as Channel;
         } else {
-          observer.next(null); // Si el documento no existe, emitir null
+          return channelData as Channel;
         }
-      });
-    });
+      })
+    );
   }
 
- 
+  // Obtener mensaje y datos de usuario
+  private async fetchMessageWithUser(messageId: string): Promise<Message | null> {
+    const messageDocRef = doc(this.firestore, 'messages', messageId);
+    const messageSnapshot = await getDoc(messageDocRef);
+
+    if (messageSnapshot.exists()) {
+      const messageDataFromDb = messageSnapshot.data();
+      const createdAtTimestamp = messageDataFromDb['createdAt'] as Timestamp;
+      const messageData: Message = {
+        id: messageSnapshot.id,
+        ...messageDataFromDb,
+        createdAt: createdAtTimestamp.toDate(), // Conversión a Date para createdAt
+        createAtString: this.getFormattedDate(createdAtTimestamp.seconds), // Formato de fecha legible
+        time: this.formatTimestampTo24HourFormat(createdAtTimestamp.seconds) 
+      } as Message ;
+
+      const userData = await this.fetchUser(messageData.senderID);
+      if (userData) {
+        messageData.senderData = userData; // Agregar datos de usuario al mensaje en un campo separado
+      }
+      return messageData;
+    } else {
+      return null;
+    }
+  }
+
+  // Obtener datos de usuario en tiempo real
+  private async fetchUser(userId: string): Promise<User | null> {
+    const userDocRef = doc(this.firestore, 'users', userId);
+    const userSnapshot = await getDoc(userDocRef);
+
+    if (userSnapshot.exists()) {
+      return {
+        id: userSnapshot.id,
+        ...userSnapshot.data(),
+        avatar: userSnapshot.data()['avatar'],
+        fullName: userSnapshot.data()['fullName'],
+      } as User;
+    } else {
+      return null;
+    }
+  }
 
 
   formatTimestampTo24HourFormat(timestampInSeconds: number): string {
