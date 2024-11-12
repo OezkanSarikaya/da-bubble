@@ -107,9 +107,11 @@ export class ChannelService {
 
             this.fetchUserAsObservable(messageData.senderID).subscribe((userData) => {
               if (userData) {
-                messageData.senderData = userData;
+                const messageDataWithSender = { ...messageData, senderData: userData };
+                observer.next(messageDataWithSender);
+              }else{
+                observer.next(messageData); 
               }
-              observer.next(messageData); 
             });
           } else {
             observer.next(null); 
@@ -130,7 +132,7 @@ export class ChannelService {
               avatar: userSnapshot.data()['avatar'],
               fullName: userSnapshot.data()['fullName'],
             } as User;
-            observer.next(userData); 
+            observer.next({...userData}); 
           } else {
             observer.next(null); 
           }
@@ -215,14 +217,15 @@ export class ChannelService {
 
             combineLatest([combineLatest(threadObservables), userObservable])
                     .subscribe(([threadData, user]) => {
-                        observer.next({
-                            ...MessageData,
-                            threadData: threadData,
-                            senderData: user,        
-                            createdAt: createdAt,
-                            createdAtString: this.getFormattedDate(createdAt?.getTime() / 1000 || 0),
-                            time: this.formatTimestampTo24HourFormat(createdAt?.getTime() / 1000 || 0)
-                          });
+                      const threadMessageCopy = {
+                        ...MessageData,
+                        threadData: threadData,
+                        senderData: user,        
+                        createdAt: createdAt,
+                        createdAtString: this.getFormattedDate(createdAt?.getTime() / 1000 || 0),
+                        time: this.formatTimestampTo24HourFormat(createdAt?.getTime() / 1000 || 0)
+                      }
+                        observer.next(threadMessageCopy as ThreadMessage);
                     });
           }
         });
