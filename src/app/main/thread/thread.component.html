@@ -58,42 +58,43 @@
         <div class="horizontal-line"></div>
       </div>
 
-
-      <!-- @for (message of message$ | async; track $index) { -->
-        @if(true){
-          <div class="timeLine"><span></span></div>
-          <div class="chatMessage leftMessage">
-            <img
-              class="userProfile70"
-              src=""
-              alt=""
-            />
-            <div class="chatMessageDetails">
-              <header>
-                <span class="userName"></span>
-                <time class="time" datetime=""></time>
-              </header>
-              <div class="messageText"></div>
-            </div>
-          </div> 
-        }@else {
-          <div class="timeLine"><span></span></div>
-          <div class="chatMessage rightMessage">
-            <img
-              class="userProfile70"
-              src=""
-            />
-            <div class="chatMessageDetails">
-              <header>
-                <span class="userName"></span>
-                <time class="time" datetime=""></time>
-              </header>
-              <div class="messageText"></div>
-            </div>
-          </div> 
+      @if(threadObserved()?.threadIDS?.length){
+        @for (thread of threadObserved()?.threadData; track $index) {
+          @if(thread.senderID !== currentUser.idFirebase){
+            <div class="timeLine"><span>{{thread.createAtString}}</span></div>
+            <div class="chatMessage leftMessage">
+              <img
+                class="userProfile70"
+                src="{{thread.senderData?.avatar}}"
+                alt=""
+              />
+              <div class="chatMessageDetails">
+                <header>
+                  <span class="userName">{{thread.senderData?.fullName}}</span>
+                  <time class="time" datetime="">{{thread.time}}</time>
+                </header>
+                <div class="messageText">{{thread.content}}</div>
+              </div>
+            </div> 
+          }@else {
+            <div class="timeLine"><span>{{thread.createAtString}}</span></div>
+            <div class="chatMessage rightMessage">
+              <img
+                class="userProfile70"
+                src="{{thread.senderData?.avatar}}"
+              />
+              <div class="chatMessageDetails">
+                <header>
+                  <span class="userName">{{thread.senderData?.fullName}}</span>
+                  <time class="time" datetime="">{{thread.time}}</time>
+                </header>
+                <div class="messageText">{{thread.content}}</div>
+              </div>
+            </div> 
+          }
+          
         }
-        
-      <!-- } -->
+      }
   </div>
 
   <app-chatmsgbox context="thread"></app-chatmsgbox>
