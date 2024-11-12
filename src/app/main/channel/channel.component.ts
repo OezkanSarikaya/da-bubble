@@ -2,7 +2,7 @@ import { Component, computed, effect, EventEmitter, Input, Output, signal, Signa
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { hideThreadComponent, showThreadComponent } from '../../state/actions/triggerComponents.actions';
+import { editMessageChannelOpen, hideThreadComponent, showThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
@@ -44,6 +44,7 @@ export class ChannelComponent {
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
   channelObserved = signal<Channel | null>(null)
+  contentChannel: string = '';
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     effect(()=>{
@@ -70,18 +71,27 @@ export class ChannelComponent {
     const sub2 = this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;        
     });
+    const sub3 = this.channelService.contentEditChannel$.subscribe(content =>{
+      this.contentChannel = content
+    })
     this.subscription.add(sub1);
     this.subscription.add(sub2);
+    this.subscription.add(sub3);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();    
   }
 
-   
   // Methode, die das Einblenden auslöst
   onShowThread(message: Message) {
     this.store.dispatch(showThreadComponent({message}))
+  }
+
+  async editMessageChannel(messageID: string){
+    let content = await this.channelService.getMessageContentById(messageID);
+    this.channelService.setContentChannel(content);
+    this.store.dispatch(editMessageChannelOpen({messageID}));
   }
 
   toggleChannelMembers() {

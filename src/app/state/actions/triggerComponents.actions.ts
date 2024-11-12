@@ -10,3 +10,6 @@ export const showNewMessage = createAction('[New Message] open');
 export const hideNewMessage = createAction('[New Message] close');
 export const showChannelComponent = createAction('[Channel Component] open', props<{channel: Channel}>());
 export const hideChannelComponent = createAction('[Channel Component] close');
+export const editMessageChannelOpen = createAction('[chatmsgbox chanel component] open', props<{messageID: string}>());
+export const editMessageChannelClose = createAction('[chatmsgbox chanel component] close');
+export const editMessageThread = createAction('[chatmsgbox thread component] true/false');

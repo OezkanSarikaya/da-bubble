@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { hideThreadComponent, hideUserProfile, showNewMessage, hideNewMessage, showThreadComponent, showChannelComponent, triggerPopUserProfile, hideChannelComponent } from "../actions/triggerComponents.actions";
+import { hideThreadComponent, hideUserProfile, showNewMessage, hideNewMessage, showThreadComponent, showChannelComponent, triggerPopUserProfile, hideChannelComponent, editMessageThread, editMessageChannelOpen, editMessageChannelClose } from "../actions/triggerComponents.actions";
 import { Message } from "../../interfaces/message";
 
 export const initalState:  {
@@ -9,14 +9,18 @@ export const initalState:  {
   channelComponent: boolean
   newMessage: boolean,
   selectedChannel: {} | null,
-  selectedThread: Message | null
+  selectedThread: Message | null,
+  editMessageChannel: string | null,
+  editMessageThread: boolean,
 } = {userProfilePopUp: false,
     threadComponent: false,
     userProfileEditComponent: true,
     channelComponent: false,
     newMessage: true,
     selectedChannel: null, 
-    selectedThread: null
+    selectedThread: null,
+    editMessageChannel: null,
+    editMessageThread: false
 };
 
 
@@ -45,5 +49,14 @@ export const triggerComponentsReducer = createReducer(
   }),
   on(hideNewMessage, (state)=>{
     return {...state, newMessage: false}
+  }),
+  on(editMessageChannelOpen, (state, {messageID})=>{
+    return {...state, editMessageChannel: messageID}
+  }),
+  on(editMessageChannelClose, (state)=>{
+    return {...state, editMessageChannel: null}
+  }),
+  on(editMessageThread, (state)=>{
+    return {...state, editMessageThread: !state.editMessageThread}
   })
 );

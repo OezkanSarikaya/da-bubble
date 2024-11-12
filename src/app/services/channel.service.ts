@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { addDoc, arrayUnion, collection, doc, Firestore, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { addDoc, arrayUnion, collection, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
-import { combineLatest, filter, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, forkJoin, Observable } from 'rxjs';
 import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
 import { ThreadMessage } from '../interfaces/threadMessage';
@@ -13,6 +13,11 @@ export class ChannelService {
 
   allChannels = signal<Channel[]>([]);
   selectedChannel = signal<Channel | null>(null);
+  private contentEditChannelSubject: BehaviorSubject<string> = new BehaviorSubject('');
+  contentEditChannel$: Observable<string> = this.contentEditChannelSubject.asObservable();
+
+  private contentEditThreadSubject: BehaviorSubject<string> = new BehaviorSubject('');
+  contentEditThread$: Observable<string> = this.contentEditThreadSubject.asObservable();
  
   
   private firestore: Firestore = inject(Firestore);
@@ -23,6 +28,14 @@ export class ChannelService {
       console.log(this.allChannels());
     })
 
+  }
+
+  setContentChannel(content: string){
+    this.contentEditChannelSubject.next(content);
+  }
+
+  setContentThread(content: string){
+    this.contentEditThreadSubject.next(content);
   }
 
   private getAllChannels(){
@@ -254,5 +267,31 @@ export class ChannelService {
     return userObservable;
   }
 
+  async getMessageContentById(messageId: string): Promise<string> {
+      const messageDocRef = doc(this.firestore, 'messages', messageId);
+      try {
+          const messageSnapshot = await getDoc(messageDocRef);
+          // Verificar si el documento existe
+          if (messageSnapshot.exists()) {
+              const messageData = messageSnapshot.data();
+              return messageData['content'] as string; 
+          } else {
+              console.log(`Message with ID ${messageId} not found.`);
+              return '';
+          }
+      } catch (error) {
+          console.error("Error fetching message content:", error);
+          return '';
+      }
+  }
 
+  async updateMessageContent(messageId: string, newContent: string): Promise<void> {
+      const messageDocRef = doc(this.firestore, 'messages', messageId);
+      try {
+          await updateDoc(messageDocRef, { content: newContent });
+          console.log(`Message ${messageId} updated successfully!`);
+      } catch (error) {
+          console.error("Error updating message content:", error);
+      }
+  }
 }

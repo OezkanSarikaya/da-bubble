@@ -36,3 +36,13 @@ export const selectThreadSelector = createSelector(
   selectTriggerComponents,
   (state) => state.selectedThread
 );
+
+export const editMessageChannelSelector = createSelector(
+  selectTriggerComponents,
+  (state) => state.editMessageChannel
+);
+
+export const editMessageThreadSelector = createSelector(
+  selectTriggerComponents,
+  (state) => state.editMessageThread
+);

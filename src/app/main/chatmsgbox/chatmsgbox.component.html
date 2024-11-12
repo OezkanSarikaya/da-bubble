@@ -1,6 +1,7 @@
 <div class="channelBottom">
 <div class="messageArea">
     <textarea name="" id="" [(ngModel)]="content" [placeholder]="selectedChannel() ? 'Nachricht an #'+ selectedChannel()?.name : 'Nachricht'" ></textarea>
+    @if(this.context === 'channel' && editMessageChannel()){<button (click)="cancelEdit()">Cancel</button>}
     <div class="messageBottomLine">
       <div class="messageIcons">
         

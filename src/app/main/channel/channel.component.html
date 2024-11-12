@@ -462,7 +462,7 @@
             <span>
               <img src="../assets/img/hands.png" alt="" />
             </span>
-            <span (click)="onShowThread(msg)">
+            <span>
               <svg
                 width="24"
                 height="24"
@@ -517,7 +517,7 @@
               </svg>
             </span>
 
-            <span>
+            <span (click)="editMessageChannel(msg.id)">
               <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <mask id="mask0_79092_16838" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">
                 <rect x="0.333252" width="24" height="24" fill="#D9D9D9"/>
@@ -550,7 +550,7 @@
       } 
     }
       </div>
-      <app-chatmsgbox context="channel"></app-chatmsgbox>
+      <app-chatmsgbox context="channel" [contentSignal]="contentChannel"></app-chatmsgbox>
 </section>
 
 <div
