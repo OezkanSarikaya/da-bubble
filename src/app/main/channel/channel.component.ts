@@ -2,9 +2,9 @@ import { Component, computed, effect, EventEmitter, Input, Output, signal, Signa
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { showThreadComponent } from '../../state/actions/triggerComponents.actions';
+import { hideThreadComponent, showThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
@@ -29,6 +29,7 @@ export class ChannelComponent {
   isChannelMembersOpen = false;
   isAddChannelMembersOpen = false;
   isBackdropVisible = false;
+  private subscription: Subscription = new Subscription();
 
   @Input()
   isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
@@ -57,7 +58,7 @@ export class ChannelComponent {
   ngOnInit(): void {
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
-    this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
+    const sub1 = this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
       if (channel) {
         this.selectedChannel.set(channel);
         this.channelService.observeChannel(channel.id).subscribe((updatedChannel) => {
@@ -66,9 +67,15 @@ export class ChannelComponent {
         });
       }
     });
-    this.userService.currentUser$.subscribe(user => {
+    const sub2 = this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;        
     });
+    this.subscription.add(sub1);
+    this.subscription.add(sub2);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();    
   }
 
    

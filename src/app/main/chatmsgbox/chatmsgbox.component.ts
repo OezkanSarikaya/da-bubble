@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Message } from '../../interfaces/message';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chatmsgbox',
@@ -19,6 +20,7 @@ export class ChatmsgboxComponent {
   selectedChannel = signal<Channel | null>(null);
   selectedThread = signal<Message | null>(null);
   content: string = ''
+  private subscription: Subscription = new Subscription();
   @Input() context: 'channel' | 'thread' = 'channel';
 
   constructor(private channelService: ChannelService, private store: Store, private userService: UserService){ 
@@ -30,21 +32,28 @@ export class ChatmsgboxComponent {
   }
 
   ngOnInit(): void {
-    this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
+    const sub1 = this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
       if (channel) {
         this.selectedChannel.set(channel);
       }
     });
-    this.store.select(selectThreadSelector).subscribe(async (thread) => {
+    const sub2 = this.store.select(selectThreadSelector).subscribe(async (thread) => {
       if (thread) {
         this.selectedThread.set(thread);
       }
     });
-    this.userService.currentUser$.subscribe((user: any) => {
+    const sub3 = this.userService.currentUser$.subscribe((user: any) => {
       this.currentUser = user;      
     });
+    this.subscription.add(sub1);
+    this.subscription.add(sub2);
+    this.subscription.add(sub3);
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+  
   sendMessage(){
     if(this.context === 'channel'){
       if(this.selectedChannel()){

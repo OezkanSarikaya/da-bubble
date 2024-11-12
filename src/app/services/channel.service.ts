@@ -199,11 +199,27 @@ export class ChannelService {
                 ? (MessageData['createdAt'] as Timestamp).toDate()
                 : MessageData['createdAt'];
 
+          const { threadIDS, senderID } = MessageData;  
+
           if (!MessageData?.['threadIDS']?.length) {
-            observer.next(MessageData as ThreadMessage);
-            console.log(MessageData);
+            const userObservable = this.fetchUserAsObservable(senderID).pipe(
+              filter((user): user is User => user !== null)
+            );
+
+            userObservable.subscribe((user)=>{
+              const threadMessageCopy = {
+                ...MessageData,
+                senderData: user,        
+                createdAt: createdAt,
+                createdAtString: this.getFormattedDate(createdAt?.getTime() / 1000 || 0),
+                time: this.formatTimestampTo24HourFormat(createdAt?.getTime() / 1000 || 0)
+              }
+              observer.next(threadMessageCopy as ThreadMessage);
+              console.log(MessageData);
+            })
+                     
           } else {
-            const { threadIDS, senderID } = MessageData;    
+              
 
             const threadObservables = (threadIDS || []).map((messageId: string) =>
                 this.fetchMessageWithUserAsObservable(messageId).pipe(
@@ -211,9 +227,7 @@ export class ChannelService {
                 )
             );
 
-            const userObservable = this.fetchUserAsObservable(senderID).pipe(
-              filter((user): user is User => user !== null)
-            );
+            const userObservable = this.getUserObservable(senderID)
 
             combineLatest([combineLatest(threadObservables), userObservable])
                     .subscribe(([threadData, user]) => {
@@ -230,6 +244,14 @@ export class ChannelService {
           }
         });
       });
+  }
+
+
+  private getUserObservable(senderID: string){
+    const userObservable = this.fetchUserAsObservable(senderID).pipe(
+      filter((user): user is User => user !== null)
+    );
+    return userObservable;
   }
 
 
