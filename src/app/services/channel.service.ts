@@ -4,6 +4,7 @@ import { Channel } from '../interfaces/channel';
 import { combineLatest, filter, forkJoin, Observable } from 'rxjs';
 import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
+import { ThreadMessage } from '../interfaces/threadMessage';
 
 @Injectable({
   providedIn: 'root'
@@ -185,6 +186,49 @@ export class ChannelService {
     await updateDoc(parentMessageRef, {
       threadIDS: arrayUnion(newMessageID)  // Añadir el nuevo mensaje a `threadIDS`
     });
+  }
+
+  observeThread(MessageId: string): Observable<ThreadMessage> {
+    const channelDocRef = doc(this.firestore, 'messages', MessageId);
+      return new Observable<ThreadMessage>((observer) => {
+        onSnapshot(channelDocRef, (channelSnapshot) => {
+          const MessageData = channelSnapshot.data() as ThreadMessage;
+          console.log(MessageData);
+
+          if (!MessageData?.['threadIDS']?.length) {
+            observer.next(MessageData as ThreadMessage);
+            console.log(MessageData);
+          } else {
+            const { threadIDS, senderID } = MessageData;
+            console.log(threadIDS);
+            console.log(senderID);
+          
+
+            const threadObservables = (threadIDS || []).map((messageId: string) =>
+                this.fetchMessageWithUserAsObservable(messageId).pipe(
+                    filter((msg): msg is Message => msg !== null)
+                )
+            );
+
+            // Creamos observable para el usuario `senderID`
+            const userObservable = this.fetchUserAsObservable(senderID).pipe(
+              filter((user): user is User => user !== null)
+            );
+
+            console.log(threadObservables);
+            console.log(userObservable);
+
+            combineLatest([combineLatest(threadObservables), userObservable])
+                    .subscribe(([threadData, user]) => {
+                        observer.next({
+                            ...MessageData,
+                            threadData: threadData,  // Los mensajes en `threadIDS` con datos de usuario
+                            senderData: user,        // Datos del usuario que envió el mensaje original
+                        });
+                    });
+          }
+        });
+      });
   }
 
 
