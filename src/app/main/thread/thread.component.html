@@ -19,42 +19,42 @@
   </div>
 
   <div class="threadBody">
-      @if(true){
+      @if(threadObserved()?.senderID !== currentUser.idFirebase){
         <!-- <div class="timeLine"><span>{{threadInitial.msg.createdAtString}}</span></div> -->
         <div class="chatMessage leftMessage">
           <img
             class="userProfile70"
-            src=""
+            src="{{threadObserved()?.senderData?.avatar}}"
             alt=""
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName"></span>
-              <time class="time" datetime=""></time>
+              <span class="userName">{{threadObserved()?.senderData?.fullName}}</span>
+              <time class="time" datetime="">{{threadObserved()?.time}}</time>
             </header>
-            <div class="messageText"></div>
+            <div class="messageText">{{threadObserved()?.content}}</div>
           </div>
         </div> 
       }@else {
-        <div class="timeLine"><span></span></div>
+        <!-- <div class="timeLine"><span></span></div> -->
         <div class="chatMessage rightMessage">
           <img
             class="userProfile70"
-            src=""
+            src="{{threadObserved()?.senderData?.avatar}}"
             alt=""
           />
           <div class="chatMessageDetails">
             <header>
-              <span class="userName"></span>
-              <time class="time" datetime=""></time>
+              <span class="userName">{{threadObserved()?.senderData?.fullName}}</span>
+              <time class="time" datetime="">{{threadObserved()?.time}}</time>
             </header>
-            <div class="messageText"></div>
+            <div class="messageText">{{threadObserved()?.content}}</div>
           </div>
         </div> 
       }
 
       <div class="countThread">
-        <span> Antworten</span>
+        <span> {{threadObserved()?.threadIDS?.length}} Antworten</span>
         <div class="horizontal-line"></div>
       </div>
 

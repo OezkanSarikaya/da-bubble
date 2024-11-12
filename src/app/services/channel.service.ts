@@ -192,17 +192,16 @@ export class ChannelService {
     const channelDocRef = doc(this.firestore, 'messages', MessageId);
       return new Observable<ThreadMessage>((observer) => {
         onSnapshot(channelDocRef, (channelSnapshot) => {
-          const MessageData = channelSnapshot.data() as ThreadMessage;
-          console.log(MessageData);
+          const MessageData = channelSnapshot.data() as ThreadMessage;  
+          const createdAt = MessageData['createdAt'] instanceof Timestamp
+                ? (MessageData['createdAt'] as Timestamp).toDate()
+                : MessageData['createdAt'];
 
           if (!MessageData?.['threadIDS']?.length) {
             observer.next(MessageData as ThreadMessage);
             console.log(MessageData);
           } else {
-            const { threadIDS, senderID } = MessageData;
-            console.log(threadIDS);
-            console.log(senderID);
-          
+            const { threadIDS, senderID } = MessageData;    
 
             const threadObservables = (threadIDS || []).map((messageId: string) =>
                 this.fetchMessageWithUserAsObservable(messageId).pipe(
@@ -210,21 +209,20 @@ export class ChannelService {
                 )
             );
 
-            // Creamos observable para el usuario `senderID`
             const userObservable = this.fetchUserAsObservable(senderID).pipe(
               filter((user): user is User => user !== null)
             );
-
-            console.log(threadObservables);
-            console.log(userObservable);
 
             combineLatest([combineLatest(threadObservables), userObservable])
                     .subscribe(([threadData, user]) => {
                         observer.next({
                             ...MessageData,
-                            threadData: threadData,  // Los mensajes en `threadIDS` con datos de usuario
-                            senderData: user,        // Datos del usuario que envió el mensaje original
-                        });
+                            threadData: threadData,
+                            senderData: user,        
+                            createdAt: createdAt,
+                            createdAtString: this.getFormattedDate(createdAt?.getTime() / 1000 || 0),
+                            time: this.formatTimestampTo24HourFormat(createdAt?.getTime() / 1000 || 0)
+                          });
                     });
           }
         });

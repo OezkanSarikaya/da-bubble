@@ -95,6 +95,9 @@ export class ThreadComponent {
         this.threadObserved.set(updatedThread);
       });
     }
+    this.userService.currentUser$.subscribe(user => {
+      this.currentUser = user;        
+    });
   }
 
   ngOnDestroy(): void {
