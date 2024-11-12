@@ -47,7 +47,7 @@ export class ChannelComponent {
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     effect(()=>{
       if(this.selectedChannel()){
-        // console.log(this.selectedChannel());
+        console.log(this.selectedChannel());
         console.log('Canal observado actualizado:', this.channelObserved());
       }
       

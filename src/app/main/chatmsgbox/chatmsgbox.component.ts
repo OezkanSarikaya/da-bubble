@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, Input, input, signal, Signal, SimpleChanges, viewChild } from '@angular/core';
+import { Component, effect, Input, signal } from '@angular/core';
 import { Channel } from '../../interfaces/channel';
 import { ChannelService } from '../../services/channel.service';
 import { selectSelectedChannelSelector, selectThreadSelector } from '../../state/selectors/triggerComponents.selectors';

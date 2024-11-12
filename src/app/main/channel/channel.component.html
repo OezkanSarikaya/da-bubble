@@ -296,15 +296,16 @@
 
     <div class="channelMembers">
       <div class="members" (click)="toggleChannelMembers()">
-        
-        @for (member of channelObserved()?.membersData!.slice(0, 3); track $index) {
-          <img src="{{member.avatar}}" alt="" />
-        }
-        <span class="memberCount">
-          @if(channelObserved()?.members!.length >3){
-           +{{channelObserved()?.members!.length -3}}
+        @if(channelObserved()?.createdBy){
+          @for (member of channelObserved()?.membersData!.slice(0, 3); track $index) {
+            <img src="{{member.avatar}}" alt="" />
           }
-        </span>
+          <span class="memberCount">
+            @if(channelObserved()?.members!.length >3){
+             +{{channelObserved()?.members!.length -3}}
+            }
+          </span>
+        }
       </div>
 
       <svg
@@ -412,10 +413,8 @@
         </div>
       } 
     }
-
-
       </div>
-      <app-chatmsgbox ></app-chatmsgbox>
+      <app-chatmsgbox context="channel"></app-chatmsgbox>
 </section>
 
 <div
