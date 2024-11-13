@@ -1,5 +1,5 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { addDoc, arrayUnion, collection, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
 import { BehaviorSubject, combineLatest, filter, forkJoin, Observable } from 'rxjs';
 import { Message } from '../interfaces/message';
@@ -79,16 +79,22 @@ export class ChannelService {
         onSnapshot(channelDocRef, (channelSnapshot) => {
           const channelData = channelSnapshot.data();
 
-          if (!channelData?.['messageIDS']) {
+          if (!channelData?.['members']) {
             observer.next(channelData as Channel);
           } else {
             const { messageIDS, members } = channelData;
 
-            const messageObservables = (messageIDS || []).map((messageId: string) =>
-                this.fetchMessageWithUserAsObservable(messageId).pipe(
-                    filter((msg): msg is Message => msg !== null)
-                )
-            );
+            // const messageObservables = (messageIDS || []).map((messageId: string) =>
+            //     this.fetchMessageWithUserAsObservable(messageId).pipe(
+            //         filter((msg): msg is Message => msg !== null)
+            //     )
+            // );
+
+            const messageObservables = (messageIDS && messageIDS.length > 0) 
+                ? messageIDS.map((messageId: string) => 
+                    this.fetchMessageWithUserAsObservable(messageId).pipe(filter((msg): msg is Message => msg !== null))
+                  )
+                : [new Observable<Message[]>(observer => observer.next([]))];
 
             const memberObservables = (members || []).map((memberId: string) =>
                 this.fetchUserAsObservable(memberId).pipe(
@@ -301,4 +307,26 @@ export class ChannelService {
           console.error("Error updating message content:", error);
       }
   }
+
+  async deleteMessage(messageId: string, channelId: string): Promise<void> {
+    try {
+      // 1. Eliminar el mensaje de la colección 'messages'
+      const messageDocRef = doc(this.firestore, `messages/${messageId}`);
+      await deleteDoc(messageDocRef);
+      console.log('Mensaje eliminado de la colección messages');
+
+      // 2. Actualizar la colección 'channels' y eliminar el messageId del array messageIDS
+      const channelDocRef = doc(this.firestore, `channels/${channelId}`);
+      await updateDoc(channelDocRef, {
+        messageIDS: arrayRemove(messageId) // Eliminamos el messageId del array messageIDS
+      });
+      console.log('Message ID eliminado del array messageIDS en la colección channels');
+      
+    } catch (error) {
+      console.error('Error al eliminar el mensaje y actualizar el canal:', error);
+    }
+  }
 }
+
+
+

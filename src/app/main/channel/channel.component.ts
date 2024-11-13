@@ -52,7 +52,6 @@ export class ChannelComponent {
         console.log(this.selectedChannel());
         console.log('Canal observado actualizado:', this.channelObserved());
       }
-      
     })
   }
 
@@ -177,6 +176,10 @@ export class ChannelComponent {
         document.body.classList.remove('no-scroll');
       }, 300); // Dauer der CSS-Transition (300ms)
     }
+  }
+
+  async deleteMessage(messageId: string, channelID: string){
+    await this.channelService.deleteMessage(messageId, channelID)
   }
 
 }
