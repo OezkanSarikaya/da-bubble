@@ -25,8 +25,9 @@ export class ChatmsgboxComponent {
   editMessageThread$: Observable<boolean> = new Observable()
   @Input() context: 'channel' | 'thread' = 'channel';
 
-  @Input() contentSignal = ''
-  content: WritableSignal<string> = signal(this.contentSignal);
+  // @Input() contentSignal = ''
+  // content: WritableSignal<string> = signal(this.contentSignal);
+  @Input() content!: WritableSignal<string>;
 
   
 
@@ -36,14 +37,15 @@ export class ChatmsgboxComponent {
        this.selectedChannel()
        console.log(this.selectedThread());
        console.log(this.editMessageChannel());
+       console.log('Contenido actualizado en contentSignal:', this.content);
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['contentSignal']) {
-      this.content.set(this.contentSignal);
-    }
-  }
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['contentSignal']) {
+  //     this.content.set(this.contentSignal);
+  //   }
+  // }
 
   ngOnInit(): void {
     const sub1 = this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
@@ -74,14 +76,16 @@ export class ChatmsgboxComponent {
     this.subscription.unsubscribe();
   }
   
-  sendMessage(){
+  async sendMessage(){
     if(this.context === 'channel'){
+      //si esta vacio s que voy a crear algo
       if(!this.editMessageChannel()){
         if(this.selectedChannel()){
           const channelID = this.selectedChannel()!.id
           this.channelService.createMessage(this.content(), this.currentUser.idFirebase, 'messages', channelID);
         }
       }else{
+        let content = await this.channelService.getMessageContentById(this.editMessageChannel()!);
         this.channelService.updateMessageContent(this.editMessageChannel()!, this.content())
       }
     }else{
@@ -94,8 +98,8 @@ export class ChatmsgboxComponent {
   }
 
   cancelEdit(){
-    this.store.dispatch(editMessageChannelClose());
     this.content.set('');
+    this.store.dispatch(editMessageChannelClose());
   }
 
 }

@@ -26,8 +26,8 @@ export class ThreadComponent {
   threadObserved = signal<ThreadMessage | null>(null)
   selectedChannel = signal<Channel | null>(null)
   channelObserved = signal<Channel | null>(null)
-  contentThread: string = '';
-
+  contentThread = signal<string>('');
+ 
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     effect(()=>{

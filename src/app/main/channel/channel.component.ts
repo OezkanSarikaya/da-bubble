@@ -44,7 +44,7 @@ export class ChannelComponent {
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
   channelObserved = signal<Channel | null>(null)
-  contentChannel: string = '';
+  contentChannel = signal<string>('');
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     effect(()=>{
@@ -72,8 +72,9 @@ export class ChannelComponent {
       this.currentUser = user;        
     });
     const sub3 = this.channelService.contentEditChannel$.subscribe(content =>{
-      this.contentChannel = content
+      this.contentChannel.set(content)
     })
+
     this.subscription.add(sub1);
     this.subscription.add(sub2);
     this.subscription.add(sub3);
