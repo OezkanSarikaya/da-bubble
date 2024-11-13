@@ -355,6 +355,41 @@
   gap: 20px;
 }
 
+.editDeleteMsg{
+  position: relative;
+  display: inline-block;
+}
+
+.msgText {
+  position: absolute;
+  top: 60%;
+  left: 80%;
+  background-color: white;
+  padding: 10px 10px;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+  display: none;
+}
+
+.editDeleteMsg:hover .msgText {
+  display: block; 
+}
+
+.msgText p {
+  margin: 0;
+  padding: 5px 10px;
+  font-size: 20px;
+  font-weight: 600;
+  white-space: nowrap; 
+}
+
+.msgText p:hover {
+  border-radius: 16px;
+  color: $main-secondary;
+  background-color: $bg-field-color; 
+}
+
 .leftMessage {
   transition: all 125ms ease-in-out;
   &:hover .messageText {
