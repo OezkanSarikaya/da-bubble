@@ -2,7 +2,7 @@ import { Component, effect, EventEmitter, Input, Output, signal, Signal } from '
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { hideThreadComponent } from '../../state/actions/triggerComponents.actions';
+import { editMessageThreadOpen, hideThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { ChannelService } from '../../services/channel.service';
 import { BehaviorSubject, map, Observable, Subscription } from 'rxjs';
 import { selectSelectedChannelSelector, selectThreadSelector } from '../../state/selectors/triggerComponents.selectors';
@@ -43,7 +43,7 @@ export class ThreadComponent {
         this.selectedThread.set(thread);
       }
     });
-    this.subscription.add(sub1)
+    
     if(this.selectedThread()?.id){
       console.log(this.selectedThread()!.id);
       const sub2 =  this.channelService.observeThread(this.selectedThread()!.id).subscribe((updatedThread) => {
@@ -61,15 +61,28 @@ export class ThreadComponent {
         });
       }
     });
-    this.subscription.add(sub3)
+    
     const sub4 = this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;        
     });
-    this.subscription.add(sub4)
+    const sub5 = this.channelService.contentEditThread$.subscribe(content =>{
+      this.contentThread.set(content)
+    })
+    this.subscription.add(sub1);
+    this.subscription.add(sub3);
+    this.subscription.add(sub4);
+    this.subscription.add(sub5);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  async editMessageThread(messageID: string){
+    let content = await this.channelService.getMessageContentById(messageID);
+    this.channelService.setContentThread(content);
+    this.channelService.setContext('thread');
+    this.store.dispatch(editMessageThreadOpen({messageID}));
   }
 
   @Input()

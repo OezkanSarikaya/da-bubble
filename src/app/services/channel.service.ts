@@ -18,6 +18,9 @@ export class ChannelService {
 
   private contentEditThreadSubject: BehaviorSubject<string> = new BehaviorSubject('');
   contentEditThread$: Observable<string> = this.contentEditThreadSubject.asObservable();
+
+  private contextSubject: BehaviorSubject<string> = new BehaviorSubject('');
+  context$: Observable<string> = this.contextSubject.asObservable();
  
   
   private firestore: Firestore = inject(Firestore);
@@ -36,6 +39,10 @@ export class ChannelService {
 
   setContentThread(content: string){
     this.contentEditThreadSubject.next(content);
+  }
+
+  setContext(context: string){
+    this.contextSubject.next(context);
   }
 
   private getAllChannels(){

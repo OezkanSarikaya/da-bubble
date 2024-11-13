@@ -2,7 +2,7 @@ import { Component, computed, effect, EventEmitter, Input, Output, signal, Signa
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { editMessageChannelOpen, hideThreadComponent, showThreadComponent } from '../../state/actions/triggerComponents.actions';
+import { editMessageChannelOpen, editMessageThreadOpen, hideThreadComponent, showThreadComponent } from '../../state/actions/triggerComponents.actions';
 import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
@@ -92,6 +92,7 @@ export class ChannelComponent {
   async editMessageChannel(messageID: string){
     let content = await this.channelService.getMessageContentById(messageID);
     this.channelService.setContentChannel(content);
+    this.channelService.setContext('channel');
     this.store.dispatch(editMessageChannelOpen({messageID}));
   }
 

@@ -42,7 +42,9 @@
           </g>
         </svg>
 
-        @if(this.context === 'channel' && editMessageChannel()){<button class="btn-cancel-edit" (click)="cancelEdit()">Abbrechen</button>}
+        @if(context === 'channel' && editingContext === 'channel'){<button class="btn-cancel-edit" (click)="cancelEdit()">Abbrechen</button>}@else if(context === 'thread' && editingContext === 'thread'){
+          <button class="btn-cancel-edit" (click)="cancelEdit()">Abbrechen</button>
+        }
               
       </div>
       <svg (click)="sendMessage()"  class="sendIcon" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

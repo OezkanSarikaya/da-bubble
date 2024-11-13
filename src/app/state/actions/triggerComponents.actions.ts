@@ -12,4 +12,5 @@ export const showChannelComponent = createAction('[Channel Component] open', pro
 export const hideChannelComponent = createAction('[Channel Component] close');
 export const editMessageChannelOpen = createAction('[chatmsgbox chanel component] open', props<{messageID: string}>());
 export const editMessageChannelClose = createAction('[chatmsgbox chanel component] close');
-export const editMessageThread = createAction('[chatmsgbox thread component] true/false');
+export const editMessageThreadOpen = createAction('[chatmsgbox chanel component] open', props<{messageID: string}>());
+export const editMessageThreadClose = createAction('[chatmsgbox chanel component] close');

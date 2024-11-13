@@ -90,6 +90,7 @@
 }
 
 .chatMessage {
+  position: relative;
   transition: all 125ms ease-in-out;
   &:hover {
     background-color: $bg-field-color;
@@ -168,6 +169,53 @@
     flex-grow: 1;
   }
 }
+
+.chatMessage:hover .rightPopup.addReaction {
+  opacity: 1;
+  transform: translateX(-50px);
+}
+
+.rightPopup {
+  left: 80px;
+}
+
+.addReaction {
+  position: absolute;
+  box-sizing: border-box;
+  opacity: 0;
+  display: flex;
+  // width: 215px;
+  height: 46px;
+  top: -18px;
+  padding: 3px 15px 3px 20px;
+  gap: 5px;
+  border-radius: 25px 25px 0px 25px;
+  border: 1px solid #adb0d9;
+  background-color: #ffffff;
+  transition: all 125ms ease-in-out;
+  span {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    border-radius: 20px;
+    transition: all 125ms ease-in-out;
+    &:hover {
+      background-color: $bg-field-color;
+      border-radius: 20px;
+    }
+    &:hover rect,
+    &:hover path {
+      fill: $main-secondary;
+    }
+    img,
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
 
 @media screen and (min-width: 800px) {
   .thread {
