@@ -22,6 +22,7 @@ export class ThreadComponent {
 
   currentUser: any = null;
   private subscription: Subscription = new Subscription();
+  private threadSubscription = new Subscription(); 
   selectedThread = signal<Message | null>(null);
   threadObserved = signal<ThreadMessage | null>(null)
   selectedChannel = signal<Channel | null>(null)
@@ -32,10 +33,20 @@ export class ThreadComponent {
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     effect(()=>{
-      console.log(this.selectedThread());
-      console.log(this.threadObserved());
-      this.selectedChannel()
+      console.log('SelectedThread',this.selectedThread());
+      console.log('ThreadObserved',this.threadObserved());
+      this.selectedChannel();
     })
+
+    effect(() => {
+      this.threadSubscription.unsubscribe();
+      const selectedThread = this.selectedThread();
+      if (selectedThread && selectedThread.id) {
+        this.threadSubscription = this.channelService.observeThread(selectedThread.id).subscribe((updatedThread) => {
+          this.threadObserved.set(updatedThread);
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -44,15 +55,6 @@ export class ThreadComponent {
         this.selectedThread.set(thread);
       }
     });
-    
-    if(this.selectedThread()?.id){
-      console.log(this.selectedThread()!.id);
-      const sub2 =  this.channelService.observeThread(this.selectedThread()!.id).subscribe((updatedThread) => {
-        console.log('thread observado emitido:', updatedThread); 
-        this.threadObserved.set(updatedThread);
-      });
-      this.subscription.add(sub2)
-    }
     const sub3 = this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
       if (channel) {
         this.selectedChannel.set(channel);
@@ -77,6 +79,7 @@ export class ThreadComponent {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.threadSubscription.unsubscribe();
   }
 
   async editMessageThread(messageID: string){

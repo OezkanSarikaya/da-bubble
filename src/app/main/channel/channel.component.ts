@@ -86,10 +86,7 @@ export class ChannelComponent {
 
   // Methode, die das Einblenden auslöst
   onShowThread(message: Message) {
-    this.store.dispatch(hideThreadComponent())
-    setTimeout(() => {
-      this.store.dispatch(showThreadComponent({ message }));
-    }, 0);
+    this.store.dispatch(showThreadComponent({ message }));
   }
 
   async editMessageChannel(messageID: string){
