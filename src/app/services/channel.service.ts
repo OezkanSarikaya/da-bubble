@@ -312,6 +312,27 @@ export class ChannelService {
     try {
       // 1. Eliminar el mensaje de la colección 'messages'
       const messageDocRef = doc(this.firestore, `messages/${messageId}`);
+
+      const messageSnapshot = await getDoc(messageDocRef);
+      console.log(messageSnapshot);
+      if (messageSnapshot.exists()) {
+        const messageData = messageSnapshot.data();
+        const threadIds = messageData?.['threadIDS'] || [];
+        console.log(threadIds);
+
+        // 2. Eliminar los threadIDS de la colección 'messages' (si existen)
+        if (threadIds.length > 0) {
+          const threadDeletePromises = threadIds.map(async (threadId: string) => {
+            const threadDocRef = doc(this.firestore, `messages/${threadId}`);
+            await deleteDoc(threadDocRef);
+            console.log(`Hilo con ID ${threadId} eliminado.`);
+          });
+
+          await Promise.all(threadDeletePromises); // Espera a que se eliminen todos los hilos
+          console.log('Todos los hilos relacionados eliminados.');
+        }
+      }
+
       await deleteDoc(messageDocRef);
       console.log('Mensaje eliminado de la colección messages');
 
