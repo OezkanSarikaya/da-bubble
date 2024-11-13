@@ -27,6 +27,7 @@ export class ThreadComponent {
   selectedChannel = signal<Channel | null>(null)
   channelObserved = signal<Channel | null>(null)
   contentThread = signal<string>('');
+  @Input() isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
  
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
@@ -84,9 +85,6 @@ export class ThreadComponent {
     this.channelService.setContext('thread');
     this.store.dispatch(editMessageThreadOpen({messageID}));
   }
-
-  @Input()
-  isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
   // Methode zum Ausblenden der Thread-Komponente
   hide() {

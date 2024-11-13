@@ -3,7 +3,7 @@ import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { editMessageChannelOpen, editMessageThreadOpen, hideThreadComponent, showThreadComponent } from '../../state/actions/triggerComponents.actions';
-import { selectSelectedChannelSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
+import { selectSelectedChannelSelector, selectThreadSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
@@ -86,7 +86,10 @@ export class ChannelComponent {
 
   // Methode, die das Einblenden auslöst
   onShowThread(message: Message) {
-    this.store.dispatch(showThreadComponent({message}))
+    this.store.dispatch(hideThreadComponent())
+    setTimeout(() => {
+      this.store.dispatch(showThreadComponent({ message }));
+    }, 0);
   }
 
   async editMessageChannel(messageID: string){
