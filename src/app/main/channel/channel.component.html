@@ -217,16 +217,12 @@
             <h4>Beschreibung</h4>
             <span>Bearbeiten</span>
           </div>
-          <p>
-            Dieser Channel ist für alles rund um #Entwicklerteam vorgesehen.
-            Hier kannst du zusammen mit deinem Team Meetings abhalten, Dokumente
-            teilen und Entscheidungen treffen.
-          </p>
+          <p>{{channelObserved()!.description}}</p>
           <hr />
 
           <h4>Erstellt von</h4>
 
-          <span>Noah Braun</span>
+          <span>{{channelObserved()!.creatorChannelData!.fullName}}</span>
         </div>
       </div>
 

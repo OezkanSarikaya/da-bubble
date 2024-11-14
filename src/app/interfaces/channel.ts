@@ -10,5 +10,6 @@ export interface Channel {
   messageIDS: string[],
   members: string[],
   messages: Message[]
-  membersData?: User[]; 
+  membersData?: User[];
+  creatorChannelData?: User 
 }

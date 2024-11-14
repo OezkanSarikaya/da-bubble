@@ -35,7 +35,7 @@ export class ChatmsgboxComponent {
       //  console.log(this.selectedChannel());
        this.selectedChannel()
        console.log(this.selectedThread());
-       console.log(this.nameChannel);       
+      //  this.nameChannel;       
     });
     effect(()=>{
       console.log(this.editMessageChannel());

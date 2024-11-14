@@ -5,6 +5,7 @@ import { BehaviorSubject, combineLatest, filter, forkJoin, Observable } from 'rx
 import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
 import { ThreadMessage } from '../interfaces/threadMessage';
+import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,7 @@ export class ChannelService {
           if (!channelData?.['members']) {
             observer.next(channelData as Channel);
           } else {
-            const { messageIDS, members } = channelData;
+            const { messageIDS, members, createdBy } = channelData;
 
             // const messageObservables = (messageIDS || []).map((messageId: string) =>
             //     this.fetchMessageWithUserAsObservable(messageId).pipe(
@@ -102,10 +103,16 @@ export class ChannelService {
                 )
             );
 
-           combineLatest([combineLatest(messageObservables), combineLatest(memberObservables)])
-            .subscribe(([messages, membersData]) => {
+          
+            const creatorObservable = this.fetchUserAsObservable(createdBy).pipe(
+              filter((user): user is User => user !== null))
+              
+
+           combineLatest([combineLatest(messageObservables), combineLatest(memberObservables), creatorObservable])
+            .subscribe(([messages, membersData, creatorObservable]) => {
                 observer.next({
                     ...channelData,
+                    creatorChannelData: creatorObservable,
                     messages: messages,
                     membersData: membersData, // Nueva propiedad con datos de los miembros
                 } as Channel);
