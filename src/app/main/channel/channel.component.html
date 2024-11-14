@@ -150,8 +150,13 @@
         </header>
         <div class="popupBody">
           <span># {{ channelObserved()?.name }}</span>
-          <div class="inputField">
-            <input type="text" placeholder="Name eingeben" name="namePerson" [(ngModel)]="namePerson" (keyup)="searchPerson()"/>
+          <div class="inputPeople">
+            <div class="inputField">
+              <input type="text" placeholder="Name eingeben" name="namePerson" [(ngModel)]="namePerson" (keyup)="searchPerson()"/>
+            </div>
+            <div>
+              <p>User</p>
+            </div>
           </div>
           <footer>
             <!-- <button type="submit" class="button-app-disabled" disabled> -->

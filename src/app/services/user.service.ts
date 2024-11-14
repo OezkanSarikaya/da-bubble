@@ -382,12 +382,6 @@ export class UserService {
     }
   }
 
-  public searchPerson(namePerson: string, persons: any[]){
-    const lowerCaseSearchTerm = namePerson.toLowerCase();
-    let personsFound = persons.filter(person => person.fullName.toLowerCase().includes(lowerCaseSearchTerm));
-    return personsFound;
-  }
-
   // async sendVerificationEmail(newEmail: string): Promise<void> {
   //   const user = this.auth.currentUser;
   //   if (user) {

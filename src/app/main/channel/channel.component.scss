@@ -147,10 +147,15 @@
     line-height: 24.55px;
     text-align: center;
   }
+
+  .inputPerson{
+    display: flex;
+    flex-direction: column;
+  }
   .inputField{
     border: 1px solid #adb0d9;
     border-radius: 40px;
-    display: flex;
+    display: flex; 
   }
   input {
     // width: Fill (390px) px;

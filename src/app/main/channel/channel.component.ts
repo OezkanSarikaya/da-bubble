@@ -201,8 +201,8 @@ export class ChannelComponent {
   }
 
   searchPerson(){
-    let personsFound = this.userService.searchPerson(this.namePerson, this.persons);
-    console.log(personsFound);
+    this.channelService.searchPerson(this.namePerson, this.persons).subscribe(users => {
+        console.log(users); 
+    });
   }
-
 }
