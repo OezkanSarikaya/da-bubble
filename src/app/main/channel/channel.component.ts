@@ -182,7 +182,7 @@ export class ChannelComponent {
     this.store.dispatch(hideThreadComponent());
     setTimeout(async() => {
       await this.channelService.deleteMessage(messageId, channelID)
-    }, 2000);
+    }, 0);
   }
 
 }

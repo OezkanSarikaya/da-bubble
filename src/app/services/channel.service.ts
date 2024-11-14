@@ -220,7 +220,11 @@ export class ChannelService {
     const channelDocRef = doc(this.firestore, 'messages', MessageId);
       return new Observable<ThreadMessage>((observer) => {
         onSnapshot(channelDocRef, (channelSnapshot) => {
-          const MessageData = channelSnapshot.data() as ThreadMessage;  
+          const MessageData = channelSnapshot.data() as ThreadMessage; 
+          //If Message does not extist return and end the Observable
+          if (!MessageData) {
+            return; 
+          } 
           const createdAt = MessageData['createdAt'] instanceof Timestamp
                 ? (MessageData['createdAt'] as Timestamp).toDate()
                 : MessageData['createdAt'];
