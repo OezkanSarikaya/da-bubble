@@ -66,7 +66,22 @@
 
       <div class="channelMembersBody">
         <div class="channelMembersList">
-          <div class="userList">
+          @for(user of channelObserved()!.membersData; track $index){
+            <div class="userList">
+              <img
+                src="{{user.avatar}}"
+                alt=""
+                class="userProfile50"
+              />
+              <div class="online"></div>
+              <span>{{user.fullName}}
+                @if(user.id === currentUser.idFirebase){
+                  (Du)
+                }
+              </span>
+            </div>
+          }
+          <!-- <div class="userList">
             <img
               src="../../../assets/img/img_profile/profile1.png"
               alt=""
@@ -95,7 +110,7 @@
             />
             <div class="online"></div>
             <span>Noah Braun</span>
-          </div>
+          </div> -->
         </div>
         <div class="addChannelMember">
           <div class="userList" (click)="openAddChannelMembers()">
