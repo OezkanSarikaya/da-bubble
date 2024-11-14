@@ -62,7 +62,7 @@ export class ChannelComponent {
     effect(()=>{
       if(this.selectedChannel()){
         console.log(this.selectedChannel());
-        console.log('Canal observado actualizado:', this.channelObserved());
+        console.log('ChannelObserved Updated:', this.channelObserved());
         console.log(this.searchedPersons());
         console.log(this.namePerson());
       }
@@ -76,7 +76,7 @@ export class ChannelComponent {
       if (channel) {
         this.selectedChannel.set(channel);
         this.channelService.observeChannel(channel.id).subscribe((updatedChannel) => {
-          console.log('Canal observado emitido:', updatedChannel); 
+          // console.log('Canal observado emitido:', updatedChannel); 
           this.channelObserved.set(updatedChannel);
         });
       }
@@ -206,11 +206,16 @@ export class ChannelComponent {
 
   searchPerson(){
     if(this.namePerson() !== ''){
-      this.channelService.searchPerson(this.namePerson(), this.persons).subscribe(users => {
+      this.channelService.searchPerson(this.namePerson(), this.persons, this.channelObserved()!.members).subscribe(users => {
         this.searchedPersons.set(users);
       });
     }else{
-      this.searchedPersons.set([]);
+      this.closeSearch();
     }
+  }
+
+  public closeSearch(){
+    this.searchedPersons.set([]);
+    this.namePerson.set('');
   }
 }

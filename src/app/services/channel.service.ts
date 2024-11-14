@@ -402,24 +402,19 @@ export class ChannelService {
     }
   }
 
-  public searchPerson(namePerson: string, persons: any[]){
+  //Serach Person that are not in the channel yet
+  public searchPerson(namePerson: string, persons: any[], existingMemberIds: string[]){
     const lowerCaseSearchTerm = namePerson.toLowerCase();
     const filteredPersons = persons.filter(person =>
-        person.fullName.toLowerCase().includes(lowerCaseSearchTerm)
+        person.fullName.toLowerCase().includes(lowerCaseSearchTerm) &&
+        !existingMemberIds.includes(person.id)
     );
-
-    // Mapea cada usuario encontrado a un observable que incluye el estado
     const userObservables = filteredPersons.map(person =>
         this.fetchUserAsObservable(person.id).pipe(
-            filter((user): user is User => user !== null) // Filtra nulls
+            filter((user): user is User => user !== null) 
         )
     );
-
-    // Combina los observables de los usuarios en uno solo
     return combineLatest(userObservables);
-    // let personsFound = persons.filter(person => person.fullName.toLowerCase().includes(lowerCaseSearchTerm));
-    
-    // return personsFound;
   }
 
 }

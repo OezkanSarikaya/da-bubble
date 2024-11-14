@@ -34,20 +34,18 @@ export class ChatmsgboxComponent {
     effect(() => {
       //  console.log(this.selectedChannel());
        this.selectedChannel()
-       console.log(this.selectedThread());
+       this.selectedThread()
+      //  console.log(this.selectedThread());
       //  this.nameChannel;       
     });
     effect(()=>{
-      console.log(this.editMessageChannel());
-    })
-    effect(()=>{
-      console.log(this.editMessageThread());
-    })
-    effect(()=>{
-      console.log('Contenido actualizado en context:', this.context);
-    })
-    effect(()=>{
-      console.log('Contenido actualizado en contentSignal:', this.content);
+      // console.log(this.editMessageChannel());
+      // console.log(this.editMessageThread());
+      // console.log('Contenido actualizado en context:', this.context);
+      this.editMessageChannel()
+      this.editMessageThread()
+      this.content;
+      this.context
     })
   }
 
