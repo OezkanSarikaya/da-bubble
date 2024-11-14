@@ -45,6 +45,7 @@ export class ChannelComponent {
   selectedChannel = signal<Channel | null>(null);
   channelObserved = signal<Channel | null>(null)
   contentChannel = signal<string>('');
+  nameChannelSignal = computed(() => this.channelObserved()?.name ?? '');
       
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     effect(()=>{

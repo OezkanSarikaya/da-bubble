@@ -1,4 +1,4 @@
-import { Component, computed, effect, Input, signal, SimpleChanges, WritableSignal } from '@angular/core';
+import { Component, computed, effect, Input, Signal, signal, SimpleChanges, WritableSignal } from '@angular/core';
 import { Channel } from '../../interfaces/channel';
 import { ChannelService } from '../../services/channel.service';
 import { editMessageChannelSelector, editMessageThreadSelector, selectSelectedChannelSelector, selectThreadSelector } from '../../state/selectors/triggerComponents.selectors';
@@ -26,6 +26,7 @@ export class ChatmsgboxComponent {
   editMessageThread$: Observable<boolean> = new Observable()
   @Input() context: 'channel' | 'thread' = 'channel';
   @Input() content!: WritableSignal<string>;
+  @Input() nameChannel!: Signal<string>;
   editingContext!: string;
 
   
@@ -33,7 +34,8 @@ export class ChatmsgboxComponent {
     effect(() => {
       //  console.log(this.selectedChannel());
        this.selectedChannel()
-       console.log(this.selectedThread());       
+       console.log(this.selectedThread());
+       console.log(this.nameChannel);       
     });
     effect(()=>{
       console.log(this.editMessageChannel());

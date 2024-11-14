@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, Input, Output, signal, Signal } from '@angular/core';
+import { Component, computed, effect, EventEmitter, Input, Output, signal, Signal } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -29,6 +29,7 @@ export class ThreadComponent {
   channelObserved = signal<Channel | null>(null)
   contentThread = signal<string>('');
   @Input() isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
+  nameChannelSignal = computed(() => this.channelObserved()?.name ?? '');
  
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
