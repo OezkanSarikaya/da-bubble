@@ -6,6 +6,7 @@ import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
 import { ThreadMessage } from '../interfaces/threadMessage';
 import { user } from '@angular/fire/auth';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class ChannelService {
   
   private firestore: Firestore = inject(Firestore);
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.getAllChannels();
     effect(()=>{
       console.log(this.allChannels());
@@ -159,13 +160,19 @@ export class ChannelService {
       return new Observable<User | null>((observer) => {
         onSnapshot(userDocRef, (userSnapshot) => {
           if (userSnapshot.exists()) {
-            const userData: User = {
-              id: userSnapshot.id,
-              ...userSnapshot.data(),
-              avatar: userSnapshot.data()['avatar'],
-              fullName: userSnapshot.data()['fullName'],
-            } as User;
-            observer.next({...userData}); 
+
+            const statusObservable = this.userService.getUserStatus(userSnapshot.data()['uid']);
+            statusObservable.subscribe((status) => {
+                const userData: User = {
+                    id: userSnapshot.id,
+                    ...userSnapshot.data(),
+                    avatar: userSnapshot.data()['avatar'],
+                    fullName: userSnapshot.data()['fullName'],
+                    status: status // Now status is an Observable here
+                } as User;
+
+                observer.next({...userData});
+            });
           } else {
             observer.next(null); 
           }

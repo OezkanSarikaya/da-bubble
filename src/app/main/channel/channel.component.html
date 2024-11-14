@@ -73,7 +73,7 @@
                 alt=""
                 class="userProfile50"
               />
-              <div class="online"></div>
+              <div [ngClass]="{online: user.status === 'online', offline: user.status === 'offline'}"></div>
               <span>{{user.fullName}}
                 @if(user.id === currentUser.idFirebase){
                   (Du)

@@ -5,11 +5,15 @@ section{
 	flex-direction: column;
 	gap: 12px;
 	max-width: 398px;
-	padding: 16px 24px;
+	padding: 24px 32px;
 	margin: 16px 16px auto auto;
 	background-color: $white-color;
 	@extend .border-radius;
   filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.2)); 
+}
+
+.main-secondary-color{
+  color: $blue-intensive;
 }
 
 @media (max-width: 465px){
