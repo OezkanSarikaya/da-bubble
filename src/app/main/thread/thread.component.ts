@@ -30,6 +30,7 @@ export class ThreadComponent {
   contentThread = signal<string>('');
   @Input() isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
   nameChannelSignal = computed(() => this.channelObserved()?.name ?? '');
+  currentDate: string = '';
  
     
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
@@ -48,6 +49,11 @@ export class ThreadComponent {
         });
       }
     });
+
+    setInterval(()=>{
+      let timestamp = this.channelService.getTodayDate();
+      this.currentDate = this.channelService.getFormattedDate(timestamp);
+    }, 1000)
   }
 
   ngOnInit(): void {

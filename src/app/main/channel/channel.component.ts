@@ -1,4 +1,4 @@
-import { Component, computed, effect, EventEmitter, Input, Output, signal, Signal } from '@angular/core';
+import { Component, computed, effect, EventEmitter, Input, Output, signal, Signal, WritableSignal } from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -46,8 +46,14 @@ export class ChannelComponent {
   channelObserved = signal<Channel | null>(null)
   contentChannel = signal<string>('');
   nameChannelSignal = computed(() => this.channelObserved()?.name ?? '');
-      
+  currentDate: string = '';
+
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
+    setInterval(()=>{
+      let timestamp = this.channelService.getTodayDate();
+      this.currentDate = this.channelService.getFormattedDate(timestamp);
+    }, 1000)
+
     effect(()=>{
       if(this.selectedChannel()){
         console.log(this.selectedChannel());
@@ -180,10 +186,7 @@ export class ChannelComponent {
   }
 
   async deleteMessage(messageId: string, channelID: string){
-    this.store.dispatch(hideThreadComponent());
-    setTimeout(async() => {
-      await this.channelService.deleteMessageChannel(messageId, channelID)
-    }, 0);
+    await this.channelService.deleteMessageChannel(messageId, channelID)
   }
 
 }

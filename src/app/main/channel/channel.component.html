@@ -80,37 +80,7 @@
                 }
               </span>
             </div>
-          }
-          <!-- <div class="userList">
-            <img
-              src="../../../assets/img/img_profile/profile1.png"
-              alt=""
-              class="userProfile50"
-            />
-            <div class="online"></div>
-            <span>Frederick Beck (Du)</span>
-          </div>
-
-          <div class="userList">
-            <img
-              src="../../../assets/img/img_profile/profile2.png"
-              alt=""
-              class="userProfile50"
-            />
-            <div class="online"></div>
-
-            <span>Sofia Müller</span>
-          </div>
-
-          <div class="userList">
-            <img
-              src="../../../assets/img/img_profile/profile3.png"
-              alt=""
-              class="userProfile50"
-            />
-            <div class="online"></div>
-            <span>Noah Braun</span>
-          </div> -->
+          }            
         </div>
         <div class="addChannelMember">
           <div class="userList" (click)="openAddChannelMembers()">
@@ -382,7 +352,11 @@
     @if((channelObserved()?.messageIDS || []).length > 0){
       @for (msg of channelObserved()!.messages; track $index) {
         @if(msg.senderID !== currentUser.idFirebase){
-          <div class="timeLine"><span>{{msg.createAtString}}</span></div>
+          @if(currentDate === msg.createAtString){
+            <div class="timeLine"><span>Heute</span></div>
+          }@else{
+            <div class="timeLine"><span>{{msg.createAtString}}</span></div>
+          }
           <div class="chatMessage leftMessage">
             <div class="addReaction leftPopup">
               <span>
@@ -465,7 +439,11 @@
             </div>
           </div>
         }@else {
-          <div class="timeLine"><span>{{msg.createAtString}}</span></div>
+          @if(currentDate === msg.createAtString){
+            <div class="timeLine"><span>Heute</span></div>
+          }@else{
+            <div class="timeLine"><span>{{msg.createAtString}}</span></div>
+          }
           <div class="chatMessage rightMessage">
             <div class="addReaction rightPopup">
               <span>

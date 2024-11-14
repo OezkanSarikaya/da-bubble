@@ -57,7 +57,11 @@
       @if(threadObserved()?.senderID){
         @for (thread of threadObserved()?.threadData; track $index) {
           @if(thread.senderID !== currentUser.idFirebase){
-            <div class="timeLine"><span>{{thread.createAtString}}</span></div>
+            @if(currentDate === thread.createAtString){
+              <div class="timeLine"><span>Heute</span></div>
+            }@else{
+              <div class="timeLine"><span>{{thread.createAtString}}</span></div>
+            }
             <div class="chatMessage leftMessage">
               <img
                 class="userProfile70"
@@ -73,7 +77,11 @@
               </div>
             </div> 
           }@else {
-            <div class="timeLine"><span>{{thread.createAtString}}</span></div>
+            @if(currentDate === thread.createAtString){
+              <div class="timeLine"><span>Heute</span></div>
+            }@else{
+              <div class="timeLine"><span>{{thread.createAtString}}</span></div>
+            }
             <div class="chatMessage rightMessage">
               <div class="addReaction rightPopup">              
                 <span class="editDeleteMsg">

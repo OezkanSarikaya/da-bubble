@@ -196,7 +196,7 @@ export class ChannelService {
   }
 
   
-  private getFormattedDate(timestamp: number): string {
+  public getFormattedDate(timestamp: number): string {
     const date = new Date(timestamp * 1000);
     // Usamos Intl.DateTimeFormat para formatear la fecha
     const options: Intl.DateTimeFormatOptions = {
@@ -208,6 +208,11 @@ export class ChannelService {
 
     const formatter = new Intl.DateTimeFormat('de-DE', options);
     return formatter.format(date);
+  }
+
+  public getTodayDate(): number{
+    let timestampSecond = Math.floor(Date.now()/1000);
+    return timestampSecond;
   }
 
   public async createThreadedMessage(content: string, senderID: string, table: string, parentMessageID: string) {
