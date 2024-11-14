@@ -10,6 +10,7 @@ import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
 import { Message } from '../../interfaces/message';
+import { FormsModule, NgForm } from '@angular/forms';
 
 
 interface ChannelAllData {
@@ -20,7 +21,7 @@ interface ChannelAllData {
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [ChatmsgboxComponent, CommonModule],
+  imports: [ChatmsgboxComponent, CommonModule, FormsModule],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss',
 })
@@ -47,6 +48,8 @@ export class ChannelComponent {
   contentChannel = signal<string>('');
   nameChannelSignal = computed(() => this.channelObserved()?.name ?? '');
   currentDate: string = '';
+  namePerson: string = '';
+  persons: any[] = [];
 
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     setInterval(()=>{
@@ -80,10 +83,14 @@ export class ChannelComponent {
     const sub3 = this.channelService.contentEditChannel$.subscribe(content =>{
       this.contentChannel.set(content)
     })
+    const sub4 = this.userService.getUsers().subscribe((users) => {
+      this.persons = users;
+    });
 
     this.subscription.add(sub1);
     this.subscription.add(sub2);
     this.subscription.add(sub3);
+    this.subscription.add(sub4);
   }
 
   ngOnDestroy(): void {
@@ -187,6 +194,15 @@ export class ChannelComponent {
 
   async deleteMessage(messageId: string, channelID: string){
     await this.channelService.deleteMessageChannel(messageId, channelID)
+  }
+
+  addPerson(ngForm: NgForm){
+    console.log(ngForm.value);
+  }
+
+  searchPerson(){
+    let personsFound = this.userService.searchPerson(this.namePerson, this.persons);
+    console.log(personsFound);
   }
 
 }

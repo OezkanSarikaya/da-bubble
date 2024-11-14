@@ -401,6 +401,7 @@ export class ChannelService {
       console.error('Error al eliminar el mensaje y actualizar el canal:', error);
     }
   }
+
 }
 
 
