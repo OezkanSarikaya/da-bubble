@@ -95,4 +95,8 @@ export class ThreadComponent {
     this.store.dispatch(hideThreadComponent()) // Sendet das Ereignis an die Eltern-Komponente
   }
 
+  async deleteMessage(messageID: string, parentMessageID: string){
+    await this.channelService.deleteMessageThread(messageID, parentMessageID)
+  }
+
 }

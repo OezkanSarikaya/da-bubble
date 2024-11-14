@@ -362,8 +362,8 @@
 
 .msgText {
   position: absolute;
-  top: 60%;
-  left: 80%;
+  top: 50%;
+  left: 50%;
   background-color: white;
   padding: 10px 10px;
   border-top-right-radius: 16px;
@@ -603,6 +603,12 @@
       fill: $main-secondary;
     }
   }
+}
+
+.creatorChannel{
+  color: $main-secondary;
+  font-size: 20px;
+  font-weight: 400;
 }
 
 // Media Queries Mobile First

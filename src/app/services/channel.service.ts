@@ -319,7 +319,7 @@ export class ChannelService {
       }
   }
 
-  async deleteMessage(messageId: string, channelId: string): Promise<void> {
+  async deleteMessageChannel(messageId: string, channelId: string): Promise<void> {
     try {
       // 1. Eliminar el mensaje de la colección 'messages'
       const messageDocRef = doc(this.firestore, `messages/${messageId}`);
@@ -358,7 +358,41 @@ export class ChannelService {
       console.error('Error al eliminar el mensaje y actualizar el canal:', error);
     }
   }
+
+  async deleteMessageThread(messageID: string, parentMessageID: string): Promise<void> {
+    try {
+      //1. Delete iD of the threadIDS array from the message parent
+      const messageDocRefParent = doc(this.firestore, `messages/${parentMessageID}`);
+      const messageSnapshotParent = await getDoc(messageDocRefParent);
+      if (messageSnapshotParent.exists()) {
+        const parentMessageData = messageSnapshotParent.data();
+         // Verificamos si el mensaje padre tiene un array `threadIDS` y contiene el ID del mensaje hijo
+         if (parentMessageData?.['threadIDS']?.includes(messageID)) {
+          // Actualizar `threadIDS` eliminando `messageId` del array
+          const updatedThreadIds = parentMessageData['threadIDS'].filter((id: string) => id !== messageID);
+          
+          // Actualizamos el mensaje padre con el nuevo array `threadIDS`
+          await updateDoc(messageDocRefParent, { threadIDS: updatedThreadIds });
+          console.log(`Mensaje hijo ${messageID} eliminado de threadIDS del mensaje padre ${parentMessageID}`);
+        
+        }else {
+          console.warn(`El mensaje padre con ID ${parentMessageID} no existe.`);
+        }
+
+        //2. Delete Thread
+        const messageDocRef = doc(this.firestore, `messages/${messageID}`);
+        await deleteDoc(messageDocRef);
+        console.log('Mensaje eliminado de la colección messages');
+      }
+
+    } catch (error) {
+      console.error('Error al eliminar el mensaje y actualizar el canal:', error);
+    }
+  }
 }
+
+
+
 
 
 
