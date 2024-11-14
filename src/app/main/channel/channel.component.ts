@@ -11,6 +11,7 @@ import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
 import { Message } from '../../interfaces/message';
 import { FormsModule, NgForm } from '@angular/forms';
+import { User } from '../../interfaces/user';
 
 
 interface ChannelAllData {
@@ -48,8 +49,9 @@ export class ChannelComponent {
   contentChannel = signal<string>('');
   nameChannelSignal = computed(() => this.channelObserved()?.name ?? '');
   currentDate: string = '';
-  namePerson: string = '';
+  namePerson: WritableSignal<string> = signal<string>('');
   persons: any[] = [];
+  searchedPersons: WritableSignal<User[]> = signal<User[]>([]);
 
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     setInterval(()=>{
@@ -61,6 +63,8 @@ export class ChannelComponent {
       if(this.selectedChannel()){
         console.log(this.selectedChannel());
         console.log('Canal observado actualizado:', this.channelObserved());
+        console.log(this.searchedPersons());
+        console.log(this.namePerson());
       }
     })
   }
@@ -201,8 +205,12 @@ export class ChannelComponent {
   }
 
   searchPerson(){
-    this.channelService.searchPerson(this.namePerson, this.persons).subscribe(users => {
-        console.log(users); 
-    });
+    if(this.namePerson() !== ''){
+      this.channelService.searchPerson(this.namePerson(), this.persons).subscribe(users => {
+        this.searchedPersons.set(users);
+      });
+    }else{
+      this.searchedPersons.set([]);
+    }
   }
 }
