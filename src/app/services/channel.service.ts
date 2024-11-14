@@ -417,6 +417,19 @@ export class ChannelService {
     return combineLatest(userObservables);
   }
 
+  async addUserToChannel(channelId: string, userId: string): Promise<void> {
+    try {
+      const channelDocRef = doc(this.firestore, `channels/${channelId}`);
+      await updateDoc(channelDocRef, {
+        members: arrayUnion(userId)
+      });
+      console.log(`User ${userId} added to channel ${channelId}`);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+
 }
 
 

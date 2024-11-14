@@ -52,6 +52,15 @@ export class ChannelComponent {
   namePerson: WritableSignal<string> = signal<string>('');
   persons: any[] = [];
   searchedPersons: WritableSignal<User[]> = signal<User[]>([]);
+  userEmpty: User = {
+    avatar: '',
+    email: '',
+    fullName: '',
+    id: '',
+    status: '',
+    uid: '',
+  }
+  personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty)
 
   constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
     setInterval(()=>{
@@ -65,6 +74,7 @@ export class ChannelComponent {
         console.log('ChannelObserved Updated:', this.channelObserved());
         console.log(this.searchedPersons());
         console.log(this.namePerson());
+        console.log(this.personSelectedForChannel());
       }
     })
   }
@@ -200,8 +210,10 @@ export class ChannelComponent {
     await this.channelService.deleteMessageChannel(messageId, channelID)
   }
 
-  addPerson(ngForm: NgForm){
-    console.log(ngForm.value);
+  addPerson(){
+    this.channelService.addUserToChannel(this.selectedChannel()!.id, this.personSelectedForChannel().id);
+    this.deletePersonSelectedToChannel();
+    this.closePopup()
   }
 
   searchPerson(){
@@ -218,4 +230,15 @@ export class ChannelComponent {
     this.searchedPersons.set([]);
     this.namePerson.set('');
   }
+
+  addPersonSelectedToChannel(user: User){
+    this.personSelectedForChannel.set(user);
+    this.closeSearch();
+  }
+
+  deletePersonSelectedToChannel(){
+    this.personSelectedForChannel.set(this.userEmpty);
+  }
+
+
 }

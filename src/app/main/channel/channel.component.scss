@@ -162,8 +162,12 @@
       border-color: $main-color // Cambia esto por el color que deseas en foco
     }
   }
+
+  .dnone{
+    display: none;
+  }
   
-  input {
+  input.addPerson-input {
     // width: Fill (390px) px;
     // height: Fixed (60px) px;
     &::placeholder {
@@ -644,6 +648,23 @@
   &:hover {
     background-color: $bg-field-color;
   }
+}
+
+.bg-gray{
+  background-color: $bg-field-color !important;
+  margin: 6px 8px !important;
+  padding: 0 16px !important;
+  
+}
+
+img.size-add-person{
+  width: 32px !important;
+  height: 32px !important;
+  padding: 6px !important;
+}
+
+.color-black{
+  color: $black-color !important;
 }
 
 .creatorChannel{
