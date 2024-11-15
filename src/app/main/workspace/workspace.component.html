@@ -319,7 +319,7 @@
   </form>
 </div>
 
-<div
+<form
   *ngIf="isAddChannelOpen"
   class="addChannelContainer"
   [ngClass]="{ dnone: !isAddChannelOpen }"
@@ -362,15 +362,23 @@
 
   <div class="formField">
     <label>Channel-name</label>
-    <input type="text" required placeholder="# z.B. Kooperationsprojekte" />
+    <input type="text" required placeholder="# z.B. Kooperationsprojekte" name="name" [(ngModel)]="channelCreate.name" (keyup)="updateChannelCreate()"   />
+    @if(nameTaken){
+      <span class="error">Dieser Name ist nicht mehr verfügbar</span>
+    }
   </div>
   <div class="formField">
     <label>Beschreibung <small>(optional)</small></label>
-    <input type="text" placeholder="Dein Text hier" />
+    <input type="text" placeholder="Dein Text hier" name="description" [(ngModel)]="channelCreate.description" (keyup)="updateChannelCreate()"/>
   </div>
 
-  <button class="button-app" (click)="addPeopleChoicePopup()">Erstellen</button>
-</div>
+  @if(nameTaken){
+    <button class="button-app-disabled" disabled (click)="addPeopleChoicePopup()">Erstellen</button>
+  }@else{
+    <button class="button-app" (click)="addPeopleChoicePopup()">Erstellen</button>
+  }
+    
+</form>
 
 <div
   class="backdrop"

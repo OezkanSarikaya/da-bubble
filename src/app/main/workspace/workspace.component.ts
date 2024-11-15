@@ -8,11 +8,16 @@ import {
   OnDestroy,
   effect,
   Signal,
+  signal,
+  computed,
+  ElementRef,
+  viewChild,
+  ViewChild,
 } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
 import { UserService } from '../../services/user.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -24,11 +29,18 @@ import {
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
+import { FormsModule } from '@angular/forms';
+
+
+export interface channelCreate {
+  name: string,
+  description: string
+}
 
 @Component({
   selector: 'app-workspace',
   standalone: true,
-  imports: [CommonModule, SearchComponent],
+  imports: [CommonModule, SearchComponent, FormsModule],
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.scss'], // Hier den korrekten Schlüssel 'styleUrls' verwenden
 })
@@ -47,7 +59,15 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   channels$: Signal<Channel[]>;
   currentUser: any = null;
   closePopup = false;
+  channelCreate = {
+    name: '',
+    description: ''
+  }
+  channelCreateSubject: BehaviorSubject<channelCreate> = new BehaviorSubject(this.channelCreate)
+  channelCreate$: Observable<channelCreate> = this.channelCreateSubject.asObservable();
+  nameTaken: boolean = false;
 
+  
   constructor(
     private personService: PersonService,
     private userService: UserService,
@@ -62,6 +82,16 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       console.log('Updated channels:', this.channels$());
       this.cdr.detectChanges();
     });
+    this.channelCreate$.subscribe(createChannel =>{
+      this.channels$().map(channel =>{
+        this.nameTaken = channel.name.toLocaleLowerCase() === createChannel.name.toLocaleLowerCase();
+      })
+    })
+
+  }
+
+  updateChannelCreate(){
+    this.channelCreateSubject.next(this.channelCreate);
   }
 
   ngOnInit(): void {
@@ -173,13 +203,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.store.dispatch(hideNewMessage());
   }
 
-  // findChannelClicked(channelId: string) {
-  //   const channelClicked = this.channels$();
-  //   channelClicked.filter(
-  //     (channel) => channel.id === channelId
-  //   );
-  // }
-
   // Methode, die das Einblenden auslöst
   ontoggleNewMessage() {
     this.store.dispatch(showNewMessage());
@@ -216,4 +239,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       }, 300); // Dauer der CSS-Transition (300ms)
     }
   }
+
+  
 }
