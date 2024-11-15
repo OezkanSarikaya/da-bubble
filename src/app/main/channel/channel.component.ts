@@ -75,7 +75,7 @@ export class ChannelComponent {
         console.log('ChannelObserved Updated:', this.channelObserved());
         console.log(this.searchedPersons());
         console.log(this.namePerson());
-        console.log(this.personSelectedForChannel());
+        this.personSelectedForChannel();
       }
     })
   }

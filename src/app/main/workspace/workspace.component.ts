@@ -23,6 +23,7 @@ import {
 } from '../../state/actions/triggerComponents.actions';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
+import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
 
 @Component({
   selector: 'app-workspace',
@@ -44,7 +45,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   isAddChannelOpen = false;
   isBackdropVisible: boolean = false;
   channels$: Signal<Channel[]>;
-  
+  currentUser: any = null;
   closePopup = false;
 
   constructor(
@@ -52,7 +53,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private cdr: ChangeDetectorRef,
     private store: Store<any>,
-    private readonly channelService: ChannelService
+    private readonly channelService: ChannelService,
+    public channelDependenciesService: ChannelDependenciesService
   ) {
     this.channels$ = this.channelService.allChannels;
     // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
@@ -74,6 +76,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             this.subscriptions.add(
               this.userService.getUserStatus(person.uid).subscribe((status) => {
                 person.isOnline = status === 'online';
+                // console.log(person);
                 this.cdr.detectChanges(); // Actualizamos la vista
               })
             );
@@ -81,6 +84,11 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         });
       })
     );
+
+    const sub1 = this.userService.currentUser$.subscribe(user => {
+      this.currentUser = user;        
+    });
+    this.subscriptions.add(sub1)
   }
 
   addPeopleChoicePopup() {
@@ -144,6 +152,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error);
       }
     );
+
   }
 
   ngOnDestroy() {

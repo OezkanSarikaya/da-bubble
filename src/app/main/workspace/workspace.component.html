@@ -158,7 +158,13 @@
         <div
           [ngClass]="{ online: person.isOnline, offline: !person.isOnline }"
         ></div>
-        <span>{{ person.fullName }}</span>
+        <span>{{ person.fullName }}
+          @if(currentUser){
+            @if(this.channelDependenciesService.belongTheUserCurrentItem(person, currentUser)){
+              (Du)
+            }
+          }
+        </span>
       </div>
     </div>
   </div>
