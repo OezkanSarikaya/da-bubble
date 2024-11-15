@@ -92,22 +92,30 @@ export class ChannelComponent {
           // console.log('Canal observado emitido:', updatedChannel); 
           this.channelObserved.set(updatedChannel);
           
-          updatedChannel.messages?.forEach((message) => {
-            this.channelService.observeLastThreadTimeFromMessage(message.id).subscribe((lastThreadTime) => {
-              if (lastThreadTime) {
-                // Asignamos el último tiempo del thread al mensaje
-                const updatedMessage = { 
-                  ...message,  // Copia todos los valores del mensaje original
-                  lastThreadTime: lastThreadTime  // Asigna el time del último thread
-                };
-                // Aquí deberías actualizar el mensaje en el arreglo (por ejemplo, en un servicio o store)
-                const index = updatedChannel.messages.findIndex(msg => msg.id === message.id);
-                if (index !== -1) {
-                  updatedChannel.messages[index] = updatedMessage; // Reemplaza el mensaje en el array
-                }
+          if (updatedChannel.messages && updatedChannel.messages.length > 0) {
+            updatedChannel.messages.forEach((message) => {
+              // Verificar si el mensaje y su ID están definidos
+              if (message && message.id) {
+                this.channelService.observeLastThreadTimeFromMessage(message.id).subscribe((lastThreadTime) => {
+                  if (lastThreadTime) {
+                    // Asignamos el último tiempo del thread al mensaje
+                    const updatedMessage = {
+                      ...message,  // Copiar todos los valores del mensaje original
+                      lastThreadTime: lastThreadTime  // Asigna el tiempo del último thread
+                    };
+  
+                    // Actualizar el mensaje en el arreglo
+                    const index = updatedChannel.messages.findIndex(msg => msg.id === message.id);
+                    if (index !== -1) {
+                      updatedChannel.messages[index] = updatedMessage; // Reemplazar el mensaje en el array
+                    }
+                  }
+                });
+              } else {
+                console.log('We dont have anything here to show for', message);
               }
             });
-          });
+          }
         });
       }
     });
