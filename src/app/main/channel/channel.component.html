@@ -424,7 +424,7 @@
       }
     </div>
   </div>
-  <div class="channelBody">
+  <div class="channelBody" [ngClass]="{channelEmpty: (channelObserved()?.messageIDS || []).length == 0}">
     @if((channelObserved()?.messageIDS || []).length > 0){
       @for (msg of channelObserved()!.messages; track $index) {
         @if(msg.senderID !== currentUser.idFirebase){
@@ -619,6 +619,23 @@
           </div>
         } 
       }
+    }@else{
+      <div class="container-new-channel">
+        @if(channelObserved()){
+          
+          <h4># {{channelObserved()!.name}}</h4>
+          <p>
+            @if(currentUser.idFirebase === channelObserved()!.createdBy){
+            <span class="creatorChannel">Du</span>
+            }@else{
+              <span class="creatorChannel">
+              {{channelObserved()!.creatorChannelData!.fullName}}
+              </span>
+            }
+            hast diesen Channel erstellt. Das ist der Anfang des Channels <span># {{channelObserved()!.name}}</span></p>
+          
+        }
+      </div>
     }
       </div>
       @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
