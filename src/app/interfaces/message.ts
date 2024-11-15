@@ -8,5 +8,6 @@ export interface Message {
   id: string,
   senderData?: User,
   createAtString?: string,
-  time?: string
+  time?: string,
+  lastThreadTime?: string
 }

@@ -510,6 +510,7 @@
               @if(msg.threadIDS!.length > 0){
                 <footer>
                   <span class="answers" (click)="onShowThread(msg)"> {{msg.threadIDS.length}} Antworten </span>
+                  <span class="last-message">letzte Antwort {{msg.lastThreadTime}}</span>
                 </footer>
               }
             </div>
@@ -613,6 +614,7 @@
               @if(msg.threadIDS!.length > 0){
                 <footer>
                   <span class="answers" (click)="onShowThread(msg)"> {{msg.threadIDS.length}} Antworten </span>
+                  <span class="last-message">letzte Antwort {{msg.lastThreadTime}}</span>
                 </footer>
               }
             </div>

@@ -86,12 +86,6 @@ export class ChannelService {
           } else {
             const { messageIDS, members, createdBy } = channelData;
 
-            // const messageObservables = (messageIDS || []).map((messageId: string) =>
-            //     this.fetchMessageWithUserAsObservable(messageId).pipe(
-            //         filter((msg): msg is Message => msg !== null)
-            //     )
-            // );
-
             const messageObservables = (messageIDS && messageIDS.length > 0) 
                 ? messageIDS.map((messageId: string) => 
                     this.fetchMessageWithUserAsObservable(messageId).pipe(filter((msg): msg is Message => msg !== null))
@@ -495,7 +489,36 @@ export class ChannelService {
       console.error('Error al eliminar el miembro:', error);
     }
   }
-
+  
+  observeLastThreadTimeFromMessage(messageId: string): Observable<string | null> {
+    return new Observable<string | null>((observer) => {
+      this.observeThread(messageId).subscribe((parentMessage) => {
+        if (parentMessage?.threadIDS?.length) {
+          const threadObservables = parentMessage.threadIDS.map((threadId) =>
+            this.fetchMessageWithUserAsObservable(threadId)
+          );
+  
+          combineLatest(threadObservables).subscribe((threads) => {
+            const lastThread = threads
+              .filter((thread): thread is Message => thread !== null) // Filtrar threads válidos
+              .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+  
+            if (lastThread) {
+              const formattedTime = this.formatTimestampTo24HourFormat(
+                lastThread.createdAt.getTime() / 1000
+              );
+              observer.next(formattedTime);
+            } else {
+              observer.next(null);
+            }
+          });
+        } else {
+          observer.next(null);
+        }
+      });
+    });
+  }
+  
 
 }
 
