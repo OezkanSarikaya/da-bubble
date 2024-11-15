@@ -85,13 +85,10 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.channelCreate$.subscribe(createChannel =>{
       this.channels$().map(channel =>{
         this.nameTaken = channel.name.toLocaleLowerCase() === createChannel.name.toLocaleLowerCase();
-      })
+        console.log(this.nameTaken);
+      });
+      console.log(createChannel);
     })
-
-  }
-
-  updateChannelCreate(){
-    this.channelCreateSubject.next(this.channelCreate);
   }
 
   ngOnInit(): void {
@@ -119,6 +116,29 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       this.currentUser = user;        
     });
     this.subscriptions.add(sub1)
+  }
+
+  updateChannelCreate(){
+    this.channelCreateSubject.next(this.channelCreate);
+  }
+
+  resetData(){
+    this.channelCreate.name = '';
+    this.channelCreate.description = ''
+    this.channelCreateSubject.next(this.channelCreate);
+    this.addPeopleChoicePopup();
+    this.toggleAddChannel()
+  }
+
+
+  addPeopleToNewChannel(){
+    if(this.isAddMembersInputVisible){
+      console.log('selected user only');
+    }else{
+      console.log('add allUser');
+      this.channelService.createChannelAllPeople(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description);
+      this.resetData();
+    }
   }
 
   addPeopleChoicePopup() {

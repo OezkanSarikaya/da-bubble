@@ -47,6 +47,7 @@ import { Router } from '@angular/router';
 import { PersonService } from './person.service'; // Importiere den PersonService
 import { Store } from '@ngrx/store';
 import { hideChannelComponent, hideThreadComponent, showNewMessage } from '../state/actions/triggerComponents.actions';
+import { User } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
@@ -162,7 +163,8 @@ export class UserService {
       const users = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));
+      })) as User[];
+      console.log(users);
       usersSubject.next(users); // Emitimos los usuarios actualizados
     });
 

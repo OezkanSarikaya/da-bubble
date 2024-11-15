@@ -280,7 +280,7 @@
       </g>
     </svg>
   </header>
-  <form>
+  <form >
     <div class="radioField">
     
       <label for="allPeople"
@@ -294,7 +294,7 @@
         (click)="toggleAddMembersInput()"
       />
         
-        <span>Alle Mitglieder von <b>Office Team</b> hinzufügen</span></label
+        <span>Alle Mitglieder von <b class="color-text-blue">Devspace</b> hinzufügen</span></label
       >
     </div>
     <div class="radioField">
@@ -314,7 +314,7 @@
       <input type="text" placeholder="Name eingeben"/>
     </div>
     <footer>
-      <button type="submit" class="button-app">Erstellen</button>
+      <button type="submit" class="button-app" (click)="addPeopleToNewChannel()">Erstellen</button>
     </footer>
   </form>
 </div>
@@ -372,8 +372,8 @@
     <input type="text" placeholder="Dein Text hier" name="description" [(ngModel)]="channelCreate.description" (keyup)="updateChannelCreate()"/>
   </div>
 
-  @if(nameTaken){
-    <button class="button-app-disabled" disabled (click)="addPeopleChoicePopup()">Erstellen</button>
+  @if(nameTaken || channelCreate.name.trim() == ''){
+    <button class="button-app-disabled" disabled>Erstellen</button>
   }@else{
     <button class="button-app" (click)="addPeopleChoicePopup()">Erstellen</button>
   }

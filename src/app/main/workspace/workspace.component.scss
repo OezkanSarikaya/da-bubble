@@ -4,6 +4,10 @@ body {
   background-color: white !important;
 }
 
+.color-text-blue{
+  color: $main-secondary;
+}
+
 .addChannelContainer {
   display: flex;
   flex-direction: column;

@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
-import { BehaviorSubject, combineLatest, filter, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, firstValueFrom, forkJoin, map, Observable } from 'rxjs';
 import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
 import { ThreadMessage } from '../interfaces/threadMessage';
@@ -426,6 +426,30 @@ export class ChannelService {
       console.log(`User ${userId} added to channel ${channelId}`);
     } catch (error) {
       console.error("Error:", error);
+    }
+  }
+
+  async createChannelAllPeople(createdBy: string, name: string, description: string): Promise<void> {
+    const userObservable: Observable<User[]> = this.userService.getUsers();
+    const users = await firstValueFrom(userObservable.pipe(
+      filter((users) => users.length > 0),
+      map(users =>users.map(user => user.id))
+      )
+    );
+    const newChannel = {
+      createdBy,
+      description,
+      name,
+      createdAt: Timestamp.now(),
+      messagesIDs: [], 
+      members: users || [], 
+    };
+    try {
+      const channelCollection = collection(this.firestore, 'channels');
+      await addDoc(channelCollection, newChannel);
+      console.log('Canal creado con éxito:', newChannel);
+    } catch (error) {
+      console.error('Error al crear el canal:', error);
     }
   }
 
