@@ -241,10 +241,9 @@ export class ChannelComponent {
     this.personSelectedForChannel.set(this.userEmpty);
   }
 
-  // isUserMemberChannel(channelObserved: Channel, currentUser: any){
-  //   return channelObserved?.members.includes(currentUser.idFirebase) 
-  //   // return this.channelObserved()?.members.includes(this.currentUser.idFirebase) 
-  // }
+  leaveAChannel(){
+    this.channelService.removeMemberFromChannel(this.selectedChannel()!.id, this.currentUser.idFirebase)
+  }
 
 
 }

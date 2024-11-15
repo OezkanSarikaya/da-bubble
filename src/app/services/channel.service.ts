@@ -484,6 +484,18 @@ export class ChannelService {
     }
   }
 
+  async removeMemberFromChannel(channelId: string, memberId: string): Promise<void> {
+    try {
+      const channelDocRef = doc(this.firestore, 'channels', channelId);
+      await updateDoc(channelDocRef, {
+        members: arrayRemove(memberId),
+      });
+      console.log(`Miembro ${memberId} eliminado del canal ${channelId}`);
+    } catch (error) {
+      console.error('Error al eliminar el miembro:', error);
+    }
+  }
+
 
 }
 

@@ -289,7 +289,7 @@
 
       @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
         <footer>
-          <button class="button-app">Channel verlassen</button>
+          <button class="button-app" (click)="leaveAChannel()">Channel verlassen</button>
         </footer>
       }
     </div>
