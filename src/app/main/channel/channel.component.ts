@@ -12,6 +12,7 @@ import { UserService } from '../../services/user.service';
 import { Message } from '../../interfaces/message';
 import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../interfaces/user';
+import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
 
 
 interface ChannelAllData {
@@ -62,7 +63,7 @@ export class ChannelComponent {
   }
   personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty)
 
-  constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
+  constructor(private store: Store, private channelService: ChannelService, private userService: UserService, public channelDependenciesService: ChannelDependenciesService){
     setInterval(()=>{
       let timestamp = this.channelService.getTodayDate();
       this.currentDate = this.channelService.getFormattedDate(timestamp);
@@ -239,6 +240,11 @@ export class ChannelComponent {
   deletePersonSelectedToChannel(){
     this.personSelectedForChannel.set(this.userEmpty);
   }
+
+  // isUserMemberChannel(channelObserved: Channel, currentUser: any){
+  //   return channelObserved?.members.includes(currentUser.idFirebase) 
+  //   // return this.channelObserved()?.members.includes(this.currentUser.idFirebase) 
+  // }
 
 
 }
