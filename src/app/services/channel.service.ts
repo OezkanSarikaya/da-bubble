@@ -417,6 +417,19 @@ export class ChannelService {
     return combineLatest(userObservables);
   }
 
+  public searchPersonNewChannel(namePerson: string, persons: any[]){
+    const lowerCaseSearchTerm = namePerson.toLowerCase();
+    const filteredPersons = persons.filter(person =>
+        person.fullName.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+    const userObservables = filteredPersons.map(person =>
+        this.fetchUserAsObservable(person.id).pipe(
+            filter((user): user is User => user !== null) 
+        )
+    );
+    return combineLatest(userObservables);
+  }
+
   async addUserToChannel(channelId: string, userId: string): Promise<void> {
     try {
       const channelDocRef = doc(this.firestore, `channels/${channelId}`);
@@ -445,6 +458,24 @@ export class ChannelService {
       members: users || [], 
     };
     try {
+      const channelCollection = collection(this.firestore, 'channels');
+      await addDoc(channelCollection, newChannel);
+      console.log('Canal creado con éxito:', newChannel);
+    } catch (error) {
+      console.error('Error al crear el canal:', error);
+    }
+  }
+
+  async createChannelOnePerson(createdBy: string, name: string, description: string, memberId: string): Promise<void> {
+    try {
+      const newChannel = {
+        createdBy,
+        description,
+        name,
+        createdAt: Timestamp.now(), 
+        messagesIDs: [], 
+        members: [createdBy, memberId],
+      };
       const channelCollection = collection(this.firestore, 'channels');
       await addDoc(channelCollection, newChannel);
       console.log('Canal creado con éxito:', newChannel);

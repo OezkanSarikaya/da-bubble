@@ -13,6 +13,7 @@ import {
   ElementRef,
   viewChild,
   ViewChild,
+  WritableSignal,
 } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
@@ -30,6 +31,7 @@ import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
 import { FormsModule } from '@angular/forms';
+import { User } from '../../interfaces/user';
 
 
 export interface channelCreate {
@@ -66,6 +68,17 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   channelCreateSubject: BehaviorSubject<channelCreate> = new BehaviorSubject(this.channelCreate)
   channelCreate$: Observable<channelCreate> = this.channelCreateSubject.asObservable();
   nameTaken: boolean = false;
+  userEmpty: User = {
+    avatar: '',
+    email: '',
+    fullName: '',
+    id: '',
+    status: '',
+    uid: '',
+  }
+  namePerson: WritableSignal<string> = signal<string>('');
+  searchedPersons: WritableSignal<User[]> = signal<User[]>([]);
+  personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty)
 
   
   constructor(
@@ -80,6 +93,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
     effect(() => {
       console.log('Updated channels:', this.channels$());
+      console.log(this.namePerson());
+      console.log(this.searchedPersons());
+      console.log(this.personSelectedForChannel());
       this.cdr.detectChanges();
     });
     this.channelCreate$.subscribe(createChannel =>{
@@ -118,6 +134,30 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.subscriptions.add(sub1)
   }
 
+  searchPerson(){
+    if(this.namePerson() !== ''){
+      this.channelService.searchPersonNewChannel(this.namePerson(), this.persons).subscribe(users => {
+        this.searchedPersons.set(users);
+      });
+    }else{
+      this.closeSearch();
+    }
+  }
+
+  public closeSearch(){
+    this.searchedPersons.set([]);
+    this.namePerson.set('');
+  }
+
+  addPersonSelectedToChannel(user: User){
+    this.personSelectedForChannel.set(user);
+    this.closeSearch();
+  }
+
+  deletePersonSelectedToChannel(){
+    this.personSelectedForChannel.set(this.userEmpty);
+  }
+
   updateChannelCreate(){
     this.channelCreateSubject.next(this.channelCreate);
   }
@@ -134,11 +174,12 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   addPeopleToNewChannel(){
     if(this.isAddMembersInputVisible){
       console.log('selected user only');
+      this.channelService.createChannelOnePerson(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description, this.personSelectedForChannel().id)
     }else{
       console.log('add allUser');
       this.channelService.createChannelAllPeople(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description);
-      this.resetData();
     }
+    this.resetData();
   }
 
   addPeopleChoicePopup() {
@@ -260,5 +301,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
   }
 
+  
   
 }
