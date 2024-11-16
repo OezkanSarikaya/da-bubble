@@ -24,7 +24,7 @@ import {
   triggerChannelSelector,
   triggerNewMessageSelector,
 } from '../../state/selectors/triggerComponents.selectors';
-import { forkJoin, interval, map, Observable, Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
@@ -108,7 +108,6 @@ export class ChannelComponent {
         console.log(this.namePerson());
         console.log(this.lastAnswer());
         this.personSelectedForChannel();
-        console.log(this.currentUser());
       }
     });
   }
@@ -167,7 +166,6 @@ export class ChannelComponent {
     // const sub2 = this.userService.currentUser$.subscribe((user) => {
     //   this.currentUser = user;
     // });
-    
     const sub3 = this.channelService.contentEditChannel$.subscribe(
       (content) => {
         this.contentChannel.set(content);
@@ -327,7 +325,7 @@ export class ChannelComponent {
   leaveAChannel() {
     this.channelService.removeMemberFromChannel(
       this.selectedChannel()!.id,
-      this.currentUser().idFirebase
+      this.currentUser.idFirebase
     );
   }
 
