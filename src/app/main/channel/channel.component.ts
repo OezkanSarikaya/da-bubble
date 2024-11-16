@@ -86,9 +86,6 @@ export class ChannelComponent {
   };
   personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty);
   lastAnswer = signal<string>('');
-  value$: Observable<number> =  interval(1000).pipe(map((value) => value + 1));
-
-  valueSignal = toSignal(this.value$, { initialValue: 0 });
 
   constructor(
     private store: Store,
