@@ -34,6 +34,9 @@ export class ChannelComponent {
   isBackdropVisible = false;
   private subscription: Subscription = new Subscription();
 
+  hoveredReaction: any | null = null; // Die Reaktion, die aktuell gehovt wird
+  popupPosition = { x: 0, y: 0 }; // Position des Popups
+
   @Input()
   isNewMessageVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
 
@@ -83,6 +86,7 @@ export class ChannelComponent {
   }
 
   ngOnInit(): void {
+    
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
     const sub1 = this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
@@ -133,6 +137,35 @@ export class ChannelComponent {
     this.subscription.add(sub2);
     this.subscription.add(sub3);
     this.subscription.add(sub4);
+  }
+
+  showUsers(reaction: any, event: MouseEvent): void {
+    const targetElement = event.target as HTMLElement;
+    const parentElement = targetElement.closest('.reaction-item') as HTMLElement;
+    if (!parentElement) return;
+  
+    // Berechnung der relativen Position innerhalb des Elternelements
+    const parentRect = parentElement.getBoundingClientRect();
+    // const x = event.clientX - parentRect.left; // Position relativ zum Elternelement
+    // const y = event.clientY - parentRect.top;
+    const x = parentRect.left + parentRect.width / 2; // Zentriert über der Reaktion
+    const y = parentRect.top - 10; // 10px oberhalb des Reaktionselements
+    // const x = 27; 
+    // const y = -23;
+  // bottom 35px
+  // left 25px
+  // console.log('x: ',x-680);
+  
+    this.hoveredReaction = reaction;
+    this.popupPosition = {
+      x: x - 690,      
+      // y: y - 40 // 40px oberhalb der Reaktion
+      y: -126 
+    };
+  }
+
+  hideUsers(): void {
+    this.hoveredReaction = null;
   }
 
   ngOnDestroy(): void {

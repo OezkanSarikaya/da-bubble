@@ -67,60 +67,65 @@
       <div class="channelMembersBody">
         <div class="channelMembersList">
           @for(user of channelObserved()!.membersData; track $index){
-            <div class="userList">
-              <img
-                src="{{user.avatar}}"
-                alt=""
-                class="userProfile50"
-              />
-              <div [ngClass]="{online: user.status === 'online', offline: user.status === 'offline'}"></div>
-              <span>{{user.fullName}}
-                @if(user.id === currentUser.idFirebase){
-                  (Du)
-                }
-              </span>
-            </div>
-          }            
-        </div>
-        @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
-          <div class="addChannelMember">
-            <div class="userList" (click)="openAddChannelMembers()">
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect width="32" height="32" rx="16" fill="#ECEEFE" />
-                <mask
-                  id="mask0_79092_14265"
-                  style="mask-type: alpha"
-                  maskUnits="userSpaceOnUse"
-                  x="4"
-                  y="4"
-                  width="24"
-                  height="24"
-                >
-                  <rect x="4" y="4" width="24" height="24" fill="#D9D9D9" />
-                </mask>
-                <g mask="url(#mask0_79092_14265)">
-                  <path
-                    d="M23 18C22.7167 18 22.4793 17.904 22.288 17.712C22.096 17.5207 22 17.2833 22 17V15H20C19.7167 15 19.4793 14.904 19.288 14.712C19.096 14.5207 19 14.2833 19 14C19 13.7167 19.096 13.479 19.288 13.287C19.4793 13.0957 19.7167 13 20 13H22V11C22 10.7167 22.096 10.479 22.288 10.287C22.4793 10.0957 22.7167 10 23 10C23.2833 10 23.5207 10.0957 23.712 10.287C23.904 10.479 24 10.7167 24 11V13H26C26.2833 13 26.5207 13.0957 26.712 13.287C26.904 13.479 27 13.7167 27 14C27 14.2833 26.904 14.5207 26.712 14.712C26.5207 14.904 26.2833 15 26 15H24V17C24 17.2833 23.904 17.5207 23.712 17.712C23.5207 17.904 23.2833 18 23 18ZM13 16C11.9 16 10.9583 15.6083 10.175 14.825C9.39167 14.0417 9 13.1 9 12C9 10.9 9.39167 9.95833 10.175 9.175C10.9583 8.39167 11.9 8 13 8C14.1 8 15.0417 8.39167 15.825 9.175C16.6083 9.95833 17 10.9 17 12C17 13.1 16.6083 14.0417 15.825 14.825C15.0417 15.6083 14.1 16 13 16ZM6 24C5.71667 24 5.47933 23.904 5.288 23.712C5.096 23.5207 5 23.2833 5 23V21.2C5 20.6333 5.146 20.1123 5.438 19.637C5.72933 19.1623 6.11667 18.8 6.6 18.55C7.63333 18.0333 8.68333 17.6457 9.75 17.387C10.8167 17.129 11.9 17 13 17C14.1 17 15.1833 17.129 16.25 17.387C17.3167 17.6457 18.3667 18.0333 19.4 18.55C19.8833 18.8 20.2707 19.1623 20.562 19.637C20.854 20.1123 21 20.6333 21 21.2V23C21 23.2833 20.904 23.5207 20.712 23.712C20.5207 23.904 20.2833 24 20 24H6ZM7 22H19V21.2C19 21.0167 18.9543 20.85 18.863 20.7C18.771 20.55 18.65 20.4333 18.5 20.35C17.6 19.9 16.6917 19.5623 15.775 19.337C14.8583 19.1123 13.9333 19 13 19C12.0667 19 11.1417 19.1123 10.225 19.337C9.30833 19.5623 8.4 19.9 7.5 20.35C7.35 20.4333 7.22933 20.55 7.138 20.7C7.046 20.85 7 21.0167 7 21.2V22ZM13 14C13.55 14 14.021 13.804 14.413 13.412C14.8043 13.0207 15 12.55 15 12C15 11.45 14.8043 10.9793 14.413 10.588C14.021 10.196 13.55 10 13 10C12.45 10 11.9793 10.196 11.588 10.588C11.196 10.9793 11 11.45 11 12C11 12.55 11.196 13.0207 11.588 13.412C11.9793 13.804 12.45 14 13 14Z"
-                    fill="black"
-                  />
-                </g>
-              </svg>
-  
-              <span>Mitglieder hinzufügen</span>
-            </div>
+          <div class="userList">
+            <img src="{{ user.avatar }}" alt="" class="userProfile50" />
+            <div
+              [ngClass]="{
+                online: user.status === 'online',
+                offline: user.status === 'offline'
+              }"
+            ></div>
+            <span
+              >{{ user.fullName }}
+              @if(user.id === currentUser.idFirebase){ (Du) }
+            </span>
           </div>
+          }
+        </div>
+        @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+        currentUser)){
+        <div class="addChannelMember">
+          <div class="userList" (click)="openAddChannelMembers()">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="32" height="32" rx="16" fill="#ECEEFE" />
+              <mask
+                id="mask0_79092_14265"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="4"
+                y="4"
+                width="24"
+                height="24"
+              >
+                <rect x="4" y="4" width="24" height="24" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_79092_14265)">
+                <path
+                  d="M23 18C22.7167 18 22.4793 17.904 22.288 17.712C22.096 17.5207 22 17.2833 22 17V15H20C19.7167 15 19.4793 14.904 19.288 14.712C19.096 14.5207 19 14.2833 19 14C19 13.7167 19.096 13.479 19.288 13.287C19.4793 13.0957 19.7167 13 20 13H22V11C22 10.7167 22.096 10.479 22.288 10.287C22.4793 10.0957 22.7167 10 23 10C23.2833 10 23.5207 10.0957 23.712 10.287C23.904 10.479 24 10.7167 24 11V13H26C26.2833 13 26.5207 13.0957 26.712 13.287C26.904 13.479 27 13.7167 27 14C27 14.2833 26.904 14.5207 26.712 14.712C26.5207 14.904 26.2833 15 26 15H24V17C24 17.2833 23.904 17.5207 23.712 17.712C23.5207 17.904 23.2833 18 23 18ZM13 16C11.9 16 10.9583 15.6083 10.175 14.825C9.39167 14.0417 9 13.1 9 12C9 10.9 9.39167 9.95833 10.175 9.175C10.9583 8.39167 11.9 8 13 8C14.1 8 15.0417 8.39167 15.825 9.175C16.6083 9.95833 17 10.9 17 12C17 13.1 16.6083 14.0417 15.825 14.825C15.0417 15.6083 14.1 16 13 16ZM6 24C5.71667 24 5.47933 23.904 5.288 23.712C5.096 23.5207 5 23.2833 5 23V21.2C5 20.6333 5.146 20.1123 5.438 19.637C5.72933 19.1623 6.11667 18.8 6.6 18.55C7.63333 18.0333 8.68333 17.6457 9.75 17.387C10.8167 17.129 11.9 17 13 17C14.1 17 15.1833 17.129 16.25 17.387C17.3167 17.6457 18.3667 18.0333 19.4 18.55C19.8833 18.8 20.2707 19.1623 20.562 19.637C20.854 20.1123 21 20.6333 21 21.2V23C21 23.2833 20.904 23.5207 20.712 23.712C20.5207 23.904 20.2833 24 20 24H6ZM7 22H19V21.2C19 21.0167 18.9543 20.85 18.863 20.7C18.771 20.55 18.65 20.4333 18.5 20.35C17.6 19.9 16.6917 19.5623 15.775 19.337C14.8583 19.1123 13.9333 19 13 19C12.0667 19 11.1417 19.1123 10.225 19.337C9.30833 19.5623 8.4 19.9 7.5 20.35C7.35 20.4333 7.22933 20.55 7.138 20.7C7.046 20.85 7 21.0167 7 21.2V22ZM13 14C13.55 14 14.021 13.804 14.413 13.412C14.8043 13.0207 15 12.55 15 12C15 11.45 14.8043 10.9793 14.413 10.588C14.021 10.196 13.55 10 13 10C12.45 10 11.9793 10.196 11.588 10.588C11.196 10.9793 11 11.45 11 12C11 12.55 11.196 13.0207 11.588 13.412C11.9793 13.804 12.45 14 13 14Z"
+                  fill="black"
+                />
+              </g>
+            </svg>
+
+            <span>Mitglieder hinzufügen</span>
+          </div>
+        </div>
         }
       </div>
     </div>
-    <div class="addChannelMembersPopup" *ngIf="isAddChannelMembersOpen" (click)="closeSearch()">
+    <div
+      class="addChannelMembersPopup"
+      *ngIf="isAddChannelMembersOpen"
+      (click)="closeSearch()"
+    >
       <!-- <div class="shortLine"></div> -->
-       <form (click)="addPerson()">
+      <form (click)="addPerson()">
         <header>
           <h3>Leute hinzufügen</h3>
           <svg
@@ -154,74 +159,88 @@
           <span># {{ channelObserved()?.name }}</span>
           <div class="inputPeople" (click)="$event.stopPropagation()">
             <div class="inputField">
-              <input [ngClass]="{dnone: personSelectedForChannel().fullName !== ''}" class="addPerson-input" type="text" placeholder="Name eingeben" name="namePerson" [(ngModel)]="namePerson" (keyup)="searchPerson()"/>
+              <input
+                [ngClass]="{
+                  dnone: personSelectedForChannel().fullName !== ''
+                }"
+                class="addPerson-input"
+                type="text"
+                placeholder="Name eingeben"
+                name="namePerson"
+                [(ngModel)]="namePerson"
+                (keyup)="searchPerson()"
+              />
               @if(personSelectedForChannel().fullName !== ''){
-                <div class="userList bg-gray">
-                  <img
-                    src="{{personSelectedForChannel().avatar}}"
-                    alt=""
-                    class="userProfile50 size-add-person"
-                  />
-                  <span class="color-black">{{personSelectedForChannel().fullName}}</span>
-                  <svg
-                    (click)="deletePersonSelectedToChannel()"
+              <div class="userList bg-gray">
+                <img
+                  src="{{ personSelectedForChannel().avatar }}"
+                  alt=""
+                  class="userProfile50 size-add-person"
+                />
+                <span class="color-black">{{
+                  personSelectedForChannel().fullName
+                }}</span>
+                <svg
+                  (click)="deletePersonSelectedToChannel()"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <mask
+                    id="mask0_79092_694"
+                    style="mask-type: alpha"
+                    maskUnits="userSpaceOnUse"
+                    x="0"
+                    y="0"
                     width="24"
                     height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <mask
-                      id="mask0_79092_694"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="24"
-                      height="24"
-                    >
-                      <rect width="24" height="24" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_79092_694)">
-                      <path
-                        d="M12 13.4L7.10005 18.3C6.91672 18.4833 6.68338 18.575 6.40005 18.575C6.11672 18.575 5.88338 18.4833 5.70005 18.3C5.51672 18.1167 5.42505 17.8833 5.42505 17.6C5.42505 17.3167 5.51672 17.0833 5.70005 16.9L10.6 12L5.70005 7.09999C5.51672 6.91665 5.42505 6.68332 5.42505 6.39999C5.42505 6.11665 5.51672 5.88332 5.70005 5.69999C5.88338 5.51665 6.11672 5.42499 6.40005 5.42499C6.68338 5.42499 6.91672 5.51665 7.10005 5.69999L12 10.6L16.9 5.69999C17.0834 5.51665 17.3167 5.42499 17.6 5.42499C17.8834 5.42499 18.1167 5.51665 18.3 5.69999C18.4834 5.88332 18.575 6.11665 18.575 6.39999C18.575 6.68332 18.4834 6.91665 18.3 7.09999L13.4 12L18.3 16.9C18.4834 17.0833 18.575 17.3167 18.575 17.6C18.575 17.8833 18.4834 18.1167 18.3 18.3C18.1167 18.4833 17.8834 18.575 17.6 18.575C17.3167 18.575 17.0834 18.4833 16.9 18.3L12 13.4Z"
-                        fill="black"
-                      />
-                    </g>
-                  </svg>
-                </div>
+                    <rect width="24" height="24" fill="#D9D9D9" />
+                  </mask>
+                  <g mask="url(#mask0_79092_694)">
+                    <path
+                      d="M12 13.4L7.10005 18.3C6.91672 18.4833 6.68338 18.575 6.40005 18.575C6.11672 18.575 5.88338 18.4833 5.70005 18.3C5.51672 18.1167 5.42505 17.8833 5.42505 17.6C5.42505 17.3167 5.51672 17.0833 5.70005 16.9L10.6 12L5.70005 7.09999C5.51672 6.91665 5.42505 6.68332 5.42505 6.39999C5.42505 6.11665 5.51672 5.88332 5.70005 5.69999C5.88338 5.51665 6.11672 5.42499 6.40005 5.42499C6.68338 5.42499 6.91672 5.51665 7.10005 5.69999L12 10.6L16.9 5.69999C17.0834 5.51665 17.3167 5.42499 17.6 5.42499C17.8834 5.42499 18.1167 5.51665 18.3 5.69999C18.4834 5.88332 18.575 6.11665 18.575 6.39999C18.575 6.68332 18.4834 6.91665 18.3 7.09999L13.4 12L18.3 16.9C18.4834 17.0833 18.575 17.3167 18.575 17.6C18.575 17.8833 18.4834 18.1167 18.3 18.3C18.1167 18.4833 17.8834 18.575 17.6 18.575C17.3167 18.575 17.0834 18.4833 16.9 18.3L12 13.4Z"
+                      fill="black"
+                    />
+                  </g>
+                </svg>
+              </div>
               }
             </div>
             @if((searchedPersons() || []).length > 0 ){
-            <div class="userSearched-container" >
+            <div class="userSearched-container">
               <div class="channelMembersList">
                 @for(user of searchedPersons(); track $index){
-                  <div class="userList" (click)="addPersonSelectedToChannel(user)">
-                    <img
-                      src="{{user.avatar}}"
-                      alt=""
-                      class="userProfile50"
-                    />
-                    <div [ngClass]="{online: user.status === 'online', offline: user.status === 'offline'}"></div>
-                    <span>{{user.fullName}}</span>
-                  </div>
-                } 
+                <div
+                  class="userList"
+                  (click)="addPersonSelectedToChannel(user)"
+                >
+                  <img src="{{ user.avatar }}" alt="" class="userProfile50" />
+                  <div
+                    [ngClass]="{
+                      online: user.status === 'online',
+                      offline: user.status === 'offline'
+                    }"
+                  ></div>
+                  <span>{{ user.fullName }}</span>
+                </div>
+                }
               </div>
             </div>
-            }           
+            }
           </div>
           @if(personSelectedForChannel().fullName !== ''){
-            <footer>
-              <button type="submit" class="button-app" >
-                Hinzufügen
-              </button>
-            </footer>
+          <footer>
+            <button type="submit" class="button-app">Hinzufügen</button>
+          </footer>
           }@else{
-            <footer>
-              <button type="submit" class="button-app-disabled" disabled>
-                Hinzufügen
-              </button>
-            </footer>
+          <footer>
+            <button type="submit" class="button-app-disabled" disabled>
+              Hinzufügen
+            </button>
+          </footer>
           }
         </div>
       </form>
@@ -261,8 +280,9 @@
         <div class="roundBox">
           <div class="roundBoxHeader">
             <h4>Channel-Name</h4>
-            @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
-              <span class="creatorChannel fs-18">Bearbeiten</span>
+            @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+            currentUser)){
+            <span class="creatorChannel fs-18">Bearbeiten</span>
             }
           </div>
           <span># {{ channelObserved()?.name }}</span>
@@ -270,16 +290,19 @@
         <div class="roundBox">
           <div class="roundBoxHeader">
             <h4>Beschreibung</h4>
-            @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
-              <span class="creatorChannel fs-18">Bearbeiten</span>
+            @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+            currentUser)){
+            <span class="creatorChannel fs-18">Bearbeiten</span>
             }
           </div>
-          <p>{{channelObserved()!.description}}</p>
+          <p>{{ channelObserved()!.description }}</p>
           <hr />
 
           <h4>Erstellt von</h4>
 
-          <span class="creatorChannel fs-20">{{channelObserved()!.creatorChannelData!.fullName}}</span>
+          <span class="creatorChannel fs-20">{{
+            channelObserved()!.creatorChannelData!.fullName
+          }}</span>
         </div>
       </div>
 
@@ -287,10 +310,13 @@
         <h3>Mitglieder</h3>
       </div>
 
-      @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
-        <footer>
-          <button class="button-app" (click)="leaveAChannel()">Channel verlassen</button>
-        </footer>
+      @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+      currentUser)){
+      <footer>
+        <button class="button-app" (click)="leaveAChannel()">
+          Channel verlassen
+        </button>
+      </footer>
       }
     </div>
 
@@ -351,15 +377,16 @@
 
     <div class="channelMembers">
       <div class="members" (click)="toggleChannelMembers()">
-        @if(channelObserved()?.createdBy){
-          @for (member of channelObserved()?.membersData!.slice(0, 3); track $index) {
-            <img src="{{member.avatar}}" alt="" />
+        @if(channelObserved()?.createdBy){ @for (member of
+        channelObserved()?.membersData!.slice(0, 3); track $index) {
+        <img src="{{ member.avatar }}" alt="" />
+        }
+        <span class="memberCount">
+          @if(channelObserved()?.members!.length >3){ +{{
+            (channelObserved()?.members)!.length - 3
+          }}
           }
-          <span class="memberCount">
-            @if(channelObserved()?.members!.length >3){
-             +{{channelObserved()?.members!.length -3}}
-            }
-          </span>
+        </span>
         }
       </div>
 
@@ -392,267 +419,320 @@
         </g>
       </svg>
 
-      @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
-        <svg
-          class="channelMembersDesktop"
-          (click)="openAddChannelMembers()"
-          width="32"
-          height="32"
-          viewBox="0 0 32 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+      currentUser)){
+      <svg
+        class="channelMembersDesktop"
+        (click)="openAddChannelMembers()"
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="32" height="32" rx="16" fill="#ECEEFE" />
+        <mask
+          id="mask0_79092_14265"
+          style="mask-type: alpha"
+          maskUnits="userSpaceOnUse"
+          x="4"
+          y="4"
+          width="24"
+          height="24"
         >
-          <rect width="32" height="32" rx="16" fill="#ECEEFE" />
-          <mask
-            id="mask0_79092_14265"
-            style="mask-type: alpha"
-            maskUnits="userSpaceOnUse"
-            x="4"
-            y="4"
-            width="24"
-            height="24"
-          >
-            <rect x="4" y="4" width="24" height="24" fill="#D9D9D9" />
-          </mask>
-          <g mask="url(#mask0_79092_14265)">
-            <path
-              d="M23 18C22.7167 18 22.4793 17.904 22.288 17.712C22.096 17.5207 22 17.2833 22 17V15H20C19.7167 15 19.4793 14.904 19.288 14.712C19.096 14.5207 19 14.2833 19 14C19 13.7167 19.096 13.479 19.288 13.287C19.4793 13.0957 19.7167 13 20 13H22V11C22 10.7167 22.096 10.479 22.288 10.287C22.4793 10.0957 22.7167 10 23 10C23.2833 10 23.5207 10.0957 23.712 10.287C23.904 10.479 24 10.7167 24 11V13H26C26.2833 13 26.5207 13.0957 26.712 13.287C26.904 13.479 27 13.7167 27 14C27 14.2833 26.904 14.5207 26.712 14.712C26.5207 14.904 26.2833 15 26 15H24V17C24 17.2833 23.904 17.5207 23.712 17.712C23.5207 17.904 23.2833 18 23 18ZM13 16C11.9 16 10.9583 15.6083 10.175 14.825C9.39167 14.0417 9 13.1 9 12C9 10.9 9.39167 9.95833 10.175 9.175C10.9583 8.39167 11.9 8 13 8C14.1 8 15.0417 8.39167 15.825 9.175C16.6083 9.95833 17 10.9 17 12C17 13.1 16.6083 14.0417 15.825 14.825C15.0417 15.6083 14.1 16 13 16ZM6 24C5.71667 24 5.47933 23.904 5.288 23.712C5.096 23.5207 5 23.2833 5 23V21.2C5 20.6333 5.146 20.1123 5.438 19.637C5.72933 19.1623 6.11667 18.8 6.6 18.55C7.63333 18.0333 8.68333 17.6457 9.75 17.387C10.8167 17.129 11.9 17 13 17C14.1 17 15.1833 17.129 16.25 17.387C17.3167 17.6457 18.3667 18.0333 19.4 18.55C19.8833 18.8 20.2707 19.1623 20.562 19.637C20.854 20.1123 21 20.6333 21 21.2V23C21 23.2833 20.904 23.5207 20.712 23.712C20.5207 23.904 20.2833 24 20 24H6ZM7 22H19V21.2C19 21.0167 18.9543 20.85 18.863 20.7C18.771 20.55 18.65 20.4333 18.5 20.35C17.6 19.9 16.6917 19.5623 15.775 19.337C14.8583 19.1123 13.9333 19 13 19C12.0667 19 11.1417 19.1123 10.225 19.337C9.30833 19.5623 8.4 19.9 7.5 20.35C7.35 20.4333 7.22933 20.55 7.138 20.7C7.046 20.85 7 21.0167 7 21.2V22ZM13 14C13.55 14 14.021 13.804 14.413 13.412C14.8043 13.0207 15 12.55 15 12C15 11.45 14.8043 10.9793 14.413 10.588C14.021 10.196 13.55 10 13 10C12.45 10 11.9793 10.196 11.588 10.588C11.196 10.9793 11 11.45 11 12C11 12.55 11.196 13.0207 11.588 13.412C11.9793 13.804 12.45 14 13 14Z"
-              fill="black"
-            />
-          </g>
-        </svg>
+          <rect x="4" y="4" width="24" height="24" fill="#D9D9D9" />
+        </mask>
+        <g mask="url(#mask0_79092_14265)">
+          <path
+            d="M23 18C22.7167 18 22.4793 17.904 22.288 17.712C22.096 17.5207 22 17.2833 22 17V15H20C19.7167 15 19.4793 14.904 19.288 14.712C19.096 14.5207 19 14.2833 19 14C19 13.7167 19.096 13.479 19.288 13.287C19.4793 13.0957 19.7167 13 20 13H22V11C22 10.7167 22.096 10.479 22.288 10.287C22.4793 10.0957 22.7167 10 23 10C23.2833 10 23.5207 10.0957 23.712 10.287C23.904 10.479 24 10.7167 24 11V13H26C26.2833 13 26.5207 13.0957 26.712 13.287C26.904 13.479 27 13.7167 27 14C27 14.2833 26.904 14.5207 26.712 14.712C26.5207 14.904 26.2833 15 26 15H24V17C24 17.2833 23.904 17.5207 23.712 17.712C23.5207 17.904 23.2833 18 23 18ZM13 16C11.9 16 10.9583 15.6083 10.175 14.825C9.39167 14.0417 9 13.1 9 12C9 10.9 9.39167 9.95833 10.175 9.175C10.9583 8.39167 11.9 8 13 8C14.1 8 15.0417 8.39167 15.825 9.175C16.6083 9.95833 17 10.9 17 12C17 13.1 16.6083 14.0417 15.825 14.825C15.0417 15.6083 14.1 16 13 16ZM6 24C5.71667 24 5.47933 23.904 5.288 23.712C5.096 23.5207 5 23.2833 5 23V21.2C5 20.6333 5.146 20.1123 5.438 19.637C5.72933 19.1623 6.11667 18.8 6.6 18.55C7.63333 18.0333 8.68333 17.6457 9.75 17.387C10.8167 17.129 11.9 17 13 17C14.1 17 15.1833 17.129 16.25 17.387C17.3167 17.6457 18.3667 18.0333 19.4 18.55C19.8833 18.8 20.2707 19.1623 20.562 19.637C20.854 20.1123 21 20.6333 21 21.2V23C21 23.2833 20.904 23.5207 20.712 23.712C20.5207 23.904 20.2833 24 20 24H6ZM7 22H19V21.2C19 21.0167 18.9543 20.85 18.863 20.7C18.771 20.55 18.65 20.4333 18.5 20.35C17.6 19.9 16.6917 19.5623 15.775 19.337C14.8583 19.1123 13.9333 19 13 19C12.0667 19 11.1417 19.1123 10.225 19.337C9.30833 19.5623 8.4 19.9 7.5 20.35C7.35 20.4333 7.22933 20.55 7.138 20.7C7.046 20.85 7 21.0167 7 21.2V22ZM13 14C13.55 14 14.021 13.804 14.413 13.412C14.8043 13.0207 15 12.55 15 12C15 11.45 14.8043 10.9793 14.413 10.588C14.021 10.196 13.55 10 13 10C12.45 10 11.9793 10.196 11.588 10.588C11.196 10.9793 11 11.45 11 12C11 12.55 11.196 13.0207 11.588 13.412C11.9793 13.804 12.45 14 13 14Z"
+            fill="black"
+          />
+        </g>
+      </svg>
       }
     </div>
   </div>
-  <div class="channelBody" [ngClass]="{channelEmpty: (channelObserved()?.messageIDS || []).length == 0}">
-    @if((channelObserved()?.messageIDS || []).length > 0){
-      @for (msg of channelObserved()!.messages; track $index) {
-        @if(msg.senderID !== currentUser.idFirebase){
-          @if(currentDate === msg.createAtString){
-            <div class="timeLine"><span>Heute</span></div>
-          }@else{
-            <div class="timeLine"><span>{{msg.createAtString}}</span></div>
-          }
-          <div class="chatMessage leftMessage">
-            <div class="addReaction leftPopup">
-              <span>
-                <img src="../assets/img/checked.png" alt="" />
-              </span>
-              <span>
-                <img src="../assets/img/hands.png" alt="" />
-              </span>
-              <span>
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <mask
-                    id="mask0_79092_10289"
-                    style="mask-type: alpha"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
-                    width="24"
-                    height="24"
-                  >
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_79092_10289)">
-                    <path
-                      d="M12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C12.75 2 13.4792 2.07917 14.1875 2.2375C14.8958 2.39583 15.5667 2.625 16.2 2.925C16.1333 3.09167 16.0833 3.26667 16.05 3.45C16.0167 3.63333 16 3.81667 16 4C16 4.23333 16.025 4.45417 16.075 4.6625C16.125 4.87083 16.1917 5.06667 16.275 5.25C15.6583 4.86667 14.9917 4.5625 14.275 4.3375C13.5583 4.1125 12.8 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 14.2167 4.77917 16.1042 6.3375 17.6625C7.89583 19.2208 9.78333 20 12 20C14.2167 20 16.1042 19.2208 17.6625 17.6625C19.2208 16.1042 20 14.2167 20 12C20 11.3333 19.9208 10.6917 19.7625 10.075C19.6042 9.45833 19.3833 8.875 19.1 8.325C19.3667 8.54167 19.6583 8.70833 19.975 8.825C20.2917 8.94167 20.6333 9 21 9C21.0833 9 21.1708 8.99583 21.2625 8.9875C21.3542 8.97917 21.4417 8.96667 21.525 8.95C21.675 9.43333 21.7917 9.92917 21.875 10.4375C21.9583 10.9458 22 11.4667 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM15.5 11C15.9333 11 16.2917 10.8583 16.575 10.575C16.8583 10.2917 17 9.93333 17 9.5C17 9.06667 16.8583 8.70833 16.575 8.425C16.2917 8.14167 15.9333 8 15.5 8C15.0667 8 14.7083 8.14167 14.425 8.425C14.1417 8.70833 14 9.06667 14 9.5C14 9.93333 14.1417 10.2917 14.425 10.575C14.7083 10.8583 15.0667 11 15.5 11ZM8.5 11C8.93333 11 9.29167 10.8583 9.575 10.575C9.85833 10.2917 10 9.93333 10 9.5C10 9.06667 9.85833 8.70833 9.575 8.425C9.29167 8.14167 8.93333 8 8.5 8C8.06667 8 7.70833 8.14167 7.425 8.425C7.14167 8.70833 7 9.06667 7 9.5C7 9.93333 7.14167 10.2917 7.425 10.575C7.70833 10.8583 8.06667 11 8.5 11ZM12 17.5C13.1833 17.5 14.2292 17.175 15.1375 16.525C16.0458 15.875 16.7 15.0333 17.1 14H6.9C7.3 15.0333 7.95417 15.875 8.8625 16.525C9.77083 17.175 10.8167 17.5 12 17.5ZM20 5H19C18.7167 5 18.4792 4.90417 18.2875 4.7125C18.0958 4.52083 18 4.28333 18 4C18 3.71667 18.0958 3.47917 18.2875 3.2875C18.4792 3.09583 18.7167 3 19 3H20V2C20 1.71667 20.0958 1.47917 20.2875 1.2875C20.4792 1.09583 20.7167 1 21 1C21.2833 1 21.5208 1.09583 21.7125 1.2875C21.9042 1.47917 22 1.71667 22 2V3H23C23.2833 3 23.5208 3.09583 23.7125 3.2875C23.9042 3.47917 24 3.71667 24 4C24 4.28333 23.9042 4.52083 23.7125 4.7125C23.5208 4.90417 23.2833 5 23 5H22V6C22 6.28333 21.9042 6.52083 21.7125 6.7125C21.5208 6.90417 21.2833 7 21 7C20.7167 7 20.4792 6.90417 20.2875 6.7125C20.0958 6.52083 20 6.28333 20 6V5Z"
-                      fill="black"
-                    />
-                  </g>
-                </svg>
-              </span>
-              <span (click)="onShowThread(msg)">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <mask
-                    id="mask0_813_12172"
-                    style="mask-type: alpha"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
-                    width="24"
-                    height="24"
-                  >
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_813_12172)">
-                    <path
-                      d="M7 14H17C17.2833 14 17.5207 13.904 17.712 13.712C17.904 13.5207 18 13.2833 18 13C18 12.7167 17.904 12.479 17.712 12.287C17.5207 12.0957 17.2833 12 17 12H7C6.71667 12 6.479 12.0957 6.287 12.287C6.09567 12.479 6 12.7167 6 13C6 13.2833 6.09567 13.5207 6.287 13.712C6.479 13.904 6.71667 14 7 14ZM7 11H17C17.2833 11 17.5207 10.904 17.712 10.712C17.904 10.5207 18 10.2833 18 10C18 9.71667 17.904 9.479 17.712 9.287C17.5207 9.09567 17.2833 9 17 9H7C6.71667 9 6.479 9.09567 6.287 9.287C6.09567 9.479 6 9.71667 6 10C6 10.2833 6.09567 10.5207 6.287 10.712C6.479 10.904 6.71667 11 7 11ZM7 8H17C17.2833 8 17.5207 7.90433 17.712 7.713C17.904 7.521 18 7.28333 18 7C18 6.71667 17.904 6.479 17.712 6.287C17.5207 6.09567 17.2833 6 17 6H7C6.71667 6 6.479 6.09567 6.287 6.287C6.09567 6.479 6 6.71667 6 7C6 7.28333 6.09567 7.521 6.287 7.713C6.479 7.90433 6.71667 8 7 8ZM20.3 20.3L18 18H4C3.45 18 2.97933 17.8043 2.588 17.413C2.196 17.021 2 16.55 2 16V4C2 3.45 2.196 2.979 2.588 2.587C2.97933 2.19567 3.45 2 4 2H20C20.55 2 21.021 2.19567 21.413 2.587C21.8043 2.979 22 3.45 22 4V19.575C22 20.025 21.796 20.3373 21.388 20.512C20.9793 20.6873 20.6167 20.6167 20.3 20.3ZM4 4V16H18.825L20 17.175V4H4Z"
-                      fill="#1C1B1F"
-                    />
-                  </g>
-                </svg>
-              </span>
-            </div> 
-            <img
-              class="userProfile70"
-              src="{{msg.senderData?.avatar}}"
-              alt=""
-            />
-            <div class="chatMessageDetails">
-              <header>
-                <span class="userName">{{msg.senderData?.fullName}}</span>
-                <time class="time" datetime="">{{msg.time}} Uhr</time>
-              </header>
-              <div class="messageText">{{msg.content}}</div>
-              @if(msg.threadIDS!.length > 0){
-                <footer>
-                  <span class="answers" (click)="onShowThread(msg)"> {{msg.threadIDS.length}} Antworten </span>
-                  <span class="last-message">letzte Antwort {{msg.lastThreadTime}}</span>
-                </footer>
-              }
-            </div>
-          </div>
-        }@else {
-          @if(currentDate === msg.createAtString){
-            <div class="timeLine"><span>Heute</span></div>
-          }@else{
-            <div class="timeLine"><span>{{msg.createAtString}}</span></div>
-          }
-          <div class="chatMessage rightMessage">
-            <div class="addReaction rightPopup">
-              <span>
-                <img src="../assets/img/checked.png" alt="" />
-              </span>
-              <span>
-                <img src="../assets/img/hands.png" alt="" />
-              </span>
-              <span>
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <mask
-                    id="mask0_79092_10289"
-                    style="mask-type: alpha"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
-                    width="24"
-                    height="24"
-                  >
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_79092_10289)">
-                    <path
-                      d="M12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C12.75 2 13.4792 2.07917 14.1875 2.2375C14.8958 2.39583 15.5667 2.625 16.2 2.925C16.1333 3.09167 16.0833 3.26667 16.05 3.45C16.0167 3.63333 16 3.81667 16 4C16 4.23333 16.025 4.45417 16.075 4.6625C16.125 4.87083 16.1917 5.06667 16.275 5.25C15.6583 4.86667 14.9917 4.5625 14.275 4.3375C13.5583 4.1125 12.8 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 14.2167 4.77917 16.1042 6.3375 17.6625C7.89583 19.2208 9.78333 20 12 20C14.2167 20 16.1042 19.2208 17.6625 17.6625C19.2208 16.1042 20 14.2167 20 12C20 11.3333 19.9208 10.6917 19.7625 10.075C19.6042 9.45833 19.3833 8.875 19.1 8.325C19.3667 8.54167 19.6583 8.70833 19.975 8.825C20.2917 8.94167 20.6333 9 21 9C21.0833 9 21.1708 8.99583 21.2625 8.9875C21.3542 8.97917 21.4417 8.96667 21.525 8.95C21.675 9.43333 21.7917 9.92917 21.875 10.4375C21.9583 10.9458 22 11.4667 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM15.5 11C15.9333 11 16.2917 10.8583 16.575 10.575C16.8583 10.2917 17 9.93333 17 9.5C17 9.06667 16.8583 8.70833 16.575 8.425C16.2917 8.14167 15.9333 8 15.5 8C15.0667 8 14.7083 8.14167 14.425 8.425C14.1417 8.70833 14 9.06667 14 9.5C14 9.93333 14.1417 10.2917 14.425 10.575C14.7083 10.8583 15.0667 11 15.5 11ZM8.5 11C8.93333 11 9.29167 10.8583 9.575 10.575C9.85833 10.2917 10 9.93333 10 9.5C10 9.06667 9.85833 8.70833 9.575 8.425C9.29167 8.14167 8.93333 8 8.5 8C8.06667 8 7.70833 8.14167 7.425 8.425C7.14167 8.70833 7 9.06667 7 9.5C7 9.93333 7.14167 10.2917 7.425 10.575C7.70833 10.8583 8.06667 11 8.5 11ZM12 17.5C13.1833 17.5 14.2292 17.175 15.1375 16.525C16.0458 15.875 16.7 15.0333 17.1 14H6.9C7.3 15.0333 7.95417 15.875 8.8625 16.525C9.77083 17.175 10.8167 17.5 12 17.5ZM20 5H19C18.7167 5 18.4792 4.90417 18.2875 4.7125C18.0958 4.52083 18 4.28333 18 4C18 3.71667 18.0958 3.47917 18.2875 3.2875C18.4792 3.09583 18.7167 3 19 3H20V2C20 1.71667 20.0958 1.47917 20.2875 1.2875C20.4792 1.09583 20.7167 1 21 1C21.2833 1 21.5208 1.09583 21.7125 1.2875C21.9042 1.47917 22 1.71667 22 2V3H23C23.2833 3 23.5208 3.09583 23.7125 3.2875C23.9042 3.47917 24 3.71667 24 4C24 4.28333 23.9042 4.52083 23.7125 4.7125C23.5208 4.90417 23.2833 5 23 5H22V6C22 6.28333 21.9042 6.52083 21.7125 6.7125C21.5208 6.90417 21.2833 7 21 7C20.7167 7 20.4792 6.90417 20.2875 6.7125C20.0958 6.52083 20 6.28333 20 6V5Z"
-                      fill="black"
-                    />
-                  </g>
-                </svg>
-              </span>
-              <span (click)="onShowThread(msg)">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <mask
-                    id="mask0_813_12172"
-                    style="mask-type: alpha"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
-                    width="24"
-                    height="24"
-                  >
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_813_12172)">
-                    <path
-                      d="M7 14H17C17.2833 14 17.5207 13.904 17.712 13.712C17.904 13.5207 18 13.2833 18 13C18 12.7167 17.904 12.479 17.712 12.287C17.5207 12.0957 17.2833 12 17 12H7C6.71667 12 6.479 12.0957 6.287 12.287C6.09567 12.479 6 12.7167 6 13C6 13.2833 6.09567 13.5207 6.287 13.712C6.479 13.904 6.71667 14 7 14ZM7 11H17C17.2833 11 17.5207 10.904 17.712 10.712C17.904 10.5207 18 10.2833 18 10C18 9.71667 17.904 9.479 17.712 9.287C17.5207 9.09567 17.2833 9 17 9H7C6.71667 9 6.479 9.09567 6.287 9.287C6.09567 9.479 6 9.71667 6 10C6 10.2833 6.09567 10.5207 6.287 10.712C6.479 10.904 6.71667 11 7 11ZM7 8H17C17.2833 8 17.5207 7.90433 17.712 7.713C17.904 7.521 18 7.28333 18 7C18 6.71667 17.904 6.479 17.712 6.287C17.5207 6.09567 17.2833 6 17 6H7C6.71667 6 6.479 6.09567 6.287 6.287C6.09567 6.479 6 6.71667 6 7C6 7.28333 6.09567 7.521 6.287 7.713C6.479 7.90433 6.71667 8 7 8ZM20.3 20.3L18 18H4C3.45 18 2.97933 17.8043 2.588 17.413C2.196 17.021 2 16.55 2 16V4C2 3.45 2.196 2.979 2.588 2.587C2.97933 2.19567 3.45 2 4 2H20C20.55 2 21.021 2.19567 21.413 2.587C21.8043 2.979 22 3.45 22 4V19.575C22 20.025 21.796 20.3373 21.388 20.512C20.9793 20.6873 20.6167 20.6167 20.3 20.3ZM4 4V16H18.825L20 17.175V4H4Z"
-                      fill="#1C1B1F"
-                    />
-                  </g>
-                </svg>
-              </span>
-
-              <span class="editDeleteMsg" >
-                <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <mask id="mask0_79092_16838" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="24">
-                  <rect x="0.333252" width="24" height="24" fill="#D9D9D9"/>
-                  </mask>
-                  <g mask="url(#mask0_79092_16838)">
-                  <path d="M12.3333 20C11.7833 20 11.3124 19.8042 10.9208 19.4125C10.5291 19.0208 10.3333 18.55 10.3333 18C10.3333 17.45 10.5291 16.9792 10.9208 16.5875C11.3124 16.1958 11.7833 16 12.3333 16C12.8833 16 13.3541 16.1958 13.7458 16.5875C14.1374 16.9792 14.3333 17.45 14.3333 18C14.3333 18.55 14.1374 19.0208 13.7458 19.4125C13.3541 19.8042 12.8833 20 12.3333 20ZM12.3333 14C11.7833 14 11.3124 13.8042 10.9208 13.4125C10.5291 13.0208 10.3333 12.55 10.3333 12C10.3333 11.45 10.5291 10.9792 10.9208 10.5875C11.3124 10.1958 11.7833 10 12.3333 10C12.8833 10 13.3541 10.1958 13.7458 10.5875C14.1374 10.9792 14.3333 11.45 14.3333 12C14.3333 12.55 14.1374 13.0208 13.7458 13.4125C13.3541 13.8042 12.8833 14 12.3333 14ZM12.3333 8C11.7833 8 11.3124 7.80417 10.9208 7.4125C10.5291 7.02083 10.3333 6.55 10.3333 6C10.3333 5.45 10.5291 4.97917 10.9208 4.5875C11.3124 4.19583 11.7833 4 12.3333 4C12.8833 4 13.3541 4.19583 13.7458 4.5875C14.1374 4.97917 14.3333 5.45 14.3333 6C14.3333 6.55 14.1374 7.02083 13.7458 7.4125C13.3541 7.80417 12.8833 8 12.3333 8Z" fill="#1C1B1F"/>
-                  </g>
-                </svg>
-                <div class="msgText">
-                  <p (click)="editMessageChannel(msg.id)">Nachricht bearbeiten</p>
-                  <p (click)="deleteMessage(msg.id, this.selectedChannel()!.id)">Löschen</p>
-                </div>
-                  
-              </span>
-            </div>
-            <img
-              class="userProfile70"
-              src="{{msg.senderData?.avatar}}"
-              alt=""
-            />
-            <div class="chatMessageDetails">
-              <header>
-                <span class="userName">{{msg.senderData?.fullName}}</span>
-                <time class="time" datetime="">{{msg.time}} Uhr</time>
-              </header>
-              <div class="messageText">{{msg.content}}</div>
-              @if(msg.threadIDS!.length > 0){
-                <footer>
-                  <span class="answers" (click)="onShowThread(msg)"> {{msg.threadIDS.length}} Antworten </span>
-                  <span class="last-message">letzte Antwort {{msg.lastThreadTime}}</span>
-                </footer>
-              }
-              <div class="showReactions">
-                {{msg.reactions}}
-                <span>
-                  <img src="../assets/img/rocket.png" alt=""> 1
-                </span>
-                <span>
-                  <img src="../assets/img/checked.png" alt=""> 1
-                </span>
-              </div>
-            </div>
-         
-          </div>
-        } 
-      }
+  <div
+    class="channelBody"
+    [ngClass]="{
+      channelEmpty: (channelObserved()?.messageIDS || []).length == 0
+    }"
+  >
+    @if((channelObserved()?.messageIDS || []).length > 0){ @for (msg of
+    channelObserved()!.messages; track $index) { @if(msg.senderID !==
+    currentUser.idFirebase){ @if(currentDate === msg.createAtString){
+    <div class="timeLine"><span>Heute</span></div>
     }@else{
-      <div class="container-new-channel">
-        @if(channelObserved()){
-          
-          <h4># {{channelObserved()!.name}}</h4>
-          <p>
-            @if(currentUser.idFirebase === channelObserved()!.createdBy){
-            <span class="creatorChannel">Du</span>
-            }@else{
-              <span class="creatorChannel">
-              {{channelObserved()!.creatorChannelData!.fullName}}
-              </span>
-            }
-            hast diesen Channel erstellt. Das ist der Anfang des Channels <span># {{channelObserved()!.name}}</span></p>
-          
+    <div class="timeLine">
+      <span>{{ msg.createAtString }}</span>
+    </div>
+    }
+    <div class="chatMessage leftMessage">
+      <div class="addReaction leftPopup">
+        <span>
+          <img src="../assets/img/checked.png" alt="" />
+        </span>
+        <span>
+          <img src="../assets/img/hands.png" alt="" />
+        </span>
+        <span>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <mask
+              id="mask0_79092_10289"
+              style="mask-type: alpha"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="24"
+              height="24"
+            >
+              <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_79092_10289)">
+              <path
+                d="M12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C12.75 2 13.4792 2.07917 14.1875 2.2375C14.8958 2.39583 15.5667 2.625 16.2 2.925C16.1333 3.09167 16.0833 3.26667 16.05 3.45C16.0167 3.63333 16 3.81667 16 4C16 4.23333 16.025 4.45417 16.075 4.6625C16.125 4.87083 16.1917 5.06667 16.275 5.25C15.6583 4.86667 14.9917 4.5625 14.275 4.3375C13.5583 4.1125 12.8 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 14.2167 4.77917 16.1042 6.3375 17.6625C7.89583 19.2208 9.78333 20 12 20C14.2167 20 16.1042 19.2208 17.6625 17.6625C19.2208 16.1042 20 14.2167 20 12C20 11.3333 19.9208 10.6917 19.7625 10.075C19.6042 9.45833 19.3833 8.875 19.1 8.325C19.3667 8.54167 19.6583 8.70833 19.975 8.825C20.2917 8.94167 20.6333 9 21 9C21.0833 9 21.1708 8.99583 21.2625 8.9875C21.3542 8.97917 21.4417 8.96667 21.525 8.95C21.675 9.43333 21.7917 9.92917 21.875 10.4375C21.9583 10.9458 22 11.4667 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM15.5 11C15.9333 11 16.2917 10.8583 16.575 10.575C16.8583 10.2917 17 9.93333 17 9.5C17 9.06667 16.8583 8.70833 16.575 8.425C16.2917 8.14167 15.9333 8 15.5 8C15.0667 8 14.7083 8.14167 14.425 8.425C14.1417 8.70833 14 9.06667 14 9.5C14 9.93333 14.1417 10.2917 14.425 10.575C14.7083 10.8583 15.0667 11 15.5 11ZM8.5 11C8.93333 11 9.29167 10.8583 9.575 10.575C9.85833 10.2917 10 9.93333 10 9.5C10 9.06667 9.85833 8.70833 9.575 8.425C9.29167 8.14167 8.93333 8 8.5 8C8.06667 8 7.70833 8.14167 7.425 8.425C7.14167 8.70833 7 9.06667 7 9.5C7 9.93333 7.14167 10.2917 7.425 10.575C7.70833 10.8583 8.06667 11 8.5 11ZM12 17.5C13.1833 17.5 14.2292 17.175 15.1375 16.525C16.0458 15.875 16.7 15.0333 17.1 14H6.9C7.3 15.0333 7.95417 15.875 8.8625 16.525C9.77083 17.175 10.8167 17.5 12 17.5ZM20 5H19C18.7167 5 18.4792 4.90417 18.2875 4.7125C18.0958 4.52083 18 4.28333 18 4C18 3.71667 18.0958 3.47917 18.2875 3.2875C18.4792 3.09583 18.7167 3 19 3H20V2C20 1.71667 20.0958 1.47917 20.2875 1.2875C20.4792 1.09583 20.7167 1 21 1C21.2833 1 21.5208 1.09583 21.7125 1.2875C21.9042 1.47917 22 1.71667 22 2V3H23C23.2833 3 23.5208 3.09583 23.7125 3.2875C23.9042 3.47917 24 3.71667 24 4C24 4.28333 23.9042 4.52083 23.7125 4.7125C23.5208 4.90417 23.2833 5 23 5H22V6C22 6.28333 21.9042 6.52083 21.7125 6.7125C21.5208 6.90417 21.2833 7 21 7C20.7167 7 20.4792 6.90417 20.2875 6.7125C20.0958 6.52083 20 6.28333 20 6V5Z"
+                fill="black"
+              />
+            </g>
+          </svg>
+        </span>
+        <span (click)="onShowThread(msg)">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <mask
+              id="mask0_813_12172"
+              style="mask-type: alpha"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="24"
+              height="24"
+            >
+              <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_813_12172)">
+              <path
+                d="M7 14H17C17.2833 14 17.5207 13.904 17.712 13.712C17.904 13.5207 18 13.2833 18 13C18 12.7167 17.904 12.479 17.712 12.287C17.5207 12.0957 17.2833 12 17 12H7C6.71667 12 6.479 12.0957 6.287 12.287C6.09567 12.479 6 12.7167 6 13C6 13.2833 6.09567 13.5207 6.287 13.712C6.479 13.904 6.71667 14 7 14ZM7 11H17C17.2833 11 17.5207 10.904 17.712 10.712C17.904 10.5207 18 10.2833 18 10C18 9.71667 17.904 9.479 17.712 9.287C17.5207 9.09567 17.2833 9 17 9H7C6.71667 9 6.479 9.09567 6.287 9.287C6.09567 9.479 6 9.71667 6 10C6 10.2833 6.09567 10.5207 6.287 10.712C6.479 10.904 6.71667 11 7 11ZM7 8H17C17.2833 8 17.5207 7.90433 17.712 7.713C17.904 7.521 18 7.28333 18 7C18 6.71667 17.904 6.479 17.712 6.287C17.5207 6.09567 17.2833 6 17 6H7C6.71667 6 6.479 6.09567 6.287 6.287C6.09567 6.479 6 6.71667 6 7C6 7.28333 6.09567 7.521 6.287 7.713C6.479 7.90433 6.71667 8 7 8ZM20.3 20.3L18 18H4C3.45 18 2.97933 17.8043 2.588 17.413C2.196 17.021 2 16.55 2 16V4C2 3.45 2.196 2.979 2.588 2.587C2.97933 2.19567 3.45 2 4 2H20C20.55 2 21.021 2.19567 21.413 2.587C21.8043 2.979 22 3.45 22 4V19.575C22 20.025 21.796 20.3373 21.388 20.512C20.9793 20.6873 20.6167 20.6167 20.3 20.3ZM4 4V16H18.825L20 17.175V4H4Z"
+                fill="#1C1B1F"
+              />
+            </g>
+          </svg>
+        </span>
+      </div>
+      <img class="userProfile70" src="{{ msg.senderData?.avatar }}" alt="" />
+      <div class="chatMessageDetails">
+        <header>
+          <span class="userName">{{ msg.senderData?.fullName }}</span>
+          <time class="time" datetime="">{{ msg.time }} Uhr</time>
+        </header>
+        <div class="messageText">{{ msg.content }}</div>
+        @if(msg.threadIDS!.length > 0){
+        <footer>
+          <span class="answers" (click)="onShowThread(msg)">
+            {{ msg.threadIDS.length }} Antworten
+          </span>
+          <span class="last-message"
+            >letzte Antwort {{ msg.lastThreadTime }}</span
+          >
+        </footer>
         }
       </div>
+    </div>
+    }@else { @if(currentDate === msg.createAtString){
+    <div class="timeLine"><span>Heute</span></div>
+    }@else{
+    <div class="timeLine">
+      <span>{{ msg.createAtString }}</span>
+    </div>
     }
+    <div class="chatMessage rightMessage">
+      <div class="addReaction rightPopup">
+        <span>
+          <img src="../assets/img/checked.png" alt="" />
+        </span>
+        <span>
+          <img src="../assets/img/hands.png" alt="" />
+        </span>
+        <span>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <mask
+              id="mask0_79092_10289"
+              style="mask-type: alpha"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="24"
+              height="24"
+            >
+              <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_79092_10289)">
+              <path
+                d="M12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C12.75 2 13.4792 2.07917 14.1875 2.2375C14.8958 2.39583 15.5667 2.625 16.2 2.925C16.1333 3.09167 16.0833 3.26667 16.05 3.45C16.0167 3.63333 16 3.81667 16 4C16 4.23333 16.025 4.45417 16.075 4.6625C16.125 4.87083 16.1917 5.06667 16.275 5.25C15.6583 4.86667 14.9917 4.5625 14.275 4.3375C13.5583 4.1125 12.8 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 14.2167 4.77917 16.1042 6.3375 17.6625C7.89583 19.2208 9.78333 20 12 20C14.2167 20 16.1042 19.2208 17.6625 17.6625C19.2208 16.1042 20 14.2167 20 12C20 11.3333 19.9208 10.6917 19.7625 10.075C19.6042 9.45833 19.3833 8.875 19.1 8.325C19.3667 8.54167 19.6583 8.70833 19.975 8.825C20.2917 8.94167 20.6333 9 21 9C21.0833 9 21.1708 8.99583 21.2625 8.9875C21.3542 8.97917 21.4417 8.96667 21.525 8.95C21.675 9.43333 21.7917 9.92917 21.875 10.4375C21.9583 10.9458 22 11.4667 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM15.5 11C15.9333 11 16.2917 10.8583 16.575 10.575C16.8583 10.2917 17 9.93333 17 9.5C17 9.06667 16.8583 8.70833 16.575 8.425C16.2917 8.14167 15.9333 8 15.5 8C15.0667 8 14.7083 8.14167 14.425 8.425C14.1417 8.70833 14 9.06667 14 9.5C14 9.93333 14.1417 10.2917 14.425 10.575C14.7083 10.8583 15.0667 11 15.5 11ZM8.5 11C8.93333 11 9.29167 10.8583 9.575 10.575C9.85833 10.2917 10 9.93333 10 9.5C10 9.06667 9.85833 8.70833 9.575 8.425C9.29167 8.14167 8.93333 8 8.5 8C8.06667 8 7.70833 8.14167 7.425 8.425C7.14167 8.70833 7 9.06667 7 9.5C7 9.93333 7.14167 10.2917 7.425 10.575C7.70833 10.8583 8.06667 11 8.5 11ZM12 17.5C13.1833 17.5 14.2292 17.175 15.1375 16.525C16.0458 15.875 16.7 15.0333 17.1 14H6.9C7.3 15.0333 7.95417 15.875 8.8625 16.525C9.77083 17.175 10.8167 17.5 12 17.5ZM20 5H19C18.7167 5 18.4792 4.90417 18.2875 4.7125C18.0958 4.52083 18 4.28333 18 4C18 3.71667 18.0958 3.47917 18.2875 3.2875C18.4792 3.09583 18.7167 3 19 3H20V2C20 1.71667 20.0958 1.47917 20.2875 1.2875C20.4792 1.09583 20.7167 1 21 1C21.2833 1 21.5208 1.09583 21.7125 1.2875C21.9042 1.47917 22 1.71667 22 2V3H23C23.2833 3 23.5208 3.09583 23.7125 3.2875C23.9042 3.47917 24 3.71667 24 4C24 4.28333 23.9042 4.52083 23.7125 4.7125C23.5208 4.90417 23.2833 5 23 5H22V6C22 6.28333 21.9042 6.52083 21.7125 6.7125C21.5208 6.90417 21.2833 7 21 7C20.7167 7 20.4792 6.90417 20.2875 6.7125C20.0958 6.52083 20 6.28333 20 6V5Z"
+                fill="black"
+              />
+            </g>
+          </svg>
+        </span>
+        <span (click)="onShowThread(msg)">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <mask
+              id="mask0_813_12172"
+              style="mask-type: alpha"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="24"
+              height="24"
+            >
+              <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_813_12172)">
+              <path
+                d="M7 14H17C17.2833 14 17.5207 13.904 17.712 13.712C17.904 13.5207 18 13.2833 18 13C18 12.7167 17.904 12.479 17.712 12.287C17.5207 12.0957 17.2833 12 17 12H7C6.71667 12 6.479 12.0957 6.287 12.287C6.09567 12.479 6 12.7167 6 13C6 13.2833 6.09567 13.5207 6.287 13.712C6.479 13.904 6.71667 14 7 14ZM7 11H17C17.2833 11 17.5207 10.904 17.712 10.712C17.904 10.5207 18 10.2833 18 10C18 9.71667 17.904 9.479 17.712 9.287C17.5207 9.09567 17.2833 9 17 9H7C6.71667 9 6.479 9.09567 6.287 9.287C6.09567 9.479 6 9.71667 6 10C6 10.2833 6.09567 10.5207 6.287 10.712C6.479 10.904 6.71667 11 7 11ZM7 8H17C17.2833 8 17.5207 7.90433 17.712 7.713C17.904 7.521 18 7.28333 18 7C18 6.71667 17.904 6.479 17.712 6.287C17.5207 6.09567 17.2833 6 17 6H7C6.71667 6 6.479 6.09567 6.287 6.287C6.09567 6.479 6 6.71667 6 7C6 7.28333 6.09567 7.521 6.287 7.713C6.479 7.90433 6.71667 8 7 8ZM20.3 20.3L18 18H4C3.45 18 2.97933 17.8043 2.588 17.413C2.196 17.021 2 16.55 2 16V4C2 3.45 2.196 2.979 2.588 2.587C2.97933 2.19567 3.45 2 4 2H20C20.55 2 21.021 2.19567 21.413 2.587C21.8043 2.979 22 3.45 22 4V19.575C22 20.025 21.796 20.3373 21.388 20.512C20.9793 20.6873 20.6167 20.6167 20.3 20.3ZM4 4V16H18.825L20 17.175V4H4Z"
+                fill="#1C1B1F"
+              />
+            </g>
+          </svg>
+        </span>
+
+        <span class="editDeleteMsg">
+          <svg
+            width="25"
+            height="24"
+            viewBox="0 0 25 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <mask
+              id="mask0_79092_16838"
+              style="mask-type: alpha"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="25"
+              height="24"
+            >
+              <rect x="0.333252" width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_79092_16838)">
+              <path
+                d="M12.3333 20C11.7833 20 11.3124 19.8042 10.9208 19.4125C10.5291 19.0208 10.3333 18.55 10.3333 18C10.3333 17.45 10.5291 16.9792 10.9208 16.5875C11.3124 16.1958 11.7833 16 12.3333 16C12.8833 16 13.3541 16.1958 13.7458 16.5875C14.1374 16.9792 14.3333 17.45 14.3333 18C14.3333 18.55 14.1374 19.0208 13.7458 19.4125C13.3541 19.8042 12.8833 20 12.3333 20ZM12.3333 14C11.7833 14 11.3124 13.8042 10.9208 13.4125C10.5291 13.0208 10.3333 12.55 10.3333 12C10.3333 11.45 10.5291 10.9792 10.9208 10.5875C11.3124 10.1958 11.7833 10 12.3333 10C12.8833 10 13.3541 10.1958 13.7458 10.5875C14.1374 10.9792 14.3333 11.45 14.3333 12C14.3333 12.55 14.1374 13.0208 13.7458 13.4125C13.3541 13.8042 12.8833 14 12.3333 14ZM12.3333 8C11.7833 8 11.3124 7.80417 10.9208 7.4125C10.5291 7.02083 10.3333 6.55 10.3333 6C10.3333 5.45 10.5291 4.97917 10.9208 4.5875C11.3124 4.19583 11.7833 4 12.3333 4C12.8833 4 13.3541 4.19583 13.7458 4.5875C14.1374 4.97917 14.3333 5.45 14.3333 6C14.3333 6.55 14.1374 7.02083 13.7458 7.4125C13.3541 7.80417 12.8833 8 12.3333 8Z"
+                fill="#1C1B1F"
+              />
+            </g>
+          </svg>
+          <div class="msgText">
+            <p (click)="editMessageChannel(msg.id)">Nachricht bearbeiten</p>
+            <p (click)="deleteMessage(msg.id, this.selectedChannel()!.id)">
+              Löschen
+            </p>
+          </div>
+        </span>
       </div>
-      @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
-        <app-chatmsgbox context="channel" [content]="contentChannel" [nameChannel]="nameChannelSignal"></app-chatmsgbox>
+      <img class="userProfile70" src="{{ msg.senderData?.avatar }}" alt="" />
+      <div class="chatMessageDetails">
+        <header>
+          <span class="userName">{{ msg.senderData?.fullName }}</span>
+          <time class="time" datetime="">{{ msg.time }} Uhr</time>
+        </header>
+        <div class="messageText">{{ msg.content }}</div>
+        @if(msg.threadIDS!.length > 0){
+        <footer>
+          <span class="answers" (click)="onShowThread(msg)">
+            {{ msg.threadIDS.length }} Antworten
+          </span>
+          <span class="last-message"
+            >letzte Antwort {{ msg.lastThreadTime }}</span
+          >
+        </footer>
+        }
+        <div class="showReactions">
+          <div *ngFor="let reaction of msg.reactions">
+            <!-- <span
+              class="reaction-item"
+              (mouseenter)="showUsers(reaction, $event)"
+              (mouseleave)="hideUsers()"
+            > -->
+
+            <span class="reaction-item">
+              {{ reaction.type }} {{ reaction.users.length }}
+              <div class="reaction-users">
+                <div class="reaction-users-content">
+                  <span>{{ reaction.type }} </span>
+                  <span *ngFor="let user of reaction.users" class="bold">{{
+                    user.userName
+                  }}</span>
+                  <span>hat reagiert</span>
+                </div>
+              </div>
+            </span>
+
+            <!-- <div
+              class="reaction-users"
+              *ngIf="hoveredReaction === reaction"
+              [style.top.px]="popupPosition.y"
+              [style.left.px]="popupPosition.x"
+            > -->
+
+       
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    } } }@else{
+    <div class="container-new-channel">
+      @if(channelObserved()){
+
+      <h4># {{ channelObserved()!.name }}</h4>
+      <p>
+        @if(currentUser.idFirebase === channelObserved()!.createdBy){
+        <span class="creatorChannel">Du</span>
+        }@else{
+        <span class="creatorChannel">
+          {{ channelObserved()!.creatorChannelData!.fullName }}
+        </span>
+        } hast diesen Channel erstellt. Das ist der Anfang des Channels
+        <span># {{ channelObserved()!.name }}</span>
+      </p>
+
       }
+    </div>
+    }
+  </div>
+  @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+  currentUser)){
+  <app-chatmsgbox
+    context="channel"
+    [content]="contentChannel"
+    [nameChannel]="nameChannelSignal"
+  ></app-chatmsgbox>
+  }
 </section>
 
 <div

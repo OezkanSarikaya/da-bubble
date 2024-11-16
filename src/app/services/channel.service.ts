@@ -108,7 +108,7 @@ export class ChannelService {
                 observer.next({
                     ...channelData,
                     creatorChannelData: creatorObservable,
-                    messages: messages,
+                    messages: messages,                    
                     membersData: membersData, // Nueva propiedad con datos de los miembros
                 } as Channel);
             });
@@ -127,7 +127,9 @@ export class ChannelService {
             const createdAtTimestamp = messageDataFromDb['createdAt'] as Timestamp;
             const messageData: Message = {
               id: messageSnapshot.id,
-              ...messageDataFromDb,
+              
+              ...messageDataFromDb,        
+              reactions: messageDataFromDb['reactions'] || [],      // neu 
               createdAt: createdAtTimestamp.toDate(),
               createAtString: this.getFormattedDate(createdAtTimestamp.seconds),
               time: this.formatTimestampTo24HourFormat(createdAtTimestamp.seconds)
@@ -303,7 +305,9 @@ export class ChannelService {
           const messageSnapshot = await getDoc(messageDocRef);
           // Verificar si el documento existe
           if (messageSnapshot.exists()) {
-              const messageData = messageSnapshot.data();
+              const messageData = messageSnapshot.data();           
+              
+
               return messageData['content'] as string; 
           } else {
               console.log(`Message with ID ${messageId} not found.`);
