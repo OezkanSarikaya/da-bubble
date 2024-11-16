@@ -8,6 +8,7 @@ import {
   OnDestroy,
   effect,
   Signal,
+  HostListener 
 } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
@@ -44,6 +45,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   isAddChannelOpen = false;
   isBackdropVisible: boolean = false;
   channels$: Signal<Channel[]>;
+  windowWidth: number = window.innerWidth;
   
   closePopup = false;
 
@@ -60,6 +62,11 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       console.log('Updated channels:', this.channels$());
       this.cdr.detectChanges();
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.windowWidth = window.innerWidth;
   }
 
   ngOnInit(): void {
@@ -84,7 +91,19 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   }
 
   addPeopleChoicePopup() {
+
+
+
+
+
     if (!this.isPeopleChoiceOpen) {
+
+      if (window.innerWidth >= 800) { 
+        this.isAddChannelOpen = false;
+      }
+      this.isPeopleChoiceOpen = true;
+
+
       // Backdrop wird angezeigt
       this.isBackdropVisible = true;
       // Kleines Timeout, um das Display: none aufzuheben, bevor die Opacity-Animation startet

@@ -316,7 +316,7 @@
 <div
   *ngIf="isAddChannelOpen"
   class="addChannelContainer"
-  [ngClass]="{ dnone: !isAddChannelOpen }"
+  [ngClass]="{ dnone: !isAddChannelOpen, 'reduced-z-index': isPeopleChoiceOpen && windowWidth  < 800 }"
 >
   <header>
     <h3>Channel erstellen</h3>

@@ -4,6 +4,10 @@ body {
   background-color: white !important;
 }
 
+.reduced-z-index {
+  z-index:1 !important;
+}
+
 .addChannelContainer {
   display: flex;
   flex-direction: column;
@@ -418,7 +422,7 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: opacity 125ms ease;
-    z-index: 2;
+    z-index: 8;
   }
 
   .hidden {
