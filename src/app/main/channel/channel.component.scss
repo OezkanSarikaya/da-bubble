@@ -55,6 +55,35 @@
   transform: translateX(50px);
 }
 
+.showReactions {
+  display: flex;
+  gap:16px;
+
+  img {
+    width:24px;
+    height:24px;
+  }
+
+  span {
+    cursor: pointer;
+//     width: Hug (63.96px)px;
+// height: Hug (34px)px;
+// top: 112px;
+// left: 1.92px;
+// width: auto;
+display: flex;
+align-items: center;
+background-color:white;
+padding: 5px 10px;
+gap: 10px;
+border-radius: 20px;
+
+opacity: 0px;
+border: 1px solid #ADB0D9
+
+  }
+}
+
 .desktopEmptyChannel {
   display: flex;
   background-color: white;
