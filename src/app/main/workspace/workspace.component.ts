@@ -8,12 +8,18 @@ import {
   OnDestroy,
   effect,
   Signal,
-  HostListener 
+  HostListener, 
+  signal,
+  computed,
+  ElementRef,
+  viewChild,
+  ViewChild,
+  WritableSignal,
 } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { PersonService } from '../../services/person.service';
 import { UserService } from '../../services/user.service';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
@@ -24,11 +30,20 @@ import {
 } from '../../state/actions/triggerComponents.actions';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
+import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
+import { FormsModule } from '@angular/forms';
+import { User } from '../../interfaces/user';
+
+
+export interface channelCreate {
+  name: string,
+  description: string
+}
 
 @Component({
   selector: 'app-workspace',
   standalone: true,
-  imports: [CommonModule, SearchComponent],
+  imports: [CommonModule, SearchComponent, FormsModule],
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.scss'], // Hier den korrekten Schlüssel 'styleUrls' verwenden
 })
@@ -47,21 +62,52 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   channels$: Signal<Channel[]>;
   windowWidth: number = window.innerWidth;
   
+  currentUser: any = null;
   closePopup = false;
+  channelCreate = {
+    name: '',
+    description: ''
+  }
+  channelCreateSubject: BehaviorSubject<channelCreate> = new BehaviorSubject(this.channelCreate)
+  channelCreate$: Observable<channelCreate> = this.channelCreateSubject.asObservable();
+  nameTaken: boolean = false;
+  userEmpty: User = {
+    avatar: '',
+    email: '',
+    fullName: '',
+    id: '',
+    status: '',
+    uid: '',
+  }
+  namePerson: WritableSignal<string> = signal<string>('');
+  searchedPersons: WritableSignal<User[]> = signal<User[]>([]);
+  personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty)
 
+  
   constructor(
     private personService: PersonService,
     private userService: UserService,
     private cdr: ChangeDetectorRef,
     private store: Store<any>,
-    private readonly channelService: ChannelService
+    private readonly channelService: ChannelService,
+    public channelDependenciesService: ChannelDependenciesService
   ) {
     this.channels$ = this.channelService.allChannels;
     // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
     effect(() => {
       console.log('Updated channels:', this.channels$());
+      console.log(this.namePerson());
+      console.log(this.searchedPersons());
+      console.log(this.personSelectedForChannel());
       this.cdr.detectChanges();
     });
+    this.channelCreate$.subscribe(createChannel =>{
+      this.channels$().map(channel =>{
+        this.nameTaken = channel.name.toLocaleLowerCase() === createChannel.name.toLocaleLowerCase();
+        console.log(this.nameTaken);
+      });
+      console.log(createChannel);
+    })
   }
 
   @HostListener('window:resize', ['$event'])
@@ -81,6 +127,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
             this.subscriptions.add(
               this.userService.getUserStatus(person.uid).subscribe((status) => {
                 person.isOnline = status === 'online';
+                // console.log(person);
                 this.cdr.detectChanges(); // Actualizamos la vista
               })
             );
@@ -88,6 +135,59 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         });
       })
     );
+
+    const sub1 = this.userService.currentUser$.subscribe(user => {
+      this.currentUser = user;        
+    });
+    this.subscriptions.add(sub1)
+  }
+
+  searchPerson(){
+    if(this.namePerson() !== ''){
+      this.channelService.searchPersonNewChannel(this.namePerson(), this.persons).subscribe(users => {
+        this.searchedPersons.set(users);
+      });
+    }else{
+      this.closeSearch();
+    }
+  }
+
+  public closeSearch(){
+    this.searchedPersons.set([]);
+    this.namePerson.set('');
+  }
+
+  addPersonSelectedToChannel(user: User){
+    this.personSelectedForChannel.set(user);
+    this.closeSearch();
+  }
+
+  deletePersonSelectedToChannel(){
+    this.personSelectedForChannel.set(this.userEmpty);
+  }
+
+  updateChannelCreate(){
+    this.channelCreateSubject.next(this.channelCreate);
+  }
+
+  resetData(){
+    this.channelCreate.name = '';
+    this.channelCreate.description = ''
+    this.channelCreateSubject.next(this.channelCreate);
+    this.addPeopleChoicePopup();
+    this.toggleAddChannel()
+  }
+
+
+  addPeopleToNewChannel(){
+    if(this.isAddMembersInputVisible){
+      console.log('selected user only');
+      this.channelService.createChannelOnePerson(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description, this.personSelectedForChannel().id)
+    }else{
+      console.log('add allUser');
+      this.channelService.createChannelAllPeople(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description);
+    }
+    this.resetData();
   }
 
   addPeopleChoicePopup() {
@@ -163,6 +263,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error);
       }
     );
+
   }
 
   ngOnDestroy() {
@@ -182,13 +283,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.store.dispatch(showChannelComponent({ channel }));
     this.store.dispatch(hideNewMessage());
   }
-
-  // findChannelClicked(channelId: string) {
-  //   const channelClicked = this.channels$();
-  //   channelClicked.filter(
-  //     (channel) => channel.id === channelId
-  //   );
-  // }
 
   // Methode, die das Einblenden auslöst
   ontoggleNewMessage() {
@@ -226,4 +320,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       }, 300); // Dauer der CSS-Transition (300ms)
     }
   }
+
+  
+  
 }

@@ -12,6 +12,7 @@ import { UserService } from '../../services/user.service';
 import { Message } from '../../interfaces/message';
 import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../interfaces/user';
+import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
 
 
 interface ChannelAllData {
@@ -60,9 +61,10 @@ export class ChannelComponent {
     status: '',
     uid: '',
   }
-  personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty)
+  personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty);
+  lastAnswer = signal<string>('')
 
-  constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
+  constructor(private store: Store, private channelService: ChannelService, private userService: UserService, public channelDependenciesService: ChannelDependenciesService){
     setInterval(()=>{
       let timestamp = this.channelService.getTodayDate();
       this.currentDate = this.channelService.getFormattedDate(timestamp);
@@ -74,7 +76,8 @@ export class ChannelComponent {
         console.log('ChannelObserved Updated:', this.channelObserved());
         console.log(this.searchedPersons());
         console.log(this.namePerson());
-        console.log(this.personSelectedForChannel());
+        console.log(this.lastAnswer());
+        this.personSelectedForChannel();
       }
     })
   }
@@ -88,6 +91,31 @@ export class ChannelComponent {
         this.channelService.observeChannel(channel.id).subscribe((updatedChannel) => {
           // console.log('Canal observado emitido:', updatedChannel); 
           this.channelObserved.set(updatedChannel);
+          
+          if (updatedChannel.messages && updatedChannel.messages.length > 0) {
+            updatedChannel.messages.forEach((message) => {
+              // Verificar si el mensaje y su ID están definidos
+              if (message && message.id) {
+                this.channelService.observeLastThreadTimeFromMessage(message.id).subscribe((lastThreadTime) => {
+                  if (lastThreadTime) {
+                    // Asignamos el último tiempo del thread al mensaje
+                    const updatedMessage = {
+                      ...message,  // Copiar todos los valores del mensaje original
+                      lastThreadTime: lastThreadTime  // Asigna el tiempo del último thread
+                    };
+  
+                    // Actualizar el mensaje en el arreglo
+                    const index = updatedChannel.messages.findIndex(msg => msg.id === message.id);
+                    if (index !== -1) {
+                      updatedChannel.messages[index] = updatedMessage; // Reemplazar el mensaje en el array
+                    }
+                  }
+                });
+              } else {
+                console.log('We dont have anything here to show for', message);
+              }
+            });
+          }
         });
       }
     });
@@ -239,6 +267,19 @@ export class ChannelComponent {
   deletePersonSelectedToChannel(){
     this.personSelectedForChannel.set(this.userEmpty);
   }
+
+  leaveAChannel(){
+    this.channelService.removeMemberFromChannel(this.selectedChannel()!.id, this.currentUser.idFirebase)
+  }
+
+  // searchLastMessageTime(messageId){
+  //   this.channelObserved()?.messages.map((message)=>{
+  //     if(message.id === messageId){
+  //       let lastIndex = message.threadIDS.length;
+  //       let ThreadID = message[lastIndex -1]
+  //     }
+  //   })
+  // }
 
 
 }

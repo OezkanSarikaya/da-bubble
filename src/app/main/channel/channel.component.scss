@@ -101,6 +101,28 @@
   cursor: pointer;
 }
 
+.container-new-channel{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  margin-bottom: 32px;
+  h4{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    &:hover{
+      color: $main-color
+    }
+  }
+  p{
+    margin: 0;
+    span{
+      color: $main-color;
+    }
+  } 
+}
+
 .addChannelMembersPopup {
   padding: 30px 26px;
   gap: 25px;
@@ -257,6 +279,13 @@
 .channelBody {
   // overflow: scroll;
   overflow-x: hidden;
+}
+
+.channelEmpty{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .memberCount {
@@ -496,6 +525,12 @@
   }
 }
 
+.last-message{
+  margin-left: 20px;
+  color: rgba(0, 0, 0, 0.5);
+  font-style: 14px;
+}
+
 .channelInfo {
   background-color: white !important;
   position: fixed;
@@ -669,8 +704,15 @@ img.size-add-person{
 
 .creatorChannel{
   color: $main-secondary;
-  font-size: 20px;
   font-weight: 400;
+}
+
+.fs-20{
+  font-size: 20px;
+}
+
+.fs-18{
+  font-size: 18px;
 }
 
 // Media Queries Mobile First

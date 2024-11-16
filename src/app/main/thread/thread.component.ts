@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service';
 import { Channel } from '../../interfaces/channel';
 import { Message } from '../../interfaces/message';
 import { ThreadMessage } from '../../interfaces/threadMessage';
+import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
 
 @Component({
   selector: 'app-thread',
@@ -33,7 +34,7 @@ export class ThreadComponent {
   currentDate: string = '';
  
     
-  constructor(private store: Store, private channelService: ChannelService, private userService: UserService){
+  constructor(private store: Store, private channelService: ChannelService, private userService: UserService, public channelDependenciesService: ChannelDependenciesService){
     effect(()=>{
       console.log('SelectedThread',this.selectedThread());
       console.log('ThreadObserved',this.threadObserved());

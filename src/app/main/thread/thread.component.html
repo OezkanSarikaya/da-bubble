@@ -118,5 +118,7 @@
       }
   </div>
 
-  <app-chatmsgbox context="thread" [content]="contentThread" [nameChannel]="nameChannelSignal"></app-chatmsgbox>
+  @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!, currentUser)){
+    <app-chatmsgbox context="thread" [content]="contentThread" [nameChannel]="nameChannelSignal"></app-chatmsgbox>
+  }
 </section>

@@ -45,7 +45,7 @@ export class ChatmsgboxComponent {
       this.editMessageChannel()
       this.editMessageThread()
       this.content;
-      this.context
+      this.context;
     })
   }
 
@@ -90,6 +90,7 @@ export class ChatmsgboxComponent {
   async sendMessage(){
     if(this.context === 'channel'){
       if(!this.editMessageChannel()){
+        if(this.content().trim() === '') return
         //Create
         if(this.selectedChannel()){
           const channelID = this.selectedChannel()!.id
@@ -100,6 +101,7 @@ export class ChatmsgboxComponent {
       }
     }else if(this.context === 'thread'){
       if(!this.editMessageThread()){
+        if(this.content().trim() === '') return
         //Create
         if(this.selectedThread()){
           this.channelService.createThreadedMessage(this.content(), this.currentUser.idFirebase, 'messages', this.selectedThread()!.id)

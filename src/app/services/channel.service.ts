@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Channel } from '../interfaces/channel';
-import { BehaviorSubject, combineLatest, filter, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, firstValueFrom, forkJoin, map, Observable } from 'rxjs';
 import { Message } from '../interfaces/message';
 import { User } from '../interfaces/user';
 import { ThreadMessage } from '../interfaces/threadMessage';
@@ -85,12 +85,6 @@ export class ChannelService {
             observer.next(channelData as Channel);
           } else {
             const { messageIDS, members, createdBy } = channelData;
-
-            // const messageObservables = (messageIDS || []).map((messageId: string) =>
-            //     this.fetchMessageWithUserAsObservable(messageId).pipe(
-            //         filter((msg): msg is Message => msg !== null)
-            //     )
-            // );
 
             const messageObservables = (messageIDS && messageIDS.length > 0) 
                 ? messageIDS.map((messageId: string) => 
@@ -417,6 +411,19 @@ export class ChannelService {
     return combineLatest(userObservables);
   }
 
+  public searchPersonNewChannel(namePerson: string, persons: any[]){
+    const lowerCaseSearchTerm = namePerson.toLowerCase();
+    const filteredPersons = persons.filter(person =>
+        person.fullName.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+    const userObservables = filteredPersons.map(person =>
+        this.fetchUserAsObservable(person.id).pipe(
+            filter((user): user is User => user !== null) 
+        )
+    );
+    return combineLatest(userObservables);
+  }
+
   async addUserToChannel(channelId: string, userId: string): Promise<void> {
     try {
       const channelDocRef = doc(this.firestore, `channels/${channelId}`);
@@ -429,6 +436,89 @@ export class ChannelService {
     }
   }
 
+  async createChannelAllPeople(createdBy: string, name: string, description: string): Promise<void> {
+    const userObservable: Observable<User[]> = this.userService.getUsers();
+    const users = await firstValueFrom(userObservable.pipe(
+      filter((users) => users.length > 0),
+      map(users =>users.map(user => user.id))
+      )
+    );
+    const newChannel = {
+      createdBy,
+      description,
+      name,
+      createdAt: Timestamp.now(),
+      messagesIDs: [], 
+      members: users || [], 
+    };
+    try {
+      const channelCollection = collection(this.firestore, 'channels');
+      await addDoc(channelCollection, newChannel);
+      console.log('Canal creado con éxito:', newChannel);
+    } catch (error) {
+      console.error('Error al crear el canal:', error);
+    }
+  }
+
+  async createChannelOnePerson(createdBy: string, name: string, description: string, memberId: string): Promise<void> {
+    try {
+      const newChannel = {
+        createdBy,
+        description,
+        name,
+        createdAt: Timestamp.now(), 
+        messagesIDs: [], 
+        members: [createdBy, memberId],
+      };
+      const channelCollection = collection(this.firestore, 'channels');
+      await addDoc(channelCollection, newChannel);
+      console.log('Canal creado con éxito:', newChannel);
+    } catch (error) {
+      console.error('Error al crear el canal:', error);
+    }
+  }
+
+  async removeMemberFromChannel(channelId: string, memberId: string): Promise<void> {
+    try {
+      const channelDocRef = doc(this.firestore, 'channels', channelId);
+      await updateDoc(channelDocRef, {
+        members: arrayRemove(memberId),
+      });
+      console.log(`Miembro ${memberId} eliminado del canal ${channelId}`);
+    } catch (error) {
+      console.error('Error al eliminar el miembro:', error);
+    }
+  }
+  
+  observeLastThreadTimeFromMessage(messageId: string): Observable<string | null> {
+    return new Observable<string | null>((observer) => {
+      this.observeThread(messageId).subscribe((parentMessage) => {
+        if (parentMessage?.threadIDS?.length) {
+          const threadObservables = parentMessage.threadIDS.map((threadId) =>
+            this.fetchMessageWithUserAsObservable(threadId)
+          );
+  
+          combineLatest(threadObservables).subscribe((threads) => {
+            const lastThread = threads
+              .filter((thread): thread is Message => thread !== null) // Filtrar threads válidos
+              .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+  
+            if (lastThread) {
+              const formattedTime = this.formatTimestampTo24HourFormat(
+                lastThread.createdAt.getTime() / 1000
+              );
+              observer.next(formattedTime);
+            } else {
+              observer.next(null);
+            }
+          });
+        } else {
+          observer.next(null);
+        }
+      });
+    });
+  }
+  
 
 }
 
