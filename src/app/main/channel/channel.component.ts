@@ -65,7 +65,7 @@ export class ChannelComponent {
 
   // @Input()
   // isVisible: boolean = true; // Empfängt den Zustand der Sichtbarkeit
-  currentUser: any = null;
+  currentUser: Signal<any> = signal<any>(null);
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
@@ -325,7 +325,7 @@ export class ChannelComponent {
   leaveAChannel() {
     this.channelService.removeMemberFromChannel(
       this.selectedChannel()!.id,
-      this.currentUser.idFirebase
+      this.currentUser().idFirebase
     );
   }
 
