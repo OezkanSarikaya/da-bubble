@@ -672,12 +672,6 @@
         }
         <div class="showReactions">
           <div *ngFor="let reaction of msg.reactions">
-            <!-- <span
-              class="reaction-item"
-              (mouseenter)="showUsers(reaction, $event)"
-              (mouseleave)="hideUsers()"
-            > -->
-
             <span class="reaction-item">
               {{ reaction.type }} {{ reaction.users.length }}
               <div class="reaction-users">
@@ -690,17 +684,6 @@
                 </div>
               </div>
             </span>
-
-            <!-- <div
-              class="reaction-users"
-              *ngIf="hoveredReaction === reaction"
-              [style.top.px]="popupPosition.y"
-              [style.left.px]="popupPosition.x"
-            > -->
-
-       
-
-
           </div>
         </div>
       </div>

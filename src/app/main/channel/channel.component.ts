@@ -1,9 +1,29 @@
-import { Component, computed, effect, EventEmitter, Input, Output, signal, Signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  EventEmitter,
+  Input,
+  Output,
+  signal,
+  Signal,
+  WritableSignal,
+} from '@angular/core';
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { editMessageChannelOpen, editMessageThreadOpen, hideThreadComponent, showThreadComponent } from '../../state/actions/triggerComponents.actions';
-import { selectSelectedChannelSelector, selectThreadSelector, triggerChannelSelector, triggerNewMessageSelector } from '../../state/selectors/triggerComponents.selectors';
+import {
+  editMessageChannelOpen,
+  editMessageThreadOpen,
+  hideThreadComponent,
+  showThreadComponent,
+} from '../../state/actions/triggerComponents.actions';
+import {
+  selectSelectedChannelSelector,
+  selectThreadSelector,
+  triggerChannelSelector,
+  triggerNewMessageSelector,
+} from '../../state/selectors/triggerComponents.selectors';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
@@ -13,7 +33,6 @@ import { Message } from '../../interfaces/message';
 import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../interfaces/user';
 import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
-
 
 interface ChannelAllData {
   userName?: string;
@@ -49,7 +68,7 @@ export class ChannelComponent {
   isChannelSelected$: Observable<boolean> = new Observable();
   isNewMessageVisible$: Observable<boolean> = new Observable();
   selectedChannel = signal<Channel | null>(null);
-  channelObserved = signal<Channel | null>(null)
+  channelObserved = signal<Channel | null>(null);
   contentChannel = signal<string>('');
   nameChannelSignal = computed(() => this.channelObserved()?.name ?? '');
   currentDate: string = '';
@@ -63,18 +82,23 @@ export class ChannelComponent {
     id: '',
     status: '',
     uid: '',
-  }
+  };
   personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty);
-  lastAnswer = signal<string>('')
+  lastAnswer = signal<string>('');
 
-  constructor(private store: Store, private channelService: ChannelService, private userService: UserService, public channelDependenciesService: ChannelDependenciesService){
-    setInterval(()=>{
+  constructor(
+    private store: Store,
+    private channelService: ChannelService,
+    private userService: UserService,
+    public channelDependenciesService: ChannelDependenciesService
+  ) {
+    setInterval(() => {
       let timestamp = this.channelService.getTodayDate();
       this.currentDate = this.channelService.getFormattedDate(timestamp);
-    }, 1000)
+    }, 1000);
 
-    effect(()=>{
-      if(this.selectedChannel()){
+    effect(() => {
+      if (this.selectedChannel()) {
         console.log(this.selectedChannel());
         console.log('ChannelObserved Updated:', this.channelObserved());
         console.log(this.searchedPersons());
@@ -82,53 +106,68 @@ export class ChannelComponent {
         console.log(this.lastAnswer());
         this.personSelectedForChannel();
       }
-    })
+    });
   }
 
   ngOnInit(): void {
-    
     this.isChannelSelected$ = this.store.select(triggerChannelSelector);
     this.isNewMessageVisible$ = this.store.select(triggerNewMessageSelector);
-    const sub1 = this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
-      if (channel) {
-        this.selectedChannel.set(channel);
-        this.channelService.observeChannel(channel.id).subscribe((updatedChannel) => {
-          // console.log('Canal observado emitido:', updatedChannel); 
-          this.channelObserved.set(updatedChannel);
-          
-          if (updatedChannel.messages && updatedChannel.messages.length > 0) {
-            updatedChannel.messages.forEach((message) => {
-              // Verificar si el mensaje y su ID están definidos
-              if (message && message.id) {
-                this.channelService.observeLastThreadTimeFromMessage(message.id).subscribe((lastThreadTime) => {
-                  if (lastThreadTime) {
-                    // Asignamos el último tiempo del thread al mensaje
-                    const updatedMessage = {
-                      ...message,  // Copiar todos los valores del mensaje original
-                      lastThreadTime: lastThreadTime  // Asigna el tiempo del último thread
-                    };
-  
-                    // Actualizar el mensaje en el arreglo
-                    const index = updatedChannel.messages.findIndex(msg => msg.id === message.id);
-                    if (index !== -1) {
-                      updatedChannel.messages[index] = updatedMessage; // Reemplazar el mensaje en el array
-                    }
+    const sub1 = this.store
+      .select(selectSelectedChannelSelector)
+      .subscribe(async (channel) => {
+        if (channel) {
+          this.selectedChannel.set(channel);
+          this.channelService
+            .observeChannel(channel.id)
+            .subscribe((updatedChannel) => {
+              // console.log('Canal observado emitido:', updatedChannel);
+              this.channelObserved.set(updatedChannel);
+
+              if (
+                updatedChannel.messages &&
+                updatedChannel.messages.length > 0
+              ) {
+                updatedChannel.messages.forEach((message) => {
+                  // Verificar si el mensaje y su ID están definidos
+                  if (message && message.id) {
+                    this.channelService
+                      .observeLastThreadTimeFromMessage(message.id)
+                      .subscribe((lastThreadTime) => {
+                        if (lastThreadTime) {
+                          // Asignamos el último tiempo del thread al mensaje
+                          const updatedMessage = {
+                            ...message, // Copiar todos los valores del mensaje original
+                            lastThreadTime: lastThreadTime, // Asigna el tiempo del último thread
+                          };
+
+                          // Actualizar el mensaje en el arreglo
+                          const index = updatedChannel.messages.findIndex(
+                            (msg) => msg.id === message.id
+                          );
+                          if (index !== -1) {
+                            updatedChannel.messages[index] = updatedMessage; // Reemplazar el mensaje en el array
+                          }
+                        }
+                      });
+                  } else {
+                    console.log(
+                      'We dont have anything here to show for',
+                      message
+                    );
                   }
                 });
-              } else {
-                console.log('We dont have anything here to show for', message);
               }
             });
-          }
-        });
+        }
+      });
+    const sub2 = this.userService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+    });
+    const sub3 = this.channelService.contentEditChannel$.subscribe(
+      (content) => {
+        this.contentChannel.set(content);
       }
-    });
-    const sub2 = this.userService.currentUser$.subscribe(user => {
-      this.currentUser = user;        
-    });
-    const sub3 = this.channelService.contentEditChannel$.subscribe(content =>{
-      this.contentChannel.set(content)
-    })
+    );
     const sub4 = this.userService.getUsers().subscribe((users) => {
       this.persons = users;
     });
@@ -139,37 +178,8 @@ export class ChannelComponent {
     this.subscription.add(sub4);
   }
 
-  showUsers(reaction: any, event: MouseEvent): void {
-    const targetElement = event.target as HTMLElement;
-    const parentElement = targetElement.closest('.reaction-item') as HTMLElement;
-    if (!parentElement) return;
-  
-    // Berechnung der relativen Position innerhalb des Elternelements
-    const parentRect = parentElement.getBoundingClientRect();
-    // const x = event.clientX - parentRect.left; // Position relativ zum Elternelement
-    // const y = event.clientY - parentRect.top;
-    const x = parentRect.left + parentRect.width / 2; // Zentriert über der Reaktion
-    const y = parentRect.top - 10; // 10px oberhalb des Reaktionselements
-    // const x = 27; 
-    // const y = -23;
-  // bottom 35px
-  // left 25px
-  // console.log('x: ',x-680);
-  
-    this.hoveredReaction = reaction;
-    this.popupPosition = {
-      x: x - 690,      
-      // y: y - 40 // 40px oberhalb der Reaktion
-      y: -126 
-    };
-  }
-
-  hideUsers(): void {
-    this.hoveredReaction = null;
-  }
-
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();    
+    this.subscription.unsubscribe();
   }
 
   // Methode, die das Einblenden auslöst
@@ -177,11 +187,11 @@ export class ChannelComponent {
     this.store.dispatch(showThreadComponent({ message }));
   }
 
-  async editMessageChannel(messageID: string){
+  async editMessageChannel(messageID: string) {
     let content = await this.channelService.getMessageContentById(messageID);
     this.channelService.setContentChannel(content);
     this.channelService.setContext('channel');
-    this.store.dispatch(editMessageChannelOpen({messageID}));
+    this.store.dispatch(editMessageChannelOpen({ messageID }));
   }
 
   toggleChannelMembers() {
@@ -203,7 +213,6 @@ export class ChannelComponent {
       }, 300); // Dauer der CSS-Transition (300ms)
     }
   }
-
 
   openAddChannelMembers() {
     this.isChannelMembersOpen = false;
@@ -241,10 +250,10 @@ export class ChannelComponent {
       this.isAddChannelMembersOpen = false;
       // Nach der Animation (300ms) wird der Backdrop komplett entfernt
     }
-      setTimeout(() => {
-        this.isBackdropVisible = false;
-        document.body.classList.remove('no-scroll');
-      }, 300); // Dauer der CSS-Transition (300ms)
+    setTimeout(() => {
+      this.isBackdropVisible = false;
+      document.body.classList.remove('no-scroll');
+    }, 300); // Dauer der CSS-Transition (300ms)
   }
 
   toggleChannelInfo() {
@@ -267,42 +276,54 @@ export class ChannelComponent {
     }
   }
 
-  async deleteMessage(messageId: string, channelID: string){
-    await this.channelService.deleteMessageChannel(messageId, channelID)
+  async deleteMessage(messageId: string, channelID: string) {
+    await this.channelService.deleteMessageChannel(messageId, channelID);
   }
 
-  addPerson(){
-    this.channelService.addUserToChannel(this.selectedChannel()!.id, this.personSelectedForChannel().id);
+  addPerson() {
+    this.channelService.addUserToChannel(
+      this.selectedChannel()!.id,
+      this.personSelectedForChannel().id
+    );
     this.deletePersonSelectedToChannel();
-    this.closePopup()
+    this.closePopup();
   }
 
-  searchPerson(){
-    if(this.namePerson() !== ''){
-      this.channelService.searchPerson(this.namePerson(), this.persons, this.channelObserved()!.members).subscribe(users => {
-        this.searchedPersons.set(users);
-      });
-    }else{
+  searchPerson() {
+    if (this.namePerson() !== '') {
+      this.channelService
+        .searchPerson(
+          this.namePerson(),
+          this.persons,
+          this.channelObserved()!.members
+        )
+        .subscribe((users) => {
+          this.searchedPersons.set(users);
+        });
+    } else {
       this.closeSearch();
     }
   }
 
-  public closeSearch(){
+  public closeSearch() {
     this.searchedPersons.set([]);
     this.namePerson.set('');
   }
 
-  addPersonSelectedToChannel(user: User){
+  addPersonSelectedToChannel(user: User) {
     this.personSelectedForChannel.set(user);
     this.closeSearch();
   }
 
-  deletePersonSelectedToChannel(){
+  deletePersonSelectedToChannel() {
     this.personSelectedForChannel.set(this.userEmpty);
   }
 
-  leaveAChannel(){
-    this.channelService.removeMemberFromChannel(this.selectedChannel()!.id, this.currentUser.idFirebase)
+  leaveAChannel() {
+    this.channelService.removeMemberFromChannel(
+      this.selectedChannel()!.id,
+      this.currentUser.idFirebase
+    );
   }
 
   // searchLastMessageTime(messageId){
@@ -313,6 +334,4 @@ export class ChannelComponent {
   //     }
   //   })
   // }
-
-
 }
