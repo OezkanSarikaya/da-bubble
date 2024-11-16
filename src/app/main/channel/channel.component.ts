@@ -24,7 +24,7 @@ import {
   triggerChannelSelector,
   triggerNewMessageSelector,
 } from '../../state/selectors/triggerComponents.selectors';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { forkJoin, interval, map, Observable, Subscription } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
@@ -33,6 +33,7 @@ import { Message } from '../../interfaces/message';
 import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../interfaces/user';
 import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
+import { toSignal } from '@angular/core/rxjs-interop'
 
 interface ChannelAllData {
   userName?: string;
@@ -85,6 +86,9 @@ export class ChannelComponent {
   };
   personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty);
   lastAnswer = signal<string>('');
+  value$: Observable<number> =  interval(1000).pipe(map((value) => value + 1));
+
+  valueSignal = toSignal(this.value$, { initialValue: 0 });
 
   constructor(
     private store: Store,
@@ -96,6 +100,8 @@ export class ChannelComponent {
       let timestamp = this.channelService.getTodayDate();
       this.currentDate = this.channelService.getFormattedDate(timestamp);
     }, 1000);
+    this.currentUser = toSignal(this.userService.currentUser$);
+    console.log(this.currentUser());
 
     effect(() => {
       if (this.selectedChannel()) {
@@ -105,6 +111,7 @@ export class ChannelComponent {
         console.log(this.namePerson());
         console.log(this.lastAnswer());
         this.personSelectedForChannel();
+        console.log(this.currentUser());
       }
     });
   }
@@ -160,9 +167,10 @@ export class ChannelComponent {
             });
         }
       });
-    const sub2 = this.userService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-    });
+    // const sub2 = this.userService.currentUser$.subscribe((user) => {
+    //   this.currentUser = user;
+    // });
+    
     const sub3 = this.channelService.contentEditChannel$.subscribe(
       (content) => {
         this.contentChannel.set(content);
@@ -173,7 +181,7 @@ export class ChannelComponent {
     });
 
     this.subscription.add(sub1);
-    this.subscription.add(sub2);
+    // this.subscription.add(sub2);
     this.subscription.add(sub3);
     this.subscription.add(sub4);
   }
@@ -322,7 +330,7 @@ export class ChannelComponent {
   leaveAChannel() {
     this.channelService.removeMemberFromChannel(
       this.selectedChannel()!.id,
-      this.currentUser.idFirebase
+      this.currentUser().idFirebase
     );
   }
 

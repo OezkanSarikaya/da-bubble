@@ -77,13 +77,13 @@
             ></div>
             <span
               >{{ user.fullName }}
-              @if(user.id === currentUser.idFirebase){ (Du) }
+              @if(user.id === currentUser().idFirebase){ (Du) }
             </span>
           </div>
           }
         </div>
         @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
-        currentUser)){
+        currentUser())){
         <div class="addChannelMember">
           <div class="userList" (click)="openAddChannelMembers()">
             <svg
@@ -281,7 +281,7 @@
           <div class="roundBoxHeader">
             <h4>Channel-Name</h4>
             @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
-            currentUser)){
+            currentUser())){
             <span class="creatorChannel fs-18">Bearbeiten</span>
             }
           </div>
@@ -291,7 +291,7 @@
           <div class="roundBoxHeader">
             <h4>Beschreibung</h4>
             @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
-            currentUser)){
+            currentUser())){
             <span class="creatorChannel fs-18">Bearbeiten</span>
             }
           </div>
@@ -311,7 +311,7 @@
       </div>
 
       @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
-      currentUser)){
+      currentUser())){
       <footer>
         <button class="button-app" (click)="leaveAChannel()">
           Channel verlassen
@@ -420,7 +420,7 @@
       </svg>
 
       @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
-      currentUser)){
+      currentUser())){
       <svg
         class="channelMembersDesktop"
         (click)="openAddChannelMembers()"
@@ -460,7 +460,7 @@
   >
     @if((channelObserved()?.messageIDS || []).length > 0){ @for (msg of
     channelObserved()!.messages; track $index) { @if(msg.senderID !==
-    currentUser.idFirebase){ @if(currentDate === msg.createAtString){
+    currentUser().idFirebase){ @if(currentDate === msg.createAtString){
     <div class="timeLine"><span>Heute</span></div>
     }@else{
     <div class="timeLine">
@@ -694,7 +694,7 @@
 
       <h4># {{ channelObserved()!.name }}</h4>
       <p>
-        @if(currentUser.idFirebase === channelObserved()!.createdBy){
+        @if(currentUser().idFirebase === channelObserved()!.createdBy){
         <span class="creatorChannel">Du</span>
         }@else{
         <span class="creatorChannel">
@@ -709,7 +709,7 @@
     }
   </div>
   @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
-  currentUser)){
+  currentUser())){
   <app-chatmsgbox
     context="channel"
     [content]="contentChannel"
