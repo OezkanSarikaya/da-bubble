@@ -2,10 +2,13 @@
 <div class="showReactions">
   <div *ngFor="let reaction of reactions">
     <span class="reaction-item">
-      {{ reaction.type }} {{ reaction.users.length }}
+     
+     <img src="../assets/img/{{ reaction.type }}.png" alt="">
+      <!-- {{ reaction.type }} -->
+       {{ reaction.users.length }}
       <div class="reaction-users">
         <div class="reaction-users-content">
-          <span>{{ reaction.type }} </span>
+          <span> <img src="../assets/img/{{ reaction.type }}.png" alt=""> </span>
           <span *ngFor="let user of reaction.users" class="bold">{{
             user.userName
           }}</span>
@@ -43,6 +46,7 @@
 
     <div class="moreIconsPopup">
       <div>
+        <!-- <span (click)="addReaction('checked',msg.id, currentUser().idFirebase, currentUser().fullName )"> -->
         <span>
           <img src="../assets/img/checked.png" alt="" />
         </span>

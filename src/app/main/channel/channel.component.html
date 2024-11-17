@@ -469,10 +469,10 @@
     }
     <div class="chatMessage leftMessage">
       <div class="addReaction leftPopup">
-        <span>
+        <span (click)="addReaction('checked',msg.id, currentUser().idFirebase, currentUser().fullName )">
           <img src="../assets/img/checked.png" alt="" />
         </span>
-        <span>
+        <span (click)="addReaction('hands',msg.id, currentUser().idFirebase, currentUser().fullName )">
           <img src="../assets/img/hands.png" alt="" />
         </span>
         <span class="moreIcons">
@@ -503,22 +503,22 @@
           </svg>
 
           <div class="moreIconsPopup">
-            <div>
+            <!-- <div>
               <span>
                 <img src="../assets/img/checked.png" alt="" />
               </span>
               <span>
                 <img src="../assets/img/hands.png" alt="" />
               </span>
-            </div>
-            <div>
-              <span>
+            </div> -->
+            <!-- <div> -->
+              <span (click)="addReaction('rocket',msg.id, currentUser().idFirebase, currentUser().fullName )">
                 <img src="../assets/img/rocket.png" alt="" />
               </span>
-              <span>
+              <span (click)="addReaction('smart',msg.id, currentUser().idFirebase, currentUser().fullName )">
                 <img src="../assets/img/smart.png" alt="" />
               </span>
-            </div>
+            <!-- </div> -->
           </div>
         </span>
         <span (click)="onShowThread(msg)">
@@ -578,10 +578,10 @@
     }
     <div class="chatMessage rightMessage">
       <div class="addReaction rightPopup">
-        <span>
+        <span (click)="addReaction('checked',msg.id, currentUser().idFirebase, currentUser().fullName )">
           <img src="../assets/img/checked.png" alt="" />
         </span>
-        <span>
+        <span (click)="addReaction('hands',msg.id, currentUser().idFirebase, currentUser().fullName )">
           <img src="../assets/img/hands.png" alt="" />
         </span>
         <span class="moreIcons">
@@ -611,22 +611,22 @@
             </g>
           </svg>
           <div class="moreIconsPopup">
-            <div>
+            <!-- <div>
               <span>
                 <img src="../assets/img/checked.png" alt="" />
               </span>
               <span>
                 <img src="../assets/img/hands.png" alt="" />
               </span>
-            </div>
-            <div>
-              <span>
+            </div> -->
+            <!-- <div> -->
+              <span (click)="addReaction('rocket',msg.id, currentUser().idFirebase, currentUser().fullName )">
                 <img src="../assets/img/rocket.png" alt="" />
               </span>
-              <span>
+              <span (click)="addReaction('smart',msg.id, currentUser().idFirebase, currentUser().fullName )">
                 <img src="../assets/img/smart.png" alt="" />
               </span>
-            </div>
+            <!-- </div> -->
           </div>
         </span>
         <span (click)="onShowThread(msg)">
