@@ -8,6 +8,50 @@
   left: 80px;
 }
 
+.moreIconsPopup {
+  display: none;
+  align-items:center;
+  // gap:16px;
+  // min-width: 158px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 33px; /* Feste Position von unten */
+  left: 10px; /* Horizontale Zentrierung */
+  padding: 10px 15px;
+  border-radius: 0px 30px 30px 30px;
+  background: #444df2;
+  color: white;
+ 
+  div {
+      display: flex;
+      flex-direction: column;
+      // gap:16px;
+  }
+  .bold {
+    font-weight: 700;
+  }
+  span {
+    padding:0;
+    font-size: 18px;
+    background-color: #444df2 !important;
+    border-radius: unset !important;
+    border: none !important;
+    text-align: center;
+    img {
+      width:24px !important;
+      height:24px !important;
+    }
+  }
+}
+
+.moreIcons {
+  position: relative;
+  padding: 5px 10px;
+  &:hover .moreIconsPopup {
+    display: flex;
+  }
+}
+
 .addReaction {
   position: absolute;
   box-sizing: border-box;
