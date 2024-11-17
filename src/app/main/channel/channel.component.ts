@@ -9,6 +9,7 @@ import {
   Signal,
   WritableSignal,
 } from '@angular/core';
+
 import { ChatmsgboxComponent } from '../chatmsgbox/chatmsgbox.component';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
@@ -34,6 +35,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../interfaces/user';
 import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
 import { toSignal } from '@angular/core/rxjs-interop'
+import { ShowReactionsComponent } from "../show-reactions/show-reactions.component";
 
 interface ChannelAllData {
   userName?: string;
@@ -43,7 +45,7 @@ interface ChannelAllData {
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [ChatmsgboxComponent, CommonModule, FormsModule],
+  imports: [ChatmsgboxComponent, CommonModule, FormsModule, ShowReactionsComponent],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss',
 })
