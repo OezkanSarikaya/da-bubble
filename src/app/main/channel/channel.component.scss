@@ -94,15 +94,35 @@
 
 .showReactions {
   display: flex;
-  gap: 16px;
+  gap: 8px;
   position: relative;
+  align-items: center;
+
+  .moreIcons {
+    padding: 6px;
+    border-radius: 50%;
+    background-color: white;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+      background-color: $bg-field-color;
+    }
+    &:hover rect,
+    &:hover path {
+      fill: $main-secondary;
+    }
+  }
 
   img {
     width: 24px;
     height: 24px;
   }
-
-  span:not(.reaction-users) {
+  // moreIcons
+  span:not(.moreIcons) {
     cursor: pointer;
     display: flex;
     align-items: center;
