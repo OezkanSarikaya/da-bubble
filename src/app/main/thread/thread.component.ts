@@ -11,11 +11,12 @@ import { Channel } from '../../interfaces/channel';
 import { Message } from '../../interfaces/message';
 import { ThreadMessage } from '../../interfaces/threadMessage';
 import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
+import { ShowReactionsComponent } from '../show-reactions/show-reactions.component';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [ChatmsgboxComponent,CommonModule],
+  imports: [ChatmsgboxComponent,CommonModule,ShowReactionsComponent],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })

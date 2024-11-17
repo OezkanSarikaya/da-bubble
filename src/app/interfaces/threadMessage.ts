@@ -1,5 +1,6 @@
 import { Timestamp } from "@angular/fire/firestore";
 import { Message } from "./message";
+import { Reaction } from "./reactions";
 import { User } from "./user";
 
 export interface ThreadMessage {
@@ -12,4 +13,5 @@ export interface ThreadMessage {
   senderData: User
   threadIDS?: string[];
   threadData?: Message[];
+  reactions: Reaction[]; // Array von Reaktionen
 }

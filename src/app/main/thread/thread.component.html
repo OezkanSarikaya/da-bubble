@@ -134,6 +134,7 @@
                   <time class="time" datetime="">{{thread.time}}</time>
                 </header>
                 <div class="messageText">{{thread.content}}</div>
+                <app-show-reactions [reactions]="thread.reactions"></app-show-reactions>
               </div>
             </div> 
           }@else {
@@ -197,6 +198,7 @@
                   <time class="time" datetime="">{{thread.time}}</time>
                 </header>
                 <div class="messageText">{{thread.content}}</div>
+                <app-show-reactions [reactions]="thread.reactions"></app-show-reactions>
               </div>
             </div> 
           }

@@ -1,4 +1,5 @@
-<div class="showReactions">
+@if(reactions!.length > 0){
+<div class="showReactions" >
     <div *ngFor="let reaction of reactions">
       <span class="reaction-item">
         {{ reaction.type }} {{ reaction.users.length }}
@@ -42,18 +43,22 @@
 
 
       <div class="moreIconsPopup">
+        <div>
         <span>
           <img src="../assets/img/checked.png" alt="" />
         </span>
         <span>
           <img src="../assets/img/hands.png" alt="" />
         </span>
+    </div>
+    <div>
         <span>
           <img src="../assets/img/rocket.png" alt="" />
         </span>
         <span>
           <img src="../assets/img/smart.png" alt="" />
         </span>
+    </div>
        
       </div>
 
@@ -61,3 +66,4 @@
 
     </span>
   </div>
+}
