@@ -24,7 +24,7 @@ export class ShowReactionsComponent {
 
   async addReaction(reactionIcon: string, messageId: string, userId: string, userName: string) {
 
-    // console.log('addReaction: ',messageId,reactionIcon,userId,userName);
+    console.log('addReaction: ',messageId,reactionIcon,userId,userName);
     
     try {
       const messageDocRef = doc(this.firestore, 'messages', messageId);
