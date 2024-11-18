@@ -2,6 +2,8 @@ import { Component, Input, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Message } from '../../interfaces/message';
 import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, getDoc } from '@angular/fire/firestore';
+import { UserService } from '../../services/user.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 // import { ChannelService } from '../../services/channel.service';
 
 @Component({
@@ -13,9 +15,10 @@ import { Firestore, doc, updateDoc, arrayUnion, arrayRemove, getDoc } from '@ang
 })
 export class ShowReactionsComponent {
   @Input() reactions: any[] = [];
+  @Input() msgID!: string; // Akzeptiere ein `Message`-Objekt statt eines Arrays
   currentUser: Signal<any> = signal<any>(null);
-  constructor(private firestore: Firestore) {
-
+  constructor(private firestore: Firestore, private userService: UserService,) {
+    this.currentUser = toSignal(this.userService.currentUser$);
   }
 
 
@@ -78,7 +81,7 @@ export class ShowReactionsComponent {
         }
       }
 
-      console.log('Reaction updated successfully.');
+      // console.log('Reaction updated successfully.');
     } catch (error) {
       console.error('Error updating reaction:', error);
     }

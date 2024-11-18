@@ -214,6 +214,7 @@ export class ChannelComponent {
 
       const messageData = messageSnapshot.data();
       const reactions = messageData['reactions'] || [];
+      // const msgID:string = '';
 
       // Check if the reaction type exists
       const reactionIndex = reactions.findIndex((r: any) => r.type === reactionIcon);

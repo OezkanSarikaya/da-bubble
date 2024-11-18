@@ -1,8 +1,9 @@
 @if(reactions!.length > 0){
 <div class="showReactions">
+  
   <div *ngFor="let reaction of reactions">
-    <span class="reaction-item">
-     
+    <!-- <span class="reaction-item"> -->
+      <span class="reaction-item" (click)="addReaction(reaction.type,msgID, currentUser().idFirebase, currentUser().fullName )">
      <img src="../assets/img/{{ reaction.type }}.png" alt="">
       <!-- {{ reaction.type }} -->
        {{ reaction.users.length }}
@@ -46,19 +47,19 @@
 
     <div class="moreIconsPopup">
       <div>
-        <!-- <span (click)="addReaction('checked',msg.id, currentUser().idFirebase, currentUser().fullName )"> -->
-        <span>
+        <span (click)="addReaction('checked',msgID, currentUser().idFirebase, currentUser().fullName )">
+        <!-- <span> -->
           <img src="../assets/img/checked.png" alt="" />
         </span>
-        <span>
+        <span (click)="addReaction('hands',msgID, currentUser().idFirebase, currentUser().fullName )">
           <img src="../assets/img/hands.png" alt="" />
         </span>
       </div>
       <div>
-        <span>
+        <span (click)="addReaction('rocket',msgID, currentUser().idFirebase, currentUser().fullName )">
           <img src="../assets/img/rocket.png" alt="" />
         </span>
-        <span>
+        <span (click)="addReaction('smart',msgID, currentUser().idFirebase, currentUser().fullName )">
           <img src="../assets/img/smart.png" alt="" />
         </span>
       </div>

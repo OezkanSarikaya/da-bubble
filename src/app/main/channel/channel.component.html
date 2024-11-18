@@ -566,7 +566,7 @@
           >
         </footer>
         }
-        <app-show-reactions [reactions]="msg.reactions"></app-show-reactions>
+        <app-show-reactions [reactions]="msg.reactions" [msgID]="msg.id"></app-show-reactions>
       </div>
     </div>
     }@else { @if(currentDate === msg.createAtString){
@@ -709,7 +709,7 @@
         </footer>
         }
 
-        <app-show-reactions [reactions]="msg.reactions"></app-show-reactions>
+        <app-show-reactions [reactions]="msg.reactions" [msgID]="msg.id"></app-show-reactions>
  
       </div>
     </div>
