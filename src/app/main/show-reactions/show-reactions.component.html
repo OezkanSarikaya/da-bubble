@@ -6,7 +6,9 @@
       <span class="reaction-item" (click)="addReaction(reaction.type,msgID, currentUser().idFirebase, currentUser().fullName )">
      <img src="../assets/img/{{ reaction.type }}.png" alt="">
       <!-- {{ reaction.type }} -->
+      @if(reaction.users.length > 1){
        {{ reaction.users.length }}
+      }
       <div class="reaction-users">
         <div class="reaction-users-content">
           <span> <img src="../assets/img/{{ reaction.type }}.png" alt=""> </span>
