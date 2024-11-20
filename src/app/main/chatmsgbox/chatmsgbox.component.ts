@@ -49,6 +49,8 @@ export class ChatmsgboxComponent {
     })
   }
 
+
+
   ngOnInit(): void {
     const sub1 = this.store.select(selectSelectedChannelSelector).subscribe(async (channel) => {
       if (channel) {
@@ -85,6 +87,29 @@ export class ChatmsgboxComponent {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  addEmoji(emojiFileName: string) {
+    const textarea = document.getElementById('messageInput') as HTMLTextAreaElement;
+
+    if (!textarea) return;
+
+    // Holen der aktuellen Cursor-Position
+    const cursorPos = textarea.selectionStart;
+    const textBeforeCursor = textarea.value.substring(0, cursorPos);
+    const textAfterCursor = textarea.value.substring(cursorPos);
+
+    // Füge das Emoji als HTML-Bild-Tag an der aktuellen Position ein
+    const emojiTag = `${emojiFileName}`;  
+
+    // Aktualisiere den Inhalt des Textareas
+    textarea.value = textBeforeCursor + emojiTag + textAfterCursor;
+
+    // Setze den Cursor nach dem eingefügten Emoji
+    textarea.selectionStart = textarea.selectionEnd = cursorPos + emojiTag.length;
+
+    // Fokussiere das Textarea erneut
+    textarea.focus();
   }
   
   async sendMessage(){
