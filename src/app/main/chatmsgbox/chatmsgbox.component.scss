@@ -1,6 +1,7 @@
 @import "../../../assets/css/helper.scss";
 
 .moreIconsPopup {
+  
   display: none;
   align-items:center;
   gap:8px;
@@ -33,9 +34,10 @@
     border-radius:50%;
     width:24px !important;
     height:24px !important;
+    transition: background-color 125ms ease-in-out;
     
     &:hover {
-      background:white !important;
+      background:rgba(255,255,255,0.5) !important;
     }
 
   }
