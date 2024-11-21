@@ -89,8 +89,7 @@ export class ChatmsgboxComponent {
     this.subscription.unsubscribe();
   }
 
-  addEmoji(emojiFileName: string) {
-    const textarea = document.getElementById('messageInput') as HTMLTextAreaElement;
+  addEmoji(emoji: string, textarea: HTMLTextAreaElement) {
 
     if (!textarea) return;
 
@@ -99,14 +98,11 @@ export class ChatmsgboxComponent {
     const textBeforeCursor = textarea.value.substring(0, cursorPos);
     const textAfterCursor = textarea.value.substring(cursorPos);
 
-    // Füge das Emoji als HTML-Bild-Tag an der aktuellen Position ein
-    const emojiTag = `${emojiFileName}`;  
-
     // Aktualisiere den Inhalt des Textareas
-    textarea.value = textBeforeCursor + emojiTag + textAfterCursor;
+    textarea.value = textBeforeCursor + emoji + textAfterCursor;
 
     // Setze den Cursor nach dem eingefügten Emoji
-    textarea.selectionStart = textarea.selectionEnd = cursorPos + emojiTag.length;
+    textarea.selectionStart = textarea.selectionEnd = cursorPos + emoji.length;
 
     // Fokussiere das Textarea erneut
     textarea.focus();

@@ -1,6 +1,6 @@
 <div class="channelBottom">
 <div class="messageArea">
-    <textarea name="" id="messageInput" [(ngModel)]="content" [placeholder]="selectedChannel() ? 'Nachricht an #'+ nameChannel() : 'Nachricht'" ></textarea>
+    <textarea #textarea [(ngModel)]="content" [placeholder]="selectedChannel() ? 'Nachricht an #'+ nameChannel() : 'Nachricht'" ></textarea>
     
     <div class="messageBottomLine">
       <div class="messageIcons">
@@ -47,18 +47,18 @@
       
           <div class="moreIconsPopup">
             
-              <span (click)="addEmoji('👍')">👍</span>
-              <span (click)="addEmoji('👎')">👎</span>
-              <span (click)="addEmoji('🧡')">🧡</span>
-              <span (click)="addEmoji('🤓')">🤓</span>
-              <span (click)="addEmoji('👋')">👋</span>
-              <span (click)="addEmoji('🚀')">🚀</span>
-              <span (click)="addEmoji('😂')">😂</span>
-              <span (click)="addEmoji('😉')">😉</span>
-              <span (click)="addEmoji('🙂')">🙂</span>
-              <span (click)="addEmoji('💪')">💪</span>
-              <span (click)="addEmoji('🎉')">🎉</span>
-              <span (click)="addEmoji('🙏')">🙏</span>
+              <span (click)="addEmoji('👍', textarea)">👍</span>
+              <span (click)="addEmoji('👎', textarea)">👎</span>
+              <span (click)="addEmoji('🧡', textarea)">🧡</span>
+              <span (click)="addEmoji('🤓', textarea)">🤓</span>
+              <span (click)="addEmoji('👋', textarea)">👋</span>
+              <span (click)="addEmoji('🚀', textarea)">🚀</span>
+              <span (click)="addEmoji('😂', textarea)">😂</span>
+              <span (click)="addEmoji('😉', textarea)">😉</span>
+              <span (click)="addEmoji('🙂', textarea)">🙂</span>
+              <span (click)="addEmoji('💪', textarea)">💪</span>
+              <span (click)="addEmoji('🎉', textarea)">🎉</span>
+              <span (click)="addEmoji('🙏', textarea)">🙏</span>
   
             
           </div>
