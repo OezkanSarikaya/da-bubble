@@ -137,49 +137,13 @@ export class ChannelComponent {
           this.channelService
             .observeChannel(channel.id)
             .subscribe((updatedChannel) => {
-              // console.log('Canal observado emitido:', updatedChannel);
               this.channelObserved.set(updatedChannel);
-
-              if (
-                updatedChannel.messages &&
-                updatedChannel.messages.length > 0
-              ) {
-                updatedChannel.messages.forEach((message) => {
-                  // Verificar si el mensaje y su ID están definidos
-                  if (message && message.id) {
-                    this.channelService
-                      .observeLastThreadTimeFromMessage(message.id)
-                      .subscribe((lastThreadTime) => {
-                        if (lastThreadTime) {
-                          // Asignamos el último tiempo del thread al mensaje
-                          const updatedMessage = {
-                            ...message, // Copiar todos los valores del mensaje original
-                            lastThreadTime: lastThreadTime, // Asigna el tiempo del último thread
-                          };
-
-                          // Actualizar el mensaje en el arreglo
-                          const index = updatedChannel.messages.findIndex(
-                            (msg) => msg.id === message.id
-                          );
-                          if (index !== -1) {
-                            updatedChannel.messages[index] = updatedMessage; // Reemplazar el mensaje en el array
-                          }
-                        }
-                      });
-                  } else {
-                    console.log(
-                      'We dont have anything here to show for',
-                      message
-                    );
-                  }
-                });
+              if (updatedChannel.messages && updatedChannel.messages.length > 0) {
+                this.updateChannelMessage(updatedChannel)
               }
             });
         }
       });
-    // const sub2 = this.userService.currentUser$.subscribe((user) => {
-    //   this.currentUser = user;
-    // });
     const sub3 = this.channelService.contentEditChannel$.subscribe(
       (content) => {
         this.contentChannel.set(content);
@@ -188,15 +152,46 @@ export class ChannelComponent {
     const sub4 = this.userService.getUsers().subscribe((users) => {
       this.persons = users;
     });
-
     this.subscription.add(sub1);
-    // this.subscription.add(sub2);
     this.subscription.add(sub3);
     this.subscription.add(sub4);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  /**
+   * This function verify first if a message exist and this one has an id
+   * If a message has a thread search for the last Thread and asign in this message whre the Threads is the time of creation of the thread
+   * @param updatedChannel That is the Channel that will updated. The opened Channel
+   */
+  updateChannelMessage(updatedChannel: Channel){
+    updatedChannel.messages.forEach((message) => {
+      if (message && message.id) {
+        this.channelService
+          .observeLastThreadTimeFromMessage(message.id)
+          .subscribe((lastThreadTime) => {
+            if (lastThreadTime) {
+              const updatedMessage = {
+                ...message, 
+                lastThreadTime: lastThreadTime, 
+              };
+              const index = updatedChannel.messages.findIndex(
+                (msg) => msg.id === message.id
+              );
+              if (index !== -1) {
+                updatedChannel.messages[index] = updatedMessage;
+              }
+            }
+          });
+      } else {
+        console.log(
+          'We dont have anything here to show for',
+          message
+        );
+      }
+    });
   }
 
   async addReaction(reactionIcon: string, messageId: string, userId: string, userName: string) {
@@ -407,12 +402,4 @@ export class ChannelComponent {
     );
   }
 
-  // searchLastMessageTime(messageId){
-  //   this.channelObserved()?.messages.map((message)=>{
-  //     if(message.id === messageId){
-  //       let lastIndex = message.threadIDS.length;
-  //       let ThreadID = message[lastIndex -1]
-  //     }
-  //   })
-  // }
 }
