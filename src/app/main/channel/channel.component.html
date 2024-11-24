@@ -314,9 +314,7 @@
             </div>
             <p>{{ channelObserved()!.description }}</p>
             <hr />
-  
             <h4>Erstellt von</h4>
-  
             <span class="creatorChannel fs-20">{{
               channelObserved()!.creatorChannelData!.fullName
             }}</span>
@@ -334,10 +332,8 @@
               <textarea class="custom-input" rows="3" [ngModel]="channelModel.description" (ngModelChange)="updateChannelSignalDescription($event)"  
               name="channelDescription"></textarea>
             </div>
-            <hr />
             <div class="container-info-creator">
               <h4>Erstellt von</h4>
-    
               <span class="creatorChannel fs-20">{{
                 channelObserved()!.creatorChannelData!.fullName
               }}</span>
