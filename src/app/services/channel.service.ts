@@ -32,7 +32,6 @@ export class ChannelService {
     effect(()=>{
       console.log(this.allChannels());
     })
-
   }
 
   setContentChannel(content: string){
@@ -49,7 +48,6 @@ export class ChannelService {
 
   private getAllChannels(){
     const channelCollection = collection(this.firestore, 'channels');
-    // Escuchar cambios en la colección en tiempo real
     onSnapshot(channelCollection, (snapshot) => {
       const channels = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -60,21 +58,7 @@ export class ChannelService {
     });
   }
 
-  public async createMessage(content: string, senderID: string, table: string, channelID: string){
-    const messageCollection = collection(this.firestore, table);
-    const channelCollection = doc(this.firestore, 'channels', channelID);
-    const result = await addDoc(messageCollection, {
-      content: content,
-      createdAt: Timestamp.now(),
-      senderID: senderID,
-      threadIDS: [],
-    });
-    const messageID = result.id
-    await updateDoc(channelCollection, {
-      messageIDS: arrayUnion(messageID)
-    });
-  }
-  
+ 
   observeChannel(channelId: string): Observable<Channel> {
     const channelDocRef = doc(this.firestore, 'channels', channelId);
       return new Observable<Channel>((observer) => {
@@ -85,7 +69,6 @@ export class ChannelService {
             observer.next(channelData as Channel);
           } else {
             const { messageIDS, members, createdBy } = channelData;
-
             const messageObservables = (messageIDS && messageIDS.length > 0) 
                 ? messageIDS.map((messageId: string) => 
                     this.fetchMessageWithUserAsObservable(messageId).pipe(filter((msg): msg is Message => msg !== null))
@@ -98,18 +81,16 @@ export class ChannelService {
                 )
             );
 
-          
             const creatorObservable = this.fetchUserAsObservable(createdBy).pipe(
               filter((user): user is User => user !== null))
               
-
            combineLatest([combineLatest(messageObservables), combineLatest(memberObservables), creatorObservable])
             .subscribe(([messages, membersData, creatorObservable]) => {
                 observer.next({
                     ...channelData,
                     creatorChannelData: creatorObservable,
                     messages: messages,                    
-                    membersData: membersData, // Nueva propiedad con datos de los miembros
+                    membersData: membersData, 
                 } as Channel);
             });
           }
@@ -127,9 +108,8 @@ export class ChannelService {
             const createdAtTimestamp = messageDataFromDb['createdAt'] as Timestamp;
             const messageData: Message = {
               id: messageSnapshot.id,
-              
               ...messageDataFromDb,        
-              reactions: messageDataFromDb['reactions'] || [],      // neu 
+              reactions: messageDataFromDb['reactions'] || [],   
               createdAt: createdAtTimestamp.toDate(),
               createAtString: this.getFormattedDate(createdAtTimestamp.seconds),
               time: this.formatTimestampTo24HourFormat(createdAtTimestamp.seconds)
@@ -150,13 +130,12 @@ export class ChannelService {
       });
   }
 
-  private fetchUserAsObservable(userId: string): Observable<User | null> {
+  public fetchUserAsObservable(userId: string): Observable<User | null> {
     const userDocRef = doc(this.firestore, 'users', userId);
 
       return new Observable<User | null>((observer) => {
         onSnapshot(userDocRef, (userSnapshot) => {
           if (userSnapshot.exists()) {
-
             const statusObservable = this.userService.getUserStatus(userSnapshot.data()['uid']);
             statusObservable.subscribe((status) => {
                 const userData: User = {
@@ -164,9 +143,8 @@ export class ChannelService {
                     ...userSnapshot.data(),
                     avatar: userSnapshot.data()['avatar'],
                     fullName: userSnapshot.data()['fullName'],
-                    status: status // Now status is an Observable here
+                    status: status 
                 } as User;
-
                 observer.next({...userData});
             });
           } else {
@@ -177,31 +155,23 @@ export class ChannelService {
   }
 
   formatTimestampTo24HourFormat(timestampInSeconds: number): string {
-    //// Convertir segundos a milisegundos
     const date = new Date(timestampInSeconds * 1000);
-  
-    // Get the hour and minutes
     const hours = date.getHours();
     const minutes = date.getMinutes();
-  
-    // Format to two digits
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
-  
     return `${formattedHours}:${formattedMinutes}`;
   }
 
   
   public getFormattedDate(timestamp: number): string {
     const date = new Date(timestamp * 1000);
-    // Usamos Intl.DateTimeFormat para formatear la fecha
     const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long', // Nombre del día (ej. "Dienstag")
-      day: 'numeric', // Día del mes
-      month: 'long', // Nombre del mes (ej. "Januar")
-      year: 'numeric' // Año
+      weekday: 'long',
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
     };
-
     const formatter = new Intl.DateTimeFormat('de-DE', options);
     return formatter.format(date);
   }
@@ -212,7 +182,6 @@ export class ChannelService {
   }
 
   public async createThreadedMessage(content: string, senderID: string, table: string, parentMessageID: string) {
-    // 1. Create the new message in the specified collection
     const messageCollection = collection(this.firestore, table);
     const result = await addDoc(messageCollection, {
       content: content,
@@ -220,14 +189,10 @@ export class ChannelService {
       senderID: senderID,
       threadIDS: [],
     });
-
-    // 2. Get the ID of the newly created message
     const newMessageID = result.id;
-
-    // 3. Update the original message ('parentMessageID') to add the new message to 'threadIDS'
     const parentMessageRef = doc(this.firestore, table, parentMessageID);
     await updateDoc(parentMessageRef, {
-      threadIDS: arrayUnion(newMessageID)  // Añadir el nuevo mensaje a `threadIDS`
+      threadIDS: arrayUnion(newMessageID) 
     });
   }
 
@@ -236,7 +201,6 @@ export class ChannelService {
       return new Observable<ThreadMessage>((observer) => {
         onSnapshot(channelDocRef, (channelSnapshot) => {
           const MessageData = channelSnapshot.data() as ThreadMessage; 
-          //If Message does not extist return and end the Observable
           if (!MessageData) {
             return; 
           } 
@@ -250,7 +214,6 @@ export class ChannelService {
             const userObservable = this.fetchUserAsObservable(senderID).pipe(
               filter((user): user is User => user !== null)
             );
-
             userObservable.subscribe((user)=>{
               const threadMessageCopy = {
                 ...MessageData,
@@ -261,17 +224,13 @@ export class ChannelService {
               }
               observer.next(threadMessageCopy as ThreadMessage);
               console.log(MessageData);
-            })
-                     
+            })        
           } else {
-              
-
             const threadObservables = (threadIDS || []).map((messageId: string) =>
                 this.fetchMessageWithUserAsObservable(messageId).pipe(
                     filter((msg): msg is Message => msg !== null)
                 )
             );
-
             const userObservable = this.getUserObservable(senderID)
 
             combineLatest([combineLatest(threadObservables), userObservable])
@@ -303,11 +262,8 @@ export class ChannelService {
       const messageDocRef = doc(this.firestore, 'messages', messageId);
       try {
           const messageSnapshot = await getDoc(messageDocRef);
-          // Verificar si el documento existe
           if (messageSnapshot.exists()) {
               const messageData = messageSnapshot.data();           
-              
-
               return messageData['content'] as string; 
           } else {
               console.log(`Message with ID ${messageId} not found.`);
@@ -331,7 +287,6 @@ export class ChannelService {
 
   async deleteMessageChannel(messageId: string, channelId: string): Promise<void> {
     try {
-      // 1. Eliminar el mensaje de la colección 'messages'
       const messageDocRef = doc(this.firestore, `messages/${messageId}`);
 
       const messageSnapshot = await getDoc(messageDocRef);
@@ -341,15 +296,13 @@ export class ChannelService {
         const threadIds = messageData?.['threadIDS'] || [];
         console.log(threadIds);
 
-        // 2. Eliminar los threadIDS de la colección 'messages' (si existen)
         if (threadIds.length > 0) {
           const threadDeletePromises = threadIds.map(async (threadId: string) => {
             const threadDocRef = doc(this.firestore, `messages/${threadId}`);
             await deleteDoc(threadDocRef);
             console.log(`Hilo con ID ${threadId} eliminado.`);
           });
-
-          await Promise.all(threadDeletePromises); // Espera a que se eliminen todos los hilos
+          await Promise.all(threadDeletePromises); 
           console.log('Todos los hilos relacionados eliminados.');
         }
       }
@@ -357,10 +310,9 @@ export class ChannelService {
       await deleteDoc(messageDocRef);
       console.log('Mensaje eliminado de la colección messages');
 
-      // 2. Actualizar la colección 'channels' y eliminar el messageId del array messageIDS
       const channelDocRef = doc(this.firestore, `channels/${channelId}`);
       await updateDoc(channelDocRef, {
-        messageIDS: arrayRemove(messageId) // Eliminamos el messageId del array messageIDS
+        messageIDS: arrayRemove(messageId) 
       });
       console.log('Message ID eliminado del array messageIDS en la colección channels');
       
@@ -371,30 +323,21 @@ export class ChannelService {
 
   async deleteMessageThread(messageID: string, parentMessageID: string): Promise<void> {
     try {
-      //1. Delete iD of the threadIDS array from the message parent
       const messageDocRefParent = doc(this.firestore, `messages/${parentMessageID}`);
       const messageSnapshotParent = await getDoc(messageDocRefParent);
       if (messageSnapshotParent.exists()) {
         const parentMessageData = messageSnapshotParent.data();
-         // Verificamos si el mensaje padre tiene un array `threadIDS` y contiene el ID del mensaje hijo
          if (parentMessageData?.['threadIDS']?.includes(messageID)) {
-          // Actualizar `threadIDS` eliminando `messageId` del array
           const updatedThreadIds = parentMessageData['threadIDS'].filter((id: string) => id !== messageID);
-          
-          // Actualizamos el mensaje padre con el nuevo array `threadIDS`
           await updateDoc(messageDocRefParent, { threadIDS: updatedThreadIds });
           console.log(`Mensaje hijo ${messageID} eliminado de threadIDS del mensaje padre ${parentMessageID}`);
-        
         }else {
           console.warn(`El mensaje padre con ID ${parentMessageID} no existe.`);
         }
-
-        //2. Delete Thread
         const messageDocRef = doc(this.firestore, `messages/${messageID}`);
         await deleteDoc(messageDocRef);
         console.log('Mensaje eliminado de la colección messages');
       }
-
     } catch (error) {
       console.error('Error al eliminar el mensaje y actualizar el canal:', error);
     }
@@ -414,85 +357,6 @@ export class ChannelService {
     );
     return combineLatest(userObservables);
   }
-
-  public searchPersonNewChannel(namePerson: string, persons: any[]){
-    const lowerCaseSearchTerm = namePerson.toLowerCase();
-    const filteredPersons = persons.filter(person =>
-        person.fullName.toLowerCase().includes(lowerCaseSearchTerm)
-    );
-    const userObservables = filteredPersons.map(person =>
-        this.fetchUserAsObservable(person.id).pipe(
-            filter((user): user is User => user !== null) 
-        )
-    );
-    return combineLatest(userObservables);
-  }
-
-  async addUserToChannel(channelId: string, userId: string): Promise<void> {
-    try {
-      const channelDocRef = doc(this.firestore, `channels/${channelId}`);
-      await updateDoc(channelDocRef, {
-        members: arrayUnion(userId)
-      });
-      console.log(`User ${userId} added to channel ${channelId}`);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
-
-  async createChannelAllPeople(createdBy: string, name: string, description: string): Promise<void> {
-    const userObservable: Observable<User[]> = this.userService.getUsers();
-    const users = await firstValueFrom(userObservable.pipe(
-      filter((users) => users.length > 0),
-      map(users =>users.map(user => user.id))
-      )
-    );
-    const newChannel = {
-      createdBy,
-      description,
-      name,
-      createdAt: Timestamp.now(),
-      messagesIDs: [], 
-      members: users || [], 
-    };
-    try {
-      const channelCollection = collection(this.firestore, 'channels');
-      await addDoc(channelCollection, newChannel);
-      console.log('Canal creado con éxito:', newChannel);
-    } catch (error) {
-      console.error('Error al crear el canal:', error);
-    }
-  }
-
-  async createChannelOnePerson(createdBy: string, name: string, description: string, memberId: string): Promise<void> {
-    try {
-      const newChannel = {
-        createdBy,
-        description,
-        name,
-        createdAt: Timestamp.now(), 
-        messagesIDs: [], 
-        members: [createdBy, memberId],
-      };
-      const channelCollection = collection(this.firestore, 'channels');
-      await addDoc(channelCollection, newChannel);
-      console.log('Canal creado con éxito:', newChannel);
-    } catch (error) {
-      console.error('Error al crear el canal:', error);
-    }
-  }
-
-  async removeMemberFromChannel(channelId: string, memberId: string): Promise<void> {
-    try {
-      const channelDocRef = doc(this.firestore, 'channels', channelId);
-      await updateDoc(channelDocRef, {
-        members: arrayRemove(memberId),
-      });
-      console.log(`Miembro ${memberId} eliminado del canal ${channelId}`);
-    } catch (error) {
-      console.error('Error al eliminar el miembro:', error);
-    }
-  }
   
   observeLastThreadTimeFromMessage(messageId: string): Observable<string | null> {
     return new Observable<string | null>((observer) => {
@@ -504,7 +368,7 @@ export class ChannelService {
   
           combineLatest(threadObservables).subscribe((threads) => {
             const lastThread = threads
-              .filter((thread): thread is Message => thread !== null) // Filtrar threads válidos
+              .filter((thread): thread is Message => thread !== null) 
               .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
   
             if (lastThread) {
@@ -523,7 +387,6 @@ export class ChannelService {
     });
   }
   
-
 }
 
 

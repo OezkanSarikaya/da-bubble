@@ -357,7 +357,7 @@ export class ChannelComponent {
   }
 
   addPerson() {
-    this.channelService.addUserToChannel(
+    this.channelDependenciesService.addUserToChannel(
       this.selectedChannel()!.id,
       this.personSelectedForChannel().id
     );
@@ -396,7 +396,7 @@ export class ChannelComponent {
   }
 
   leaveAChannel() {
-    this.channelService.removeMemberFromChannel(
+    this.channelDependenciesService.removeMemberFromChannel(
       this.selectedChannel()!.id,
       this.currentUser().idFirebase
     );

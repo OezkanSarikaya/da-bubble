@@ -8,6 +8,7 @@ import { UserService } from '../../services/user.service';
 import { Message } from '../../interfaces/message';
 import { Observable, Subscription } from 'rxjs';
 import { editMessageChannelClose, editMessageThreadClose } from '../../state/actions/triggerComponents.actions';
+import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
 
 @Component({
   selector: 'app-chatmsgbox',
@@ -30,7 +31,7 @@ export class ChatmsgboxComponent {
   editingContext!: string;
 
   
-  constructor(private channelService: ChannelService, private store: Store, private userService: UserService){ 
+  constructor(private channelService: ChannelService, private store: Store, private userService: UserService, public channelDependenciesService: ChannelDependenciesService,){ 
     effect(() => {
       //  console.log(this.selectedChannel());
        this.selectedChannel()
@@ -109,19 +110,19 @@ export class ChatmsgboxComponent {
   }
   
   async sendMessage(){
-    if(this.context === 'channel'){
-      if(!this.editMessageChannel()){
+    if(this.isChannel(this.context)){
+      if(!this.isEditngMessageChannel()){
         if(this.content().trim() === '') return
         //Create
         if(this.selectedChannel()){
           const channelID = this.selectedChannel()!.id
-          this.channelService.createMessage(this.content(), this.currentUser.idFirebase, 'messages', channelID);
+          this.channelDependenciesService.createMessage(this.content(), this.currentUser.idFirebase, 'messages', channelID);
         }
       }else{
         this.channelService.updateMessageContent(this.editMessageChannel()!, this.content())
       }
-    }else if(this.context === 'thread'){
-      if(!this.editMessageThread()){
+    }else if(this.isThread(this.context)){
+      if(!this.isEditngMessageThread()){
         if(this.content().trim() === '') return
         //Create
         if(this.selectedThread()){
@@ -142,5 +143,20 @@ export class ChatmsgboxComponent {
     this.channelService.setContext('');
   }
 
+  isChannel(context: 'channel' | 'thread'){
+    return context === 'channel'
+  }
+
+  isThread(context: 'channel' | 'thread'){
+    return context === 'thread'
+  }
+
+  isEditngMessageChannel(){
+    return this.editMessageChannel();
+  }
+
+  isEditngMessageThread(){
+    return this.editMessageThread();
+  }
 
 }

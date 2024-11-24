@@ -144,7 +144,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   searchPerson(){
     if(this.namePerson() !== ''){
-      this.channelService.searchPersonNewChannel(this.namePerson(), this.persons).subscribe(users => {
+      this.channelDependenciesService.searchPersonNewChannel(this.namePerson(), this.persons).subscribe(users => {
         this.searchedPersons.set(users);
       });
     }else{
@@ -182,10 +182,10 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   addPeopleToNewChannel(){
     if(this.isAddMembersInputVisible){
       console.log('selected user only');
-      this.channelService.createChannelOnePerson(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description, this.personSelectedForChannel().id)
+      this.channelDependenciesService.createChannelOnePerson(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description, this.personSelectedForChannel().id)
     }else{
       console.log('add allUser');
-      this.channelService.createChannelAllPeople(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description);
+      this.channelDependenciesService.createChannelAllPeople(this.currentUser.idFirebase, this.channelCreate.name, this.channelCreate.description);
     }
     this.resetData();
   }
