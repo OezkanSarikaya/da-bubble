@@ -1,5 +1,66 @@
 @import "../../../assets/css/helper.scss";
 
+.moreIconsPopup {
+  
+  display: none;
+  align-items:center;
+  gap:8px;
+  width:190px;
+  // min-width: 158px;
+  box-sizing: border-box;
+  position: absolute;
+  top: -124px; /* Feste Position von unten */
+  left: 16px; /* Horizontale Zentrierung */
+  padding: 10px 15px;
+  border-radius: 30px 30px 30px 0px;
+  background: #444df2;
+  color: white;
+ 
+  div {
+      display: flex;
+      flex-direction: column;
+      gap:8px;
+  }
+  .bold {
+    font-weight: 700;
+  }
+  span {
+    padding:4px;
+    font-size: 18px;
+    background-color: #444df2 !important;
+    // border-radius: unset !important;
+    border: none !important;
+    text-align: center;
+    border-radius:50%;
+    width:24px !important;
+    height:24px !important;
+    transition: background-color 125ms ease-in-out;
+    
+    &:hover {
+      background:rgba(255,255,255,0.5) !important;
+    }
+
+  }
+}
+
+.moreIcons {
+  position: relative;
+  bottom:-3px; 
+  
+  path {
+    fill: #686868 !important;
+  }
+
+  &:hover path {
+    fill: #535af1 !important;
+  }
+
+  &:hover .moreIconsPopup {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
 .channelBottom .messageArea {
   display: flex;
   flex-direction: column;
