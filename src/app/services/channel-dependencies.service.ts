@@ -121,7 +121,16 @@ export class ChannelDependenciesService {
     try {
       const channelDocRef = doc(this.firestore, `channels/${channelId}`);
       await updateDoc(channelDocRef, { name: newName });
-      console.log(`Channel ${channelId} updated with new name: ${newName}`);
+    } catch (error) {
+      console.error('Error updating channel name:', error);
+      throw error;
+    }
+  }
+
+  async updateChannelDescription(channelId: string, newDescription: string): Promise<void> {
+    try {
+      const channelDocRef = doc(this.firestore, `channels/${channelId}`);
+      await updateDoc(channelDocRef, { description: newDescription });
     } catch (error) {
       console.error('Error updating channel name:', error);
       throw error;

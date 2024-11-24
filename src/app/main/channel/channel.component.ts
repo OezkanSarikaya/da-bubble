@@ -101,8 +101,9 @@ export class ChannelComponent {
   };
   personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty);
   lastAnswer = signal<string>('');
-  editChannelTitleTrigger = signal<boolean>(false);
-  channelNameModel: string = '';
+  editChannelNameTrigger = signal<boolean>(false);
+  editChannelDescriptionTrigger = signal<boolean>(false);
+  channelModel: {name: string, description: string} = {name: '', description: ''};
 
   constructor(
     private store: Store,
@@ -125,9 +126,11 @@ export class ChannelComponent {
         console.log(this.searchedPersons());
         console.log(this.namePerson());
         console.log(this.lastAnswer());
-        console.log(this.editChannelTitleTrigger());
+        console.log(this.editChannelNameTrigger());
+        console.log(this.editChannelDescriptionTrigger());
         this.personSelectedForChannel();
-        this.channelNameModel = this.channelObserved()?.name ?? '';
+        this.channelModel.name = this.channelObserved()?.name ?? '';
+        this.channelModel.description = this.channelObserved()?.description ?? '';
       }
     });
   }
@@ -357,8 +360,11 @@ export class ChannelComponent {
         document.body.classList.remove('no-scroll');
       }, 300); // Dauer der CSS-Transition (300ms)
     }
-    if(this.editChannelTitleTrigger()){
+    if(this.editChannelNameTrigger()){
       this.editTitleChannel();
+    }
+    if(this.editChannelDescriptionTrigger()){
+      this.editDescriptionChannel();
     }
   }
 
@@ -413,16 +419,37 @@ export class ChannelComponent {
   }
 
   editTitleChannel(){
-    this.editChannelTitleTrigger.set(!this.editChannelTitleTrigger())
+    this.editChannelNameTrigger.set(!this.editChannelNameTrigger())
   }
 
-  updateChannelSignal(value: string): void {
-    this.channelNameModel = value; 
+  editDescriptionChannel(){
+    this.editChannelDescriptionTrigger.set(!this.editChannelDescriptionTrigger())
   }
 
-  saveNameChannel(){
-    console.log(this.channelNameModel);
+  updateChannelSignalName(value: string): void {
+    this.channelModel.name = value; 
+  }
+
+  updateChannelSignalDescription(value: string): void {
+    this.channelModel.description = value; 
+  }
+
+  async saveNameChannel(){
+    try {
+      await this.channelDependenciesService.updateChannelName(this.selectedChannel()!.id, this.channelModel.name);
+    } catch (error) {
+      console.error('Error updating channel name:', error);
+    }
     this.editTitleChannel()
+  }
+
+  async saveDescriptionChannel(){
+    try {
+      await this.channelDependenciesService.updateChannelDescription(this.selectedChannel()!.id, this.channelModel.description);
+    } catch (error) {
+      console.error('Error updating channel name:', error);
+    }
+    this.editDescriptionChannel()
   }
 
 }

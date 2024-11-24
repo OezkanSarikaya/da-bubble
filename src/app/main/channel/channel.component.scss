@@ -362,7 +362,7 @@
 
 .container-input{
   border: 1px solid $gray-border-color;
-  border-radius: 40px;
+  // border-radius: 40px;
   padding: 8px;
   display: flex;
   &:focus-within {
@@ -389,6 +389,18 @@
     box-sizing: border-box; 
   }
 }
+
+.container-input-name{
+  @extend .container-input;
+  border-radius: 40px;
+}
+
+.container-input-description{
+  @extend .container-input;
+  border-radius: 20px;
+}
+
+
 
 .channelName {
   cursor: pointer;
