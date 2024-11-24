@@ -2,11 +2,13 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
   signal,
   Signal,
+  ViewChild,
   WritableSignal,
 } from '@angular/core';
 
@@ -99,6 +101,8 @@ export class ChannelComponent {
   };
   personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty);
   lastAnswer = signal<string>('');
+  editChannelTitleTrigger = signal<boolean>(false);
+  channelNameModel: string = '';
 
   constructor(
     private store: Store,
@@ -121,7 +125,9 @@ export class ChannelComponent {
         console.log(this.searchedPersons());
         console.log(this.namePerson());
         console.log(this.lastAnswer());
+        console.log(this.editChannelTitleTrigger());
         this.personSelectedForChannel();
+        this.channelNameModel = this.channelObserved()?.name ?? '';
       }
     });
   }
@@ -311,7 +317,7 @@ export class ChannelComponent {
     }
   }
 
-  closePopup() {
+  closePopup() {    
     if (this.isChannelInfoOpen) {
       this.isChannelInfoOpen = false;
       // Nach der Animation (300ms) wird der Backdrop komplett entfernt
@@ -330,6 +336,7 @@ export class ChannelComponent {
       this.isBackdropVisible = false;
       document.body.classList.remove('no-scroll');
     }, 300); // Dauer der CSS-Transition (300ms)
+    
   }
 
   toggleChannelInfo() {
@@ -349,6 +356,9 @@ export class ChannelComponent {
         this.isBackdropVisible = false;
         document.body.classList.remove('no-scroll');
       }, 300); // Dauer der CSS-Transition (300ms)
+    }
+    if(this.editChannelTitleTrigger()){
+      this.editTitleChannel();
     }
   }
 
@@ -400,6 +410,19 @@ export class ChannelComponent {
       this.selectedChannel()!.id,
       this.currentUser().idFirebase
     );
+  }
+
+  editTitleChannel(){
+    this.editChannelTitleTrigger.set(!this.editChannelTitleTrigger())
+  }
+
+  updateChannelSignal(value: string): void {
+    this.channelNameModel = value; 
+  }
+
+  saveNameChannel(){
+    console.log(this.channelNameModel);
+    this.editTitleChannel()
   }
 
 }

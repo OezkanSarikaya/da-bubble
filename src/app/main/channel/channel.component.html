@@ -276,17 +276,33 @@
           </g>
         </svg>
       </header>
-      <div>
-        <div class="roundBox">
-          <div class="roundBoxHeader">
-            <h4>Channel-Name</h4>
-            @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
-            currentUser())){
-            <span class="creatorChannel fs-18">Bearbeiten</span>
-            }
+      <form>
+        @if(!editChannelTitleTrigger()){
+          <div class="roundBox">
+            <div class="roundBoxHeader">
+              <h4>Channel-Name</h4>
+              @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+              currentUser())){
+              <span class="creatorChannel fs-18" (click)="editTitleChannel()">Bearbeiten</span>
+              }
+            </div>
+            <span># {{ channelObserved()?.name }}</span>
           </div>
-          <span># {{ channelObserved()?.name }}</span>
-        </div>
+        }@else{
+          <div class="noBox">
+            <div class="roundBoxHeader">
+              <h4>Channel-Name</h4>
+              @if(this.channelDependenciesService.isUserMemberChannel(channelObserved()!,
+              currentUser())){
+              <span class="creatorChannel fs-18" (click)="saveNameChannel()">Speichern</span>
+              }
+            </div>
+            <div class="container-input">
+              <span>#</span><textarea class="custom-input" rows="1" [ngModel]="channelNameModel" (ngModelChange)="updateChannelSignal($event)"  
+              name="channelName"></textarea>
+            </div>
+          </div>
+        }
         <div class="roundBox">
           <div class="roundBoxHeader">
             <h4>Beschreibung</h4>
@@ -304,7 +320,7 @@
             channelObserved()!.creatorChannelData!.fullName
           }}</span>
         </div>
-      </div>
+      </form>
 
       <div class="roundBox members">
         <h3>Mitglieder</h3>
