@@ -14,6 +14,7 @@
     <app-popup-user-profile
       (click)="$event.stopPropagation()"
       class="d-inline-block"
+      [currentUser]="currentUser"
     ></app-popup-user-profile>
     }@else {
     <app-user-edit

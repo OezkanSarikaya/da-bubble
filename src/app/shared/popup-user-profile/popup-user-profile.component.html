@@ -31,8 +31,12 @@
         </div>
       </div>
       <div class="active-container">
-        <div class="online"></div>
-        <span>Active</span>
+        <div [ngClass]="{online: currentUser.status === 'online', offline: currentUser.status === 'offline'}"></div>
+        @if(currentUser.status === 'online'){
+          <span class="online-text">Aktive</span>
+        }@else {
+          <span class="offline-text">Abwesend</span>
+        }
       </div>
     </div>
     <div class="container-text-email">
@@ -50,7 +54,7 @@
         <div class="empty"></div>
         <div class="email" class="main-secondary-color">{{currentUser.email}}</div>
     </div>
-    @if(!currentUser.idFirebase){
+    @if(!currentUser.id === areYou.idFirebase){
     <div>
       <button class="btn center">
         <svg width="24" height="24" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
