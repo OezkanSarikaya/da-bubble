@@ -95,10 +95,14 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.channels$ = this.channelService.allChannels;
     // Ejecuta un efecto para observar cambios en `channels$` en tiempo real
     effect(() => {
-      console.log('Updated channels:', this.channels$());
-      console.log(this.namePerson());
-      console.log(this.searchedPersons());
-      console.log(this.personSelectedForChannel());
+      this.channels$();
+      // console.log('Updated channels:', this.channels$());
+      this.namePerson();
+      this.searchedPersons();
+      this.personSelectedForChannel();
+      // console.log(this.namePerson());
+      // console.log(this.searchedPersons());
+      // console.log(this.personSelectedForChannel());
       this.cdr.detectChanges();
     });
     this.channelCreate$.subscribe(createChannel =>{
@@ -106,7 +110,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         this.nameTaken = channel.name.toLocaleLowerCase() === createChannel.name.toLocaleLowerCase();
         console.log(this.nameTaken);
       });
-      console.log(createChannel);
+      // console.log(createChannel);
     })
   }
 
@@ -175,7 +179,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.channelCreate.description = ''
     this.channelCreateSubject.next(this.channelCreate);
     this.addPeopleChoicePopup();
-    this.toggleAddChannel()
   }
 
 
@@ -191,11 +194,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   }
 
   addPeopleChoicePopup() {
-
-
-
-
-
     if (!this.isPeopleChoiceOpen) {
 
       if (window.innerWidth >= 800) { 
@@ -321,6 +319,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
   }
 
+  showDirectMessage(id: User){
+    console.log('person', id);
+  }
   
   
 }

@@ -117,17 +117,22 @@ export class ChannelComponent {
       this.currentDate = this.channelService.getFormattedDate(timestamp);
     }, 1000);
     this.currentUser = toSignal(this.userService.currentUser$);
-    console.log(this.currentUser());
+    // console.log(this.currentUser());
 
     effect(() => {
       if (this.selectedChannel()) {
         console.log(this.selectedChannel());
         console.log('ChannelObserved Updated:', this.channelObserved());
-        console.log(this.searchedPersons());
-        console.log(this.namePerson());
-        console.log(this.lastAnswer());
-        console.log(this.editChannelNameTrigger());
-        console.log(this.editChannelDescriptionTrigger());
+        this.searchedPersons();
+        this.namePerson();
+        this.lastAnswer();
+        this.editChannelNameTrigger();
+        this.editChannelDescriptionTrigger();
+        // console.log(this.searchedPersons());
+        // console.log(this.namePerson());
+        // console.log(this.lastAnswer());
+        // console.log(this.editChannelNameTrigger());
+        // console.log(this.editChannelDescriptionTrigger());
         this.personSelectedForChannel();
         this.channelModel.name = this.channelObserved()?.name ?? '';
         this.channelModel.description = this.channelObserved()?.description ?? '';
