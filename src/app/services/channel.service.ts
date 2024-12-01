@@ -223,7 +223,6 @@ export class ChannelService {
                 time: this.formatTimestampTo24HourFormat(createdAt?.getTime() / 1000 || 0)
               }
               observer.next(threadMessageCopy as ThreadMessage);
-              console.log(MessageData);
             })        
           } else {
             const threadObservables = (threadIDS || []).map((messageId: string) =>

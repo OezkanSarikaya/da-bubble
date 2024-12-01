@@ -32,7 +32,6 @@ export class PopupUserProfileComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentUser'] && changes['currentUser'].currentValue) {
       changes['currentUser'].currentValue;
-      console.log(this.currentUser);
     }
   }
 

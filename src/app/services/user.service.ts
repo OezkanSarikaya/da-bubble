@@ -164,7 +164,6 @@ export class UserService {
         id: doc.id,
         ...doc.data(),
       })) as User[];
-      console.log(users);
       usersSubject.next(users); // Emitimos los usuarios actualizados
     });
 
