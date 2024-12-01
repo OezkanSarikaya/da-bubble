@@ -117,10 +117,12 @@
 
     <div class="dropdown-content" *ngIf="isChannelOpen">
       @for(channel of channels$(); track $index){
-      <div class="channelListItem" (click)="onShowChannel(channel)">
-        <img src="../../../assets/img/tag.svg" alt="" class="iconSize24" />
-        <span>{{ channel.name }}</span>
-      </div>
+        @if(channel.name !== channelDependenciesService.directMessage){
+          <div class="channelListItem" (click)="onShowChannel(channel)">
+            <img src="../../../assets/img/tag.svg" alt="" class="iconSize24" />
+            <span>{{ channel.name }}</span>
+          </div>
+        }
       }
       <div class="channelListItem" (click)="toggleAddChannel()">
         <img
@@ -153,7 +155,7 @@
       </div>
     </div>
     <div class="dropdown-content" *ngIf="isPrivateMessageOpen">
-      <div class="userList" *ngFor="let person of persons" (click)="showDirectMessage(person.id)">
+      <div class="userList" *ngFor="let person of persons" (click)="showDirectMessage(person)">
         <img src="{{ person.avatar }}" alt="" class="userProfile50" />
         <div
           [ngClass]="{ online: person.isOnline, offline: !person.isOnline }"

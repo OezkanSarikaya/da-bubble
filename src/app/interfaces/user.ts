@@ -4,5 +4,6 @@ export interface User {
   fullName: string,
   id: string,
   status?: string,
+  isOnline?: boolean,
   uid?: string,
 }

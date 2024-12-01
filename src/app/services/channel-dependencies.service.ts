@@ -3,7 +3,7 @@ import { Channel } from '../interfaces/channel';
 import { User } from '../interfaces/user';
 import { addDoc, arrayRemove, arrayUnion, collection, doc, Firestore, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { UserService } from './user.service';
-import { combineLatest, filter, firstValueFrom, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, firstValueFrom, map, Observable } from 'rxjs';
 import { ChannelService } from './channel.service';
 
 @Injectable({
@@ -12,8 +12,25 @@ import { ChannelService } from './channel.service';
 export class ChannelDependenciesService {
 
   private firestore: Firestore = inject(Firestore);
+  directMessage: string = 'Direct-Message-Only-For-Chat-Password'
+
+  userEmpty: User = {
+    avatar: '',
+    email: '',
+    fullName: '',
+    id: '',
+    status: '',
+    uid: '',
+  }
+
+  private chatWithObject: BehaviorSubject<User> = new BehaviorSubject(this.userEmpty);
+  public chatWith$: Observable<User> = this.chatWithObject.asObservable();
 
   constructor(private userService: UserService, private channelService: ChannelService,) { }
+
+  public setChatWith(user: User){
+    this.chatWithObject.next(user);
+  }
 
   isUserMemberChannel(channelObserved: Channel, currentUser: any){
     return channelObserved?.members.includes(currentUser.idFirebase)  
@@ -135,6 +152,20 @@ export class ChannelDependenciesService {
       console.error('Error updating channel name:', error);
       throw error;
     }
+  }
+
+  public searchingChannelsDirectMessage(channels: Channel[]){
+    return channels.filter(channel => channel.name === this.directMessage)
+  }
+
+  public channelDirectMesageFound(channelDirect: Channel[], userId: string, currentUserId: string): Channel | undefined{
+    return channelDirect.find(channel => {
+      const members = channel.members as string[]; 
+      if (userId === currentUserId) {
+        return members.filter(id => id === userId).length == 2;
+      }
+      return members.includes(userId) && members.includes(currentUserId);
+    });
   }
 
 }
