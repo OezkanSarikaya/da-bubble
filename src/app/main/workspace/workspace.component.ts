@@ -82,6 +82,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   namePerson: WritableSignal<string> = signal<string>('');
   searchedPersons: WritableSignal<User[]> = signal<User[]>([]);
   personSelectedForChannel: WritableSignal<User> = signal<User>(this.userEmpty)
+  chatWith!: User;
 
   
   constructor(
@@ -143,7 +144,11 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     const sub1 = this.userService.currentUser$.subscribe(user => {
       this.currentUser = user;        
     });
-    this.subscriptions.add(sub1)
+    const sub2 = this.channelDependenciesService.chatWith$.subscribe(user => {
+      this.chatWith = user;
+    });
+    this.subscriptions.add(sub1);
+    this.subscriptions.add(sub2);
   }
 
   searchPerson(){
@@ -277,7 +282,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   // Methode, die das Einblenden auslöst
   onShowChannel(channel: Channel) {
-    // this.findChannelClicked(channel.id);
+    if(channel.name !== this.channelDependenciesService.directMessage){
+      this.channelDependenciesService.setChatWith(this.channelDependenciesService.userEmpty);
+    }
     this.store.dispatch(showChannelComponent({ channel }));
     this.store.dispatch(hideNewMessage());
   }
@@ -319,9 +326,35 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
   }
 
-  showDirectMessage(id: User){
-    console.log('person', id);
+  /**
+   * First get All Channels
+   * Check if the channel exist. If exist show it
+   * If does nit exist create it with await
+   * Wait that zhe channel will be add to channels(signal)
+   * After it will be showed
+   * @param user The person who you have a direct Message
+   * @returns User
+   */
+  async showDirectMessage(user: User){
+    this.channelDependenciesService.setChatWith(user);
+    let channelsDirectMessage = this.channelDependenciesService.searchingChannelsDirectMessage(this.channels$());
+    let channelFound = this.channelDependenciesService.channelDirectMesageFound(channelsDirectMessage, user.id, this.currentUser.idFirebase);
+    if (channelFound) {
+      this.onShowChannel(channelFound);
+      return;
+    }
+    await this.channelDependenciesService.createChannelOnePerson(
+      this.currentUser.idFirebase,
+      this.channelDependenciesService.directMessage,
+      `${this.currentUser.idFirebase}-${user.id}`,
+      user.id
+    );
+    channelsDirectMessage = this.channelDependenciesService.searchingChannelsDirectMessage(this.channels$());
+    channelFound = this.channelDependenciesService.channelDirectMesageFound(channelsDirectMessage, user.id, this.currentUser.idFirebase);
+    if (channelFound) {
+      this.onShowChannel(channelFound);
+    } else {
+      console.error('Channel creation failed or is not yet available.');
+    }
   }
-  
-  
 }

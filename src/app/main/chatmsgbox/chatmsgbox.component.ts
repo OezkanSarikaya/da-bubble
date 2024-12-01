@@ -9,6 +9,7 @@ import { Message } from '../../interfaces/message';
 import { Observable, Subscription } from 'rxjs';
 import { editMessageChannelClose, editMessageThreadClose } from '../../state/actions/triggerComponents.actions';
 import { ChannelDependenciesService } from '../../services/channel-dependencies.service';
+import { User } from '../../interfaces/user';
 
 @Component({
   selector: 'app-chatmsgbox',
@@ -29,6 +30,7 @@ export class ChatmsgboxComponent {
   @Input() content!: WritableSignal<string>;
   @Input() nameChannel!: Signal<string>;
   editingContext!: string;
+  chatWith!: User;
 
   
   constructor(private channelService: ChannelService, private store: Store, private userService: UserService, public channelDependenciesService: ChannelDependenciesService,){ 
@@ -76,14 +78,16 @@ export class ChatmsgboxComponent {
       this.editingContext = val;
       console.log(val);
     })
-      
+    const sub7 = this.channelDependenciesService.chatWith$.subscribe(user => {
+      this.chatWith = user;
+    });
     this.subscription.add(sub1);
     this.subscription.add(sub2);
     this.subscription.add(sub3);
     this.subscription.add(sub4);
     this.subscription.add(sub5);
     this.subscription.add(sub6);
-  
+    this.subscription.add(sub7);
   }
 
   ngOnDestroy(): void {

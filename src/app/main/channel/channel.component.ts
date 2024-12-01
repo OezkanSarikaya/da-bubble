@@ -27,7 +27,7 @@ import {
   triggerChannelSelector,
   triggerNewMessageSelector,
 } from '../../state/selectors/triggerComponents.selectors';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { filter, forkJoin, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { ChannelService } from '../../services/channel.service';
 import { Channel } from '../../interfaces/channel';
 import { user } from '@angular/fire/auth';
@@ -104,6 +104,7 @@ export class ChannelComponent {
   editChannelNameTrigger = signal<boolean>(false);
   editChannelDescriptionTrigger = signal<boolean>(false);
   channelModel: {name: string, description: string} = {name: '', description: ''};
+  chatWith!: User;
 
   constructor(
     private store: Store,
@@ -166,9 +167,14 @@ export class ChannelComponent {
     const sub4 = this.userService.getUsers().subscribe((users) => {
       this.persons = users;
     });
+    const sub5 = this.channelDependenciesService.chatWith$.subscribe(user => {
+      this.chatWith = user;
+      console.log(this.chatWith);
+    });
     this.subscription.add(sub1);
     this.subscription.add(sub3);
     this.subscription.add(sub4);
+    this.subscription.add(sub5);
   }
 
   ngOnDestroy(): void {
@@ -199,12 +205,7 @@ export class ChannelComponent {
               }
             }
           });
-      } else {
-        console.log(
-          'We dont have anything here to show for',
-          message
-        );
-      }
+      } 
     });
   }
 
